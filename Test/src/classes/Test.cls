@@ -1,6 +1,6 @@
 public with sharing class Test {
 	public Test()
 	{
-		// whatever
+		// whatever I want
 	}
 }
