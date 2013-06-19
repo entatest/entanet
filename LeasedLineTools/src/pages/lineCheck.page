@@ -1,0 +1,24 @@
+<apex:page standardController="Opportunity" extensions="TalkTalkQuotes" >
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" />
+    <style>
+    .bPageBlock .pbTitle { width: 80%; }
+    </style>
+    <apex:form id="myform" >
+    	<apex:pageBlock title="Leased Line Pricing Tool for {!opportunity.name} Opportunity" id="pb1">
+        	<apex:pageBlockSection columns="1" id="pbs1">
+            <apex:inputText label="Postcode: " value="{!postcode}"/>
+			<apex:inputCheckbox id="exactaddress" label="Exact Address?" value="{!exactaddress}"/>
+            </apex:pageBlockSection>
+            <apex:commandButton action="{!Quotes}" value="Get Quotes" onclick="getCheckBoxValue();"/>
+    	</apex:pageBlock>
+    </apex:form>
+        <script language="javascript">
+        function getCheckBoxValue()
+        {
+            var ea = document.getElementById('{!$Component.myForm.pb1.pbs1.exactaddress}').checked;
+            if(ea === false){
+            	alert("Quotes will not be accurate until you get the exact address.");    
+            }
+        }
+    </script>
+</apex:page>

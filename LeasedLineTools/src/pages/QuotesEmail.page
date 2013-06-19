@@ -1,0 +1,18 @@
+<apex:page Standardcontroller="Opportunity" extensions="sendEmail">
+    <apex:pageBlock title="Send quotes to your prospective customer">
+        <p>Fill out the fields below to to send an email to your prospect. </p>
+    <apex:form >
+        <br /><br />
+            <apex:outputLabel value="To" for="To"/>:<br />     
+            <apex:inputText id="To" value="{!to}" maxlength="80"/>
+            <br /><br />
+            <apex:outputLabel value="Subject" for="Subject"/>:<br />     
+            <apex:inputText id="Subject" value="{!subject}" maxlength="80"/>
+            <br /><br />
+            <apex:outputLabel value="Body" for="Body"/>:<br />     
+            <apex:inputTextarea id="Body" value="{!body}" rows="10" cols="80"/>           
+            <br /><br /><br />
+            <apex:commandButton value="Send Email" action="{!send}" /> 
+    </apex:form>
+    </apex:pageBlock>  
+</apex:page>
