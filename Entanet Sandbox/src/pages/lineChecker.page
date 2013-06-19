@@ -1,0 +1,149 @@
+<apex:page>
+            <div id="llpt_result_box">
+                <form id="leasedLineForm" class="" accept-charset="utf-8">
+
+                    <div id = "accordion"> 
+                        <h3> Site B Options </h3>
+                        <div >
+                            <fieldset style="float:none">
+                                <legend>Site B</legend>
+                                <div class="fm-req tableOption leftPadding">
+                                    <label for="llpt_siteB_postcode">Postcode</label>
+                                    <input type="text" name="siteBPostcode" id="llpt_siteB_postcode"></input>
+                                </div>
+
+                                <div class="fm-opt tableOption leftPadding" >
+                                    <label for="llpt_siteB_address" id="label_siteB_address">Address</label>
+                                    <select name="siteBToid" id="llpt_siteB_address">
+                                        <option value="">------------</option>
+                                    </select>
+                                </div>
+
+                                <div class="fm-req tableOption leftPadding">
+                                    <label for="llpt_customer_reference">Customer Reference</label>
+                                    <input type="text" name="customerReference" id="llpt_customer_reference"></input>
+                                </div>
+
+                                <div class="tableOption leftPadding"> 
+                                    Bandwidth speeds 
+                                    <div class="fm-opt">
+                                        <label for="llpt_bandwidth_siteB_10mb">10 Mb
+                                        </label>
+                                    </div>
+                                    <div class="fm-opt">
+                                        <label for="llpt_bandwidth_siteB_100mb">100 Mb
+                                        </label>
+                                    </div>
+                                    <div class="fm-opt">
+                                        <label for="llpt_bandwidth_siteB_1gb">1 Gb
+                                        </label>
+                                    </div> 
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+                        <h3> Site A Options </h3>
+                        <div>
+                            <fieldset>
+                                <legend>Site A </legend>
+                                <div class="fm-opt" >
+                                    <label for="llpt_siteA_postcode">Site A Postcodes</label>
+                                    <input type="text" name="siteAPostcode" id="llpt_siteA_postcode"></input>
+                                </div>
+
+                                <div class="floatRight leftPadding">
+                                    <p>Default Handoff Points</p>
+                                        <p>Virgin: E14 2AA </p>         
+                                        <p>BT: SE1 8NZ</p>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <h3> Contract Length</h3>
+                            <div>
+                                <fieldset>
+                                    <legend>Contract Length </legend>
+                                    <div class="leftPadding tableOption">
+                                        <div class="fm-opt" >
+                                            <label for="llpt_contract_term_1yr">Term - 1 Year
+                                            </label>
+                                        </div>
+                                        <div class="fm-opt">
+                                            <label for="llpt_contract_term_2yr">Term - 2 Year
+                                            </label>
+                                        </div>
+                                        <div class="fm-opt">
+                                            <label for="llpt_virgin_term_3yr">Term - 3 Year
+                                            </label>
+                                        </div>
+                                        <div class="fm-opt">
+                                            <label for="llpt_virgin_term_4yr">Term - 4 Year
+                                            </label>
+                                        </div>
+                                        <div class="fm-opt">
+                                            <label for="llpt_virgin_term_5yr">Term - 5 Year
+                                            </label>
+                                        </div>
+                                    </div>    
+
+                                    <div class="tableOption floatRight">     
+                                        <p>Supplier Contracts lengths </p>      
+                                        <p> BT: 1, 3 and 5 years</p> 
+                                        <p> Virgin: 1,2,3,4 and 5 years </p>
+                                        <p>Talk Talk: 1 and 3 years </p>       
+                                    </div>
+                                </fieldset>
+                            </div>
+
+
+                            <h3> BT Options</h3>
+                            <div>
+                                <fieldset>
+                                    <legend>BT Options</legend>
+                                        
+                                         <div class="fm-opt tableOption">
+                                            <label for="llpt_bt_technology">Technology <span class="note">*only fibre</span></label>
+                                            <select id = "btTechnology" name = "btTechnology">
+                                                <option>Test</option>
+                                            </select>
+                                        </div>
+                                             <div class="fm-opt tableOption" >
+                                            <label for="llpt_bt_etherway">Etherway Bandwidth</label>
+                                            <select size="10" id = "btEtherway" multiple  name = "btEtherway[]">
+                                                <option>Test</option>
+                                            </select>
+                                        </div>
+
+                                         <div class="fm-opt tableOption" >
+                                            <label for="llpt_bt_etherflow">Etherflow Bandwidth</label>
+                                            <select size="10" multiple name = "btEtherflow[]">
+                                                <option>Test</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="fm-opt tableOption" >
+                                            <label for="llpt_bt_etherflowBandwidthPricing">Etherflow Bandwidth Pricing</label>
+                                            <select  name = "etherflowBandwidthPricing">
+                                                <option>Test</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="fm-opt tableOption" >
+                                            <label for="llpt_bt_request_type">Request Types <span class="note">*only point to point</span></label>
+                                            <select  name = "btRequest">
+                                                <option>Test</option>
+                                            </select>
+                                        </div>
+                                        
+                                </fieldset>
+                            </div>
+
+                        </div> <!-- close accordion -->
+                        <input type="submit" value="Check"></input> 
+                        <span class="floatRight"><a href="index.php">Clear form</a></span>
+                    </form>
+                    
+                </div>
+
+</apex:page>
