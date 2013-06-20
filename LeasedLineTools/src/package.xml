@@ -1,28 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>ChatterAnswers</members>
+        <members>ChatterAnswersEscalationTriggerTest</members>
+        <members>LineCheckerResults</members>
+        <members>TalkTalkQuotes</members>
+        <members>TestTalkTalkQuotes</members>
+        <members>TrialCustomerPortalHomePageController</members>
+        <members>lineChecker</members>
+        <members>linecheck</members>
+        <members>sendEmail</members>
+        <members>superSort</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>ChatterAnswersAgentView</members>
+        <members>ChatterAnswersChangePassword</members>
+        <members>ChatterAnswersForgotPassword</members>
+        <members>ChatterAnswersForgotPasswordConfirm</members>
+        <members>ChatterAnswersHelp</members>
+        <members>ChatterAnswersLogin</members>
+        <members>ChatterAnswersRegistration</members>
+        <members>QuotesEmail</members>
+        <members>TrialCustomerPortalHomePage</members>
+        <members>Trial_Tour</members>
+        <members>ca_tour_main</members>
+        <members>ca_tour_style</members>
+        <members>lineCheck</members>
+        <members>lineCheckerResults</members>
+        <members>scc_tour_main</members>
+        <members>scc_tour_style</members>
+        <members>test</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
+        <members>chatter_answers_question_escalation_to_case_trigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>Opportunity</members>
-        <name>CustomObject</name>
+        <members>Opportunity.AccountId</members>
+        <members>Opportunity.CampaignId</members>
+        <members>Opportunity.LeadSource</members>
+        <members>Opportunity.OwnerId</members>
+        <members>Opportunity.StageName</members>
+        <members>Opportunity.SyncedQuoteId</members>
+        <members>Opportunity.Type</members>
+        <name>CustomField</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Opportunity.AllOpportunities</members>
+        <members>Opportunity.ClosingNextMonth</members>
+        <members>Opportunity.ClosingThisMonth</members>
+        <members>Opportunity.MyOpportunities</members>
+        <members>Opportunity.NewThisWeek</members>
+        <members>Opportunity.Won</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>ServiceCloudLogo</members>
+        <members>TrialPortalBanner</members>
+        <members>scc_tour_images</members>
         <name>StaticResource</name>
+    </types>
+    <types>
+        <members>Opportunity.Get_Pricing</members>
+        <name>WebLink</name>
     </types>
     <version>27.0</version>
 </Package>
