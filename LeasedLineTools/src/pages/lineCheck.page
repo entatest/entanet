@@ -1,4 +1,4 @@
-<apex:page standardController="Opportunity" extensions="TalkTalkQuotes" >
+<apex:page standardController="Opportunity" extensions="LeasedLinesQuotesController" >
     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" />
     <style>
     .bPageBlock .pbTitle { width: 80%; }

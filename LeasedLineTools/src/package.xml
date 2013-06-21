@@ -22,6 +22,7 @@
         <members>scc_tour_main</members>
         <members>scc_tour_style</members>
         <members>test</members>
+        <members>testQuoteDisplay</members>
         <name>ApexPage</name>
     </types>
     <types>
