@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>ChatterAnswers</members>
-        <members>ChatterAnswersEscalationTriggerTest</members>
-        <members>LineCheckerResults</members>
-        <members>TalkTalkQuotes</members>
-        <members>TestTalkTalkQuotes</members>
-        <members>TrialCustomerPortalHomePageController</members>
-        <members>lineChecker</members>
-        <members>linecheck</members>
-        <members>sendEmail</members>
-        <members>superSort</members>
+        <members>*</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -45,7 +36,12 @@
         <members>Opportunity.StageName</members>
         <members>Opportunity.SyncedQuoteId</members>
         <members>Opportunity.Type</members>
+        <members>Quote.IncludeInSummary__c</members>
         <name>CustomField</name>
+    </types>
+    <types>
+        <members>Opportunity-Opportunity Layout</members>
+        <name>Layout</name>
     </types>
     <types>
         <members>Opportunity.AllOpportunities</members>
@@ -55,10 +51,6 @@
         <members>Opportunity.NewThisWeek</members>
         <members>Opportunity.Won</members>
         <name>ListView</name>
-    </types>
-    <types>
-        <members>Opportunity-Opportunity Layout</members>
-        <name>Layout</name>
     </types>
     <types>
         <members>*</members>
