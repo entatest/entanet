@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -66,5 +66,10 @@
         <members>Opportunity.Get_Pricing</members>
         <name>WebLink</name>
     </types>
+    <types>
+        <members>Opportunity.Get_Pricing</members>
+        <name>WebLink</name>
+    </types>
     <version>27.0</version>
 </Package>
+
