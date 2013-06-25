@@ -295,4 +295,15 @@
         <page>lineCheck</page>
         <protected>false</protected>
     </webLinks>
+    <webLinks>
+        <fullName>Summary_Email</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Summary Email</masterLabel>
+        <openType>noSidebar</openType>
+        <page>QuotesEmail</page>
+        <protected>false</protected>
+    </webLinks>
 </CustomObject>
