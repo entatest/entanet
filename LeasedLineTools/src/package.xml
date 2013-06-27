@@ -1,7 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>ChatterAnswers</members>
+        <members>ChatterAnswersEscalationTriggerTest</members>
+        <members>LeasedLinesQuotes</members>
+        <members>LeasedLinesQuotesController</members>
+        <members>LineCheckerResults</members>
+        <members>TalkTalkQuotes</members>
+        <members>TestTalkTalkQuotes</members>
+        <members>TrialCustomerPortalHomePageController</members>
+        <members>leasedLinesQuotes</members>
+        <members>lineChecker</members>
+        <members>linecheck</members>
+        <members>sendEmail</members>
+        <members>superSort</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -63,8 +75,10 @@
         <name>ListView</name>
     </types>
     <types>
-        <members>Opportunity.Get_Pricing</members>
-        <name>WebLink</name>
+        <members>ServiceCloudLogo</members>
+        <members>TrialPortalBanner</members>
+        <members>scc_tour_images</members>
+        <name>StaticResource</name>
     </types>
     <types>
         <members>Opportunity.Get_Pricing</members>
@@ -72,4 +86,3 @@
     </types>
     <version>27.0</version>
 </Package>
-

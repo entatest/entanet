@@ -6,7 +6,7 @@
     <apex:form id="myform" >
     	<apex:pageBlock title="Leased Line Pricing Tool for {!opportunity.name} Opportunity" id="pb1">
         	<apex:pageBlockSection columns="1" id="pbs1">
-            <apex:inputText label="Postcode" value="{!postcode}"/>
+            <apex:inputText label="Postcode: " value="{!postcode}"/>
 			<apex:inputCheckbox id="exactaddress" label="Exact Address?" value="{!exactaddress}"/>
             </apex:pageBlockSection>
             <apex:commandButton action="{!Quotes}" value="Get Quotes" onclick="getCheckBoxValue();"/>
