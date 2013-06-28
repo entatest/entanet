@@ -10,9 +10,11 @@
         <members>TalkTalkQuotes</members>
         <members>TestTalkTalkQuotes</members>
         <members>TrialCustomerPortalHomePageController</members>
+        <members>filter</members>
         <members>leasedLinesQuotes</members>
         <members>lineChecker</members>
         <members>linecheck</members>
+        <members>salesorder</members>
         <members>sendEmail</members>
         <members>superSort</members>
         <name>ApexClass</name>

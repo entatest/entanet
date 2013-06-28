@@ -37,6 +37,19 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Term</label>
+        <picklist>
+            <picklistValues>
+                <fullName>none</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>lineProvider__c</fullName>
         <externalId>false</externalId>
         <label>lineProvider</label>
