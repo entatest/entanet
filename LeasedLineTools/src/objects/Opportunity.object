@@ -302,7 +302,7 @@
         <height>600</height>
         <linkType>page</linkType>
         <masterLabel>Summary Email</masterLabel>
-        <openType>noSidebar</openType>
+        <openType>sidebar</openType>
         <page>QuotesEmail</page>
         <protected>false</protected>
     </webLinks>
