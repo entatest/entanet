@@ -22,24 +22,7 @@
         <name>ApexComponent</name>
     </types>
     <types>
-        <members>ChatterAnswersAgentView</members>
-        <members>ChatterAnswersChangePassword</members>
-        <members>ChatterAnswersForgotPassword</members>
-        <members>ChatterAnswersForgotPasswordConfirm</members>
-        <members>ChatterAnswersHelp</members>
-        <members>ChatterAnswersLogin</members>
-        <members>ChatterAnswersRegistration</members>
-        <members>QuotesEmail</members>
-        <members>TrialCustomerPortalHomePage</members>
-        <members>Trial_Tour</members>
-        <members>ca_tour_main</members>
-        <members>ca_tour_style</members>
-        <members>lineCheck</members>
-        <members>lineCheckerResults</members>
-        <members>scc_tour_main</members>
-        <members>scc_tour_style</members>
-        <members>test</members>
-        <members>testQuoteDisplay</members>
+        <members>*</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -58,6 +41,7 @@
         <name>CustomField</name>
     </types>
     <types>
+        <members>Leased_Line_Product__c</members>
         <members>Opportunity</members>
         <members>Product2</members>
         <name>CustomObject</name>
