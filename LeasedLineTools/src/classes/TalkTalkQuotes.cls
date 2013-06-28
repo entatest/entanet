@@ -6,8 +6,21 @@ public class TalkTalkQuotes {
     public String postcode { get; set; }
     public Boolean exactaddress { get; set; }
     List<LLProducts> quotebook = new List<LLProducts>();
-    public String term { get; set; }
+    String term = 'All';
     
+    public String getterm() {
+        return term;
+    }
+    
+    public void setterm(String t) {
+        this.term = t;
+    }
+    
+    public PageReference filter(){
+        PageReference pageRef = ApexPages.currentPage();
+        pageRef.setRedirect(false);
+        return pageRef;
+    }    
     
     List<LLProducts> talktalkproducts;
     List<LLProducts> virginproducts;
@@ -17,7 +30,7 @@ public class TalkTalkQuotes {
         this.oppt = (Opportunity)controller.getRecord();
     }
     
-    public List<SelectOption> getterm(){
+    public List<SelectOption> getterms(){
         List<SelectOption> options = new List<SelectOption>();
         options.add(new SelectOption('All','All'));
         options.add(new SelectOption('1','1'));
@@ -30,6 +43,10 @@ public class TalkTalkQuotes {
     
     public pageReference Quotes(){
         return Page.linecheckerresults;
+        
+        //PageReference pageRef = new PageReference('/apex/linecheckerresults?id='+oppt.id);
+        //pageRef.setRedirect(true);
+        //return pageRef;
     }
     
     public PageReference addQuote(){
@@ -86,36 +103,61 @@ public class TalkTalkQuotes {
     }
     
     public List<LLProducts> getTalkTalkProducts() {
-        if (talktalkproducts == null) {
             talktalkproducts = new List<LLProducts>();
+            
+            if(term.equals('All'))
+            	{
             for(PricebookEntry prod : [
-            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Talktalk']) {
+            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c
+                FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Talktalk']) {
                 talktalkproducts.add(new LLProducts(prod));   
             }
+                }
+            else {
+            for(PricebookEntry prod : [
+            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Talktalk' AND Product2.Term__c =: term]) {
+                talktalkproducts.add(new LLProducts(prod));   
+            }                
         }
         return talktalkproducts;
     }
     
     public List<LLProducts> getVirginProducts() {
-        if (virginproducts == null) {
             virginproducts = new List<LLProducts>();
+            
+            if(term.equals('All'))
+            	{
             for(PricebookEntry prod : [
-            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Talktalk']) {
+            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Virgin']) {
                 virginproducts.add(new LLProducts(prod));   
             }
+                }
+            else {
+            for(PricebookEntry prod : [
+            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Virgin' AND Product2.Term__c =: term]) {
+                virginproducts.add(new LLProducts(prod));   
+            }                
         }
         return virginproducts;
     }  
     
     public List<LLProducts> getBTProducts() {
-        if (BTproducts == null) {
-            BTproducts = new List<LLProducts>();
+            btproducts = new List<LLProducts>();
+            
+            if(term.equals('All'))
+            	{
             for(PricebookEntry prod : [
-            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Talktalk']) {
-                BTproducts.add(new LLProducts(prod));   
+            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'BT']) {
+                btproducts.add(new LLProducts(prod));   
             }
+                }
+            else {
+            for(PricebookEntry prod : [
+            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'BT' AND Product2.Term__c =: term]) {
+                btproducts.add(new LLProducts(prod));   
+            }                
         }
-        return BTproducts;
+        return btproducts;
     }        
     
     public List<LLProducts> getProducts() {

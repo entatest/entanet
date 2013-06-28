@@ -1,0 +1,10 @@
+<apex:page standardController="Quote" extensions="salesorder" >
+    <apex:form id="myform" >
+        <apex:pageBlock title="New Sales Order Details" id="pb1">
+            <apex:pageBlockSection columns="1" id="pbs1">
+            <apex:inputText label="Choose Template" value="{!template}"/>
+            </apex:pageBlockSection>
+            <apex:commandButton action="{!Createso}" value="Create Sales Order"/>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
