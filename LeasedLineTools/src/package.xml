@@ -6,6 +6,7 @@
         <members>LeasedLinesQuotes</members>
         <members>LeasedLinesQuotesController</members>
         <members>LineCheckerResults</members>
+        <members>QuoteHandler</members>
         <members>TalkTalkQuotes</members>
         <members>TestTalkTalkQuotes</members>
         <members>TrialCustomerPortalHomePageController</members>
