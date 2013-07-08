@@ -52,9 +52,7 @@
         <name>Layout</name>
     </types>
     <types>
-        <members>ServiceCloudLogo</members>
-        <members>TrialPortalBanner</members>
-        <members>scc_tour_images</members>
+        <members>*</members>
         <name>StaticResource</name>
     </types>
     <types>
