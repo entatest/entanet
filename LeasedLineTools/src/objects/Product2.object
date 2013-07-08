@@ -42,7 +42,23 @@
         <label>Term</label>
         <picklist>
             <picklistValues>
-                <fullName>none</fullName>
+                <fullName>1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>5</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>

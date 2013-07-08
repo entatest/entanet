@@ -1,0 +1,106 @@
+<apex:page standardController="Opportunity" extensions="LeasedLineQuotes" >
+
+<script type="text/javascript"  src="{!URLFOR($Resource.jQuery, '/jQuery/js/jquery-1.4.2.min.js')}"></script>
+
+<script type="text/javascript">
+    
+jQuery.noConflict();
+    
+    jQuery(document).ready(function($) {
+        
+        $("#pnl_details").hide();
+ 
+        $('#viewDetails').click(function () {
+            if ($("#pnl_details").is(":hidden")) {
+                $("#pnl_details").slideDown("slow");
+                $("#viewDetails").html("Show Less Details");
+                 return false;
+            } else {
+                $("#pnl_details").hide("slow");
+                $("#viewDetails").html("Show More Details");
+             return false;
+            }
+            });         
+    });
+</script>
+
+<apex:sectionHeader title="Leased Line Pricing Tool" subtitle="Quote Options"/>
+    <style>
+    #llheader {font-size:15px;}
+    #custref {margin-left:10px;}
+    #container ul {list-style:none; margin:0; padding: 0;}
+    #container li {list-style:none; margin:0; padding: 0;}
+    #siteapostcodes {font-size:14px; margin: 0; padding: 0}
+    .bPageBlock .pbTitle { width: 80%; }
+    </style>
+    <apex:form >
+    
+    <p>Test</p>
+    
+    <apex:pageBlock title="New Quote Request" mode="new">
+        <apex:pageBlockButtons >
+        <apex:commandButton action="{!save}" value="Save" id="theButton"/>
+        <apex:commandButton action="{!save}" value="Save & New" id="theButtonnew"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection columns="2" id="pbs1">
+        <apex:inputText label="Customer Ref" value="{!llqr.Site_Reference__c}"/>
+        <apex:inputText id="ll_street" label="Street" value="{!llqr.Street__c}"/>
+        <apex:inputText id="ll_postcode" label="Postcode" value="{!llqr.Postcode__c}"/>
+        <apex:inputText id="ll_town" label="Town" value="{!llqr.Town__c}"/>
+        <p></p>
+        <apex:inputText id="ll_county" label="County" value="{!llqr.County__c}"/> 
+        <p></p>
+        <apex:inputText id="ll_toid" label="TOID" value="{!llqr.TOID__c}"/>               
+        
+        
+        
+
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" >
+        
+        <!-- Contract Term -->
+     <apex:selectCheckboxes label="Contract Term" value="{!CTItems}" layout="lineDirection" required="true" id="prodreq">
+       <apex:selectOptions value="{!CTOptions}"/>
+     </apex:selectCheckboxes>            
+            
+        </apex:pageBlockSection>
+        <br/>     
+        <h1 id="siteapostcodes">Site A Postcodes</h1>
+        <p></p>
+        <p></p>        
+        <apex:pageBlockSection columns="2" id="pbs2">
+                <apex:inputText label="BT" value="{!llqr.Site_A_Postcode_BT__c}"/>
+                <apex:inputCheckbox label="Point 2 Point" value="{!llqr.Point_2_Point__c}"/>
+                <apex:inputText label="Virgin" value="{!llqr.Site_A_Postcode_Virgin__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="BT Options"  >
+        
+        <!-- Product Options -->
+     <apex:selectCheckboxes label="Product Options" value="{!ProdItems}" layout="lineDirection" id="prodreq">
+       <apex:selectOptions value="{!ProdOptions}"/>
+     </apex:selectCheckboxes>             
+        
+        <!-- Bearer -->
+     <apex:selectCheckboxes label="Bearer" value="{!BearerItems}" layout="lineDirection" id="bearerreq">
+       <apex:selectOptions value="{!BearerOptions}"/>
+     </apex:selectCheckboxes>        
+            
+        <!-- Etherflow Bandwidth -->
+     <apex:selectCheckboxes label="Etherflow Bandwidth" value="{!EtherItems}" layout="pageDirection" id="etherreq">
+       <apex:selectOptions value="{!EtherOptions}"/>
+     </apex:selectCheckboxes>            
+        
+        <!-- Diverse Circuit -->
+     <apex:selectCheckboxes label="Diverse Circuit" value="{!DCItems}" layout="pageDirection" id="diversereq">
+       <apex:selectOptions value="{!DCOptions}"/>
+     </apex:selectCheckboxes>            
+        
+        <!-- Bandwidth -->
+     <apex:selectCheckboxes label="Diverse Circuit" value="{!BandwidthItems}" layout="pageDirection" id="bandwidthreq">
+       <apex:selectOptions value="{!BandwidthOptions}"/>
+     </apex:selectCheckboxes>
+        
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

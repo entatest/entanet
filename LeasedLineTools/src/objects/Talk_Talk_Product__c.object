@@ -33,114 +33,138 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>true</enableActivities>
+    <enableActivities>false</enableActivities>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>true</enableHistory>
-    <enableReports>true</enableReports>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
     <fields>
-        <fullName>Line_Provider__c</fullName>
+        <fullName>Collector_Exchange_Name__c</fullName>
         <externalId>false</externalId>
-        <label>Line Provider</label>
-        <picklist>
-            <picklistValues>
-                <fullName>BT</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>TalkTalk</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Virgin</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Postcode__c</fullName>
-        <externalId>false</externalId>
-        <label>Postcode</label>
-        <length>9</length>
+        <label>Collector Exchange Name</label>
+        <length>50</length>
         <required>false</required>
-        <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>TOID__c</fullName>
+        <fullName>Connection_Price_1_Year__c</fullName>
         <externalId>false</externalId>
-        <label>TOID</label>
-        <length>20</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Term__c</fullName>
-        <externalId>false</externalId>
-        <label>Term</label>
-        <picklist>
-            <picklistValues>
-                <fullName>1</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>2</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>3</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>4</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>5</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <trackHistory>false</trackHistory>
-        <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Unit_Price__c</fullName>
-        <externalId>false</externalId>
-        <label>Unit Price</label>
+        <label>Connection Price 1 Year</label>
         <precision>18</precision>
-        <required>true</required>
+        <required>false</required>
         <scale>2</scale>
-        <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>opportunity_id__c</fullName>
+        <fullName>Connection_Price_3_Year__c</fullName>
         <externalId>false</externalId>
-        <label>opportunity id</label>
-        <length>15</length>
+        <label>Connection Price 3 Year</label>
+        <precision>18</precision>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Distance__c</fullName>
+        <externalId>false</externalId>
+        <label>Distance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ethernet_Exchange_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Ethernet Exchange Name</label>
+        <length>50</length>
+        <required>false</required>
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Leased Line Product</label>
+    <fields>
+        <fullName>Fibre_Exchange_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Fibre Exchange Name</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_ID__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity ID</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Talk Talk Products</relationshipLabel>
+        <relationshipName>Talk_Talk_Products</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <externalId>false</externalId>
+        <label>Product</label>
+        <picklist>
+            <picklistValues>
+                <fullName>10MB / 100MB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>20MB / 100MB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>30MB / 100MB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>40MB / 100MB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>50MB / 100MB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>100MB / 100MB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Rental_Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Rental Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Zone__c</fullName>
+        <externalId>false</externalId>
+        <label>Zone</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Talk Talk Product</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Leased Line Product Name</label>
-        <trackHistory>false</trackHistory>
+        <label>Talk Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Leased Line Products</pluralLabel>
+    <pluralLabel>Talk Talk Products</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>
