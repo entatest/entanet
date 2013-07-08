@@ -17,8 +17,10 @@
         <members>leasedLinesQuotes</members>
         <members>lineChecker</members>
         <members>linecheck</members>
+        <members>llqr</members>
         <members>salesorder</members>
         <members>sendEmail</members>
+        <members>so</members>
         <members>superSort</members>
         <name>ApexClass</name>
     </types>

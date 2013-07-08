@@ -8,6 +8,7 @@ public class LeasedLineQuotes {
     //PageReference pageRef = new PageReference('http://www.google.com');
     //pageRef.setredirect(true);
     //return pageRef;
+    llqr.Opportunity_ID__c = ApexPages.currentPage().getParameters().get('Id');
     insert llqr;
     return page.linecheckerresults;
     }       
@@ -20,8 +21,6 @@ public class LeasedLineQuotes {
         llqr = new Leased_Line_Quote_Request__c();
         return llqr;
     }
-    
-    
     
     //Contract Term
     public List<SelectOption> CTOptions {
