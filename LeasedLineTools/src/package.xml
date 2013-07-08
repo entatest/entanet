@@ -29,34 +29,18 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>Opportunity.AccountId</members>
-        <members>Opportunity.CampaignId</members>
-        <members>Opportunity.LeadSource</members>
-        <members>Opportunity.OwnerId</members>
-        <members>Opportunity.StageName</members>
-        <members>Opportunity.SyncedQuoteId</members>
-        <members>Opportunity.Type</members>
-        <members>Quote.IncludeInSummary__c</members>
-        <name>CustomField</name>
-    </types>
-    <types>
+        <members>BT_Wholesale_Product__c</members>
         <members>Leased_Line_Product__c</members>
+        <members>Leased_Line_Quote_Request__c</members>
         <members>Opportunity</members>
         <members>Product2</members>
+        <members>Talk_Talk_Product__c</members>
+        <members>Virgin_Media_Product__c</members>
         <name>CustomObject</name>
     </types>
     <types>
         <members>Opportunity-Opportunity Layout</members>
         <name>Layout</name>
-    </types>
-    <types>
-        <members>Opportunity.AllOpportunities</members>
-        <members>Opportunity.ClosingNextMonth</members>
-        <members>Opportunity.ClosingThisMonth</members>
-        <members>Opportunity.MyOpportunities</members>
-        <members>Opportunity.NewThisWeek</members>
-        <members>Opportunity.Won</members>
-        <name>ListView</name>
     </types>
     <types>
         <members>ServiceCloudLogo</members>

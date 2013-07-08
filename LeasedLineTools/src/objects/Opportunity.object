@@ -292,7 +292,7 @@
         <linkType>page</linkType>
         <masterLabel>Get Pricing</masterLabel>
         <openType>sidebar</openType>
-        <page>lineCheck</page>
+        <page>leasedlinecheck</page>
         <protected>false</protected>
     </webLinks>
     <webLinks>
@@ -302,7 +302,7 @@
         <height>600</height>
         <linkType>page</linkType>
         <masterLabel>Summary Email</masterLabel>
-        <openType>sidebar</openType>
+        <openType>noSidebar</openType>
         <page>QuotesEmail</page>
         <protected>false</protected>
     </webLinks>

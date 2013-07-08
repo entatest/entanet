@@ -89,7 +89,7 @@ public class TalkTalkQuotes {
         
         if(quotebook != null){
             for(LLProducts conn: quotebook) {
-            	        QuoteLineItem qli2 = new QuoteLineItem(QuoteId = quo.id, 
+                        QuoteLineItem qli2 = new QuoteLineItem(QuoteId = quo.id, 
                                               PriceBookEntryId = conn.id, 
                                               UnitPrice = conn.unitprice, 
                                               Quantity = 1);
@@ -106,7 +106,7 @@ public class TalkTalkQuotes {
             talktalkproducts = new List<LLProducts>();
             
             if(term.equals('All'))
-            	{
+                {
             for(PricebookEntry prod : [
             SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c
                 FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Talktalk']) {
@@ -126,7 +126,7 @@ public class TalkTalkQuotes {
             virginproducts = new List<LLProducts>();
             
             if(term.equals('All'))
-            	{
+                {
             for(PricebookEntry prod : [
             SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'Virgin']) {
                 virginproducts.add(new LLProducts(prod));   
@@ -145,7 +145,7 @@ public class TalkTalkQuotes {
             btproducts = new List<LLProducts>();
             
             if(term.equals('All'))
-            	{
+                {
             for(PricebookEntry prod : [
             SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC' AND Product2.lineprovider__c = 'BT']) {
                 btproducts.add(new LLProducts(prod));   
@@ -184,37 +184,37 @@ public class TalkTalkQuotes {
     }
     
     public PageReference addToQuoteBook() {
-		for(LLProducts t : talktalkproducts) {
-			if(t.selected==true) {
-				quotebook.add(t);
-			}
-		}
-		for(LLProducts v : virginproducts) {
-			if(v.selected==true) {
-				quotebook.add(v);
-			}
-		}
-		for(LLProducts b : btproducts) {
-			if(b.selected==true) {
-				quotebook.add(b);
-			}
-		}        
-	return page.linecheck; // stay on the same page
-	}
+                for(LLProducts t : talktalkproducts) {
+                        if(t.selected==true) {
+                                quotebook.add(t);
+                        }
+                }
+                for(LLProducts v : virginproducts) {
+                        if(v.selected==true) {
+                                quotebook.add(v);
+                        }
+                }
+                for(LLProducts b : btproducts) {
+                        if(b.selected==true) {
+                                quotebook.add(b);
+                        }
+                }        
+        return page.linecheck; // stay on the same page
+        }
 
     public String getQuoteBookContents() {
-		if(0 == quotebook.size()) {
-			return '(empty)';
-		}
-	String msg = '<table>';
-	for(LLProducts p : quotebook) {
-	msg += '<tr>';
-	msg += '<td>'+p.name+'</td>'+'<td>'+p.lineprovider+'</td>'+'<td>'+p.unitprice+'</td>';
-	msg += '</tr>';
-	}
-	msg += '</table>';
-	return msg;
-	}
+                if(0 == quotebook.size()) {
+                        return '(empty)';
+                }
+        String msg = '<table>';
+        for(LLProducts p : quotebook) {
+        msg += '<tr>';
+        msg += '<td>'+p.name+'</td>'+'<td>'+p.lineprovider+'</td>'+'<td>'+p.unitprice+'</td>';
+        msg += '</tr>';
+        }
+        msg += '</table>';
+        return msg;
+        }
     
     public class LLProducts {
         
@@ -244,6 +244,6 @@ public class TalkTalkQuotes {
         }
         
         public Boolean selected
-        	{ get; set; }
+                { get; set; }
     } 
 }

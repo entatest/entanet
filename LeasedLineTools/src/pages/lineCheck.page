@@ -10,14 +10,14 @@
             <apex:inputCheckbox id="exactaddress" label="Exact Address?" value="{!exactaddress}"/>
             </apex:pageBlockSection>
             <apex:commandButton action="{!Quotes}" value="Get Quotes" onclick="getCheckBoxValue();"/>
-    	</apex:pageBlock>
+        </apex:pageBlock>
     </apex:form>
         <script language="javascript">
         function getCheckBoxValue()
         {
             var ea = document.getElementById('{!$Component.myForm.pb1.pbs1.exactaddress}').checked;
             if(ea === false){
-            	alert("Quotes will not be accurate until you get the exact address.");    
+                alert("Quotes will not be accurate until you get the exact address.");    
             }
         }
     </script>

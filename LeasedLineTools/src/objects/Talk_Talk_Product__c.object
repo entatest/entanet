@@ -38,45 +38,55 @@
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
     <fields>
-        <fullName>BPT_Quote__c</fullName>
+        <fullName>Collector_Exchange_Name__c</fullName>
         <externalId>false</externalId>
-        <label>BPT Quote</label>
+        <label>Collector Exchange Name</label>
         <length>50</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Bandwidth__c</fullName>
+        <fullName>Connection_Price_1_Year__c</fullName>
         <externalId>false</externalId>
-        <label>Bandwidth</label>
-        <length>50</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Bearer__c</fullName>
-        <externalId>false</externalId>
-        <label>Bearer</label>
-        <length>50</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Connection_Price__c</fullName>
-        <externalId>false</externalId>
-        <label>Connection Price</label>
+        <label>Connection Price 1 Year</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Flavour__c</fullName>
+        <fullName>Connection_Price_3_Year__c</fullName>
         <externalId>false</externalId>
-        <label>Flavour</label>
+        <label>Connection Price 3 Year</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Distance__c</fullName>
+        <externalId>false</externalId>
+        <label>Distance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ethernet_Exchange_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Ethernet Exchange Name</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fibre_Exchange_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Fibre Exchange Name</label>
         <length>50</length>
         <required>false</required>
         <type>Text</type>
@@ -88,48 +98,43 @@
         <externalId>false</externalId>
         <label>Opportunity ID</label>
         <referenceTo>Opportunity</referenceTo>
-        <relationshipLabel>Virgin Media Products</relationshipLabel>
-        <relationshipName>Virgin_Media_Products</relationshipName>
+        <relationshipLabel>Talk Talk Products</relationshipLabel>
+        <relationshipName>Talk_Talk_Products</relationshipName>
         <required>false</required>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Product_Term__c</fullName>
+        <fullName>Product__c</fullName>
         <externalId>false</externalId>
-        <label>Product Term</label>
+        <label>Product</label>
         <picklist>
             <picklistValues>
-                <fullName>1 Year</fullName>
+                <fullName>10MB / 100MB</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>2 Year</fullName>
+                <fullName>20MB / 100MB</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>3 Year</fullName>
+                <fullName>30MB / 100MB</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>4 Year</fullName>
+                <fullName>40MB / 100MB</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>5 Year</fullName>
+                <fullName>50MB / 100MB</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>100MB / 100MB</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Reference__c</fullName>
-        <externalId>false</externalId>
-        <label>Reference</label>
-        <length>50</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Rental_Price__c</fullName>
@@ -141,45 +146,25 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Site_B_Access__c</fullName>
+        <fullName>Zone__c</fullName>
         <externalId>false</externalId>
-        <label>Site B Access</label>
+        <label>Zone</label>
         <length>50</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <fields>
-        <fullName>Site_Ref__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Site Ref</label>
-        <referenceTo>Leased_Line_Quote_Request__c</referenceTo>
-        <relationshipLabel>Virgin Media Products</relationshipLabel>
-        <relationshipName>Virgin_Media_Products</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Total_Pricing_Summary__c</fullName>
-        <externalId>false</externalId>
-        <label>Total Pricing Summary</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <type>Currency</type>
-    </fields>
-    <label>Virgin Media Product</label>
+    <label>Talk Talk Product</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Virgin Media Product Name</label>
+        <label>Talk Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Virgin Media Products</pluralLabel>
+    <pluralLabel>Talk Talk Products</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

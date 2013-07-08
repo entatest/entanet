@@ -1,0 +1,16 @@
+<apex:page controller="applications" >
+    <apex:form >
+        <apex:selectCheckboxes value="{!crmAppplications}" title="Choose">
+            <apex:selectOptions value="{!items}"/>
+        </apex:selectCheckboxes><br/>
+        <apex:commandButton value="Save" action="{!saveOptions}" />
+        
+        {!test}
+    </apex:form> 
+    
+    <apex:repeat value="{! selectedsos}" var="so">
+    <h1>{! so.name}</h1>
+    <p>{! so.detail__c}</p>
+    </apex:repeat>
+       
+</apex:page>

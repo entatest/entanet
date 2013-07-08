@@ -1,0 +1,113 @@
+<apex:page standardController="Opportunity" extensions="LeasedLineQuoteResults">
+    
+<style>
+    #virgintable { width:100%; }
+    #virgintable img { width:30px; height:25px; }
+    #bttable { width:100%; }
+    #bttable img { width:45px; height:25px; }    
+    #talktalktable { width:100%; }
+    #talktalktable img { width:60px; height:20px; }    
+    #choosedetails { text-alignment: right; }
+    #showalldetails { font-size:11px; display: inline-block; padding: 3px 6px; color: #FFFFFF;
+    text-decoration: none; position: relative; cursor: pointer; background-color: #1797C0;
+    text-shadow: 0 -1px 1px #565656; -webkit-border-radius: 7px; border-radius: 7px;
+    -webkit-box-shadow: 0 1px 3px 0 #565656; box-shadow: 0 1px 3px 0 #565656;
+    }
+</style>    
+    
+    <apex:form >
+    <apex:pageBlock title="BT Wholesale" >
+        <apex:pageBlockSection columns="1">
+            <table id="bttable"><tr>
+                <td><img src="{!$Resource.BT}"/></td>
+                <td align="right" id="choosedetails"><input id="showalldetails" type="button" value="Show All Details"/></td>
+            </tr></table>
+            <apex:pageBlockTable value="{!btproducts}" var="btprod">
+                <apex:column headerValue="Bearer">
+                    <apex:outputText value="{!btprod.Bearer__c}"/>
+                </apex:column>
+                <apex:column headerValue="Bandwidth">
+                    <apex:outputText value="{!btprod.Bandwidth__c}"/>
+                </apex:column>
+                <apex:column headerValue="Product Term">
+                    <apex:outputText value="{!btprod.Product_Term__c}"/>
+                </apex:column>
+                <apex:column headerValue="Etherflow Pricing">
+                    <apex:outputText value="{!btprod.Etherflow_Pricing__c}"/>
+                </apex:column>   
+                <apex:column headerValue="Connection Price">
+                    <apex:outputText value="{!btprod.Connection_Price__c}"/>
+                </apex:column>                
+                <apex:column headerValue="Rental Price">
+                    <apex:outputText value="{!btprod.Rental_Price__c}"/>
+                </apex:column> 
+                <apex:column headerValue="Hub Site Postcode">
+                    <apex:outputText value="{!btprod.Hub_Site_Postcode__c}"/>
+                </apex:column>
+                <apex:column headerValue="Access Type">
+                    <apex:outputText value="{!btprod.Access_Type__c}"/>
+                </apex:column>                
+                <apex:column headerValue="Include On Quote">
+                    <apex:inputCheckbox value="{!btprod.Rental_Price__c}"/>
+                </apex:column>                
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>         
+    <apex:pageBlock title="Virgin Media" >
+        <apex:pageBlockSection columns="1">
+            <table id="virgintable"><tr>
+                <td><img src="{!$Resource.Virgin}"/></td>
+                <td align="right" id="choosedetails"><input id="showalldetails" type="button" value="Show All Details"/></td>
+            </tr></table>
+            <apex:pageBlockTable value="{!virginproducts}" var="vprod">
+                <apex:column headerValue="Bearer">
+                    <apex:outputText value="{!vprod.Bearer__c}"/>
+                </apex:column>
+                <apex:column headerValue="Bandwidth">
+                    <apex:outputText value="{!vprod.Bandwidth__c}"/>
+                </apex:column>
+                <apex:column headerValue="Product Term">
+                    <apex:outputText value="{!vprod.Product_Term__c}"/>
+                </apex:column>
+                <apex:column headerValue="Connection Price">
+                    <apex:outputtext value="£{!vprod.Connection_Price__c}"/>
+                </apex:column>
+                <apex:column headerValue="Rental Price">
+                    <apex:outputtext value="£{!vprod.Rental_Price__c}"/>
+                </apex:column> 
+                <apex:column headerValue="Total Pricing Summary">
+                    <apex:outputtext value="£{!vprod.Total_Pricing_Summary__c}"/>
+                </apex:column>
+                <apex:column headerValue="Include On Quote">
+                    <apex:inputCheckbox value="{!vprod.Bearer__c}"/>
+                </apex:column>                
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <apex:pageBlock title="Talk Talk" >
+        <apex:pageBlockSection columns="1">
+            <table id="talktalktable"><tr>
+                <td><img src="{!$Resource.TalkTalk}"/></td>
+                <td align="right" id="choosedetails"><input id="showalldetails" type="button" value="Show All Details"/></td>
+            </tr></table>
+            <apex:pageBlockTable value="{!talktalkproducts}" var="talkprod">
+                <apex:column headerValue="Product">
+                    <apex:outputText value="{!talkprod.Product__c}"/>
+                </apex:column>
+                <apex:column headerValue="Connection Price 1 Year">
+                    <apex:outputText value="{!talkprod.Product__c}"/>
+                </apex:column>
+                <apex:column headerValue="Connection Price 3 Year">
+                    <apex:outputText value="{!talkprod.Product__c}"/>
+                </apex:column>
+                <apex:column headerValue="Rental Price">
+                    <apex:outputText value="{!talkprod.Product__c}"/>
+                </apex:column>                
+                <apex:column headerValue="Include On Quote">
+                    <apex:inputCheckbox value="{!talkprod.Product__c}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>         
+    </apex:form>    
+</apex:page>
