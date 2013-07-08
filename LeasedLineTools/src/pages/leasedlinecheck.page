@@ -50,7 +50,8 @@ jQuery.noConflict();
         <p></p>
         <apex:inputText id="ll_county" label="County" value="{!llqr.County__c}"/> 
         <p></p>
-        <apex:inputText id="ll_toid" label="TOID" value="{!llqr.TOID__c}"/>               
+        <apex:inputText id="ll_toid" label="TOID" value="{!llqr.TOID__c}"/>  
+        <apex:inputHidden value="{!llqr.Opportunity_ID__c}" id="hiddenField"/>
         
         
         
