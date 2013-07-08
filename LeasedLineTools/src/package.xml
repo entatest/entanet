@@ -3,6 +3,8 @@
     <types>
         <members>ChatterAnswers</members>
         <members>ChatterAnswersEscalationTriggerTest</members>
+        <members>LeasedLineQuoteResults</members>
+        <members>LeasedLineQuotes</members>
         <members>LeasedLinesQuotes</members>
         <members>LeasedLinesQuotesController</members>
         <members>LineCheckerResults</members>
@@ -10,6 +12,7 @@
         <members>TalkTalkQuotes</members>
         <members>TestTalkTalkQuotes</members>
         <members>TrialCustomerPortalHomePageController</members>
+        <members>applications</members>
         <members>filter</members>
         <members>leasedLinesQuotes</members>
         <members>lineChecker</members>
