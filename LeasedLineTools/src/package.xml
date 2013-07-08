@@ -3,6 +3,8 @@
     <types>
         <members>ChatterAnswers</members>
         <members>ChatterAnswersEscalationTriggerTest</members>
+        <members>LeasedLineQuoteResults</members>
+        <members>LeasedLineQuotes</members>
         <members>LeasedLinesQuotes</members>
         <members>LeasedLinesQuotesController</members>
         <members>LineCheckerResults</members>
@@ -10,12 +12,15 @@
         <members>TalkTalkQuotes</members>
         <members>TestTalkTalkQuotes</members>
         <members>TrialCustomerPortalHomePageController</members>
+        <members>applications</members>
         <members>filter</members>
         <members>leasedLinesQuotes</members>
         <members>lineChecker</members>
         <members>linecheck</members>
+        <members>llqr</members>
         <members>salesorder</members>
         <members>sendEmail</members>
+        <members>so</members>
         <members>superSort</members>
         <name>ApexClass</name>
     </types>
@@ -32,22 +37,12 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>Opportunity.AccountId</members>
-        <members>Opportunity.CampaignId</members>
-        <members>Opportunity.LeadSource</members>
-        <members>Opportunity.OwnerId</members>
-        <members>Opportunity.StageName</members>
-        <members>Opportunity.SyncedQuoteId</members>
-        <members>Opportunity.Type</members>
-        <members>Quote.IncludeInSummary__c</members>
-        <name>CustomField</name>
-    </types>
-    <types>
         <members>BT_Wholesale_Product__c</members>
         <members>Leased_Line_Product__c</members>
         <members>Leased_Line_Quote_Request__c</members>
         <members>Opportunity</members>
         <members>Product2</members>
+        <members>Sales_Order_Option__c</members>
         <members>Talk_Talk_Product__c</members>
         <members>Virgin_Media_Product__c</members>
         <name>CustomObject</name>
@@ -57,9 +52,7 @@
         <name>Layout</name>
     </types>
     <types>
-        <members>ServiceCloudLogo</members>
-        <members>TrialPortalBanner</members>
-        <members>scc_tour_images</members>
+        <members>*</members>
         <name>StaticResource</name>
     </types>
     <types>

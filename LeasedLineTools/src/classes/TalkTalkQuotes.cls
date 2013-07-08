@@ -5,34 +5,83 @@ public class TalkTalkQuotes {
     public Opportunity oppt;
     public String postcode { get; set; }
     public Boolean exactaddress { get; set; }
-
+    List<LLProducts> quotebook = new List<LLProducts>();
+    String term = 'All';
+    
+    public String getterm() {
+        return term;
+    }
+    
+    public void setterm(String t) {
+        this.term = t;
+    }
+    
+    public PageReference filter(){
+        PageReference pageRef = ApexPages.currentPage();
+        pageRef.setRedirect(false);
+        return pageRef;
+    }    
+    
+    List<LLProducts> talktalkproducts;
+    List<LLProducts> virginproducts;
+    List<LLProducts> btproducts;
+    
     public TalkTalkQuotes(ApexPages.StandardController controller) {
         this.oppt = (Opportunity)controller.getRecord();
     }
     
+    public List<SelectOption> getterms(){
+        List<SelectOption> options = new List<SelectOption>();
+        options.add(new SelectOption('All','All'));
+        options.add(new SelectOption('1','1'));
+        options.add(new SelectOption('2','2'));
+        options.add(new SelectOption('3','3'));
+        options.add(new SelectOption('4','4'));
+        options.add(new SelectOption('5','5'));
+        return options;
+    }
+    
     public pageReference Quotes(){
         return Page.linecheckerresults;
+        
+        //PageReference pageRef = new PageReference('/apex/linecheckerresults?id='+oppt.id);
+        //pageRef.setRedirect(true);
+        //return pageRef;
     }
     
     public PageReference addQuote(){
         List<LLProducts> sp = new List<LLProducts>();
         
-        Quote quo = new Quote(name = 'TalkTalk Quote2', 
+        Quote quo = new Quote(name = 'TalkTalk Quote', 
                               opportunityid = oppt.id, 
-                              pricebook2id = '01sJ00000000GMUIA2');
+                              pricebook2id = '01sb0000000Im2zAAC');
         insert quo;
         
-        for(LLProducts cCon:getproducts())
+        for(LLProducts cCon:gettalktalkproducts())
         {
             if(cCon.selected==true){
-            	sp.add(cCon);
+              sp.add(cCon);
             }
-        }
+        } 
+        
+        for(LLProducts cCon:getvirginproducts())
+        {
+            if(cCon.selected==true){
+              sp.add(cCon);
+            }
+        } 
+
+        for(LLProducts cCon:getbtproducts())
+        {
+            if(cCon.selected==true){
+              sp.add(cCon);
+            }
+        }         
         
         for(LLProducts con: sp) {
         
         QuoteLineItem qli = new QuoteLineItem(QuoteId = quo.id, 
-                                              PriceBookEntryId = con.id,
+                                              PriceBookEntryId = con.id, 
                                               UnitPrice = con.unitprice, 
                                               Quantity = 1);
         insert qli; 
@@ -47,6 +96,7 @@ public class TalkTalkQuotes {
         insert qli2; 
             }
         }
+                
         PageReference pageRef = new PageReference('/'+quo.id);
         pageRef.setRedirect(false);
         return pageRef;
@@ -114,7 +164,7 @@ public class TalkTalkQuotes {
         if (products == null) {
             products = new List<LLProducts>();
             for(PricebookEntry prod : [
-            SELECT Id, Name FROM PricebookEntry WHERE Pricebook2Id = '01sJ00000000GMUIA2']) {
+            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC']) {
                 products.add(new LLProducts(prod));   
             }
         }
@@ -130,7 +180,7 @@ public class TalkTalkQuotes {
                 selectedproducts.add(cCon);
             }
         }
-     	return selectedproducts;   
+       return selectedproducts;   
     }
     
     public PageReference addToQuoteBook() {
@@ -173,6 +223,18 @@ public class TalkTalkQuotes {
             this.product = prod;
         }
         
+        public String term {
+            get { return product.product2.term__c; }
+        }
+        
+        public String lineprovider {
+            get { return product.product2.lineprovider__C; }
+        }
+        
+        public decimal unitprice {
+            get {return product.unitprice; }   
+        }
+        
         public String id {
             get { return product.id; }   
         }
@@ -181,6 +243,7 @@ public class TalkTalkQuotes {
             get { return product.name; }  
         }
         
-        public Boolean selected { get; set; }
-    }
+        public Boolean selected
+                { get; set; }
+    } 
 }
