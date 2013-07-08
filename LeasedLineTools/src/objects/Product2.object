@@ -42,6 +42,7 @@
         <label>Term</label>
         <picklist>
             <picklistValues>
+<<<<<<< HEAD
                 <fullName>1</fullName>
                 <default>false</default>
             </picklistValues>
@@ -59,6 +60,9 @@
             </picklistValues>
             <picklistValues>
                 <fullName>5</fullName>
+=======
+                <fullName>none</fullName>
+>>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>

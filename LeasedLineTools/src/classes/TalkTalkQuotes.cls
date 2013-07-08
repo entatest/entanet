@@ -5,83 +5,35 @@ public class TalkTalkQuotes {
     public Opportunity oppt;
     public String postcode { get; set; }
     public Boolean exactaddress { get; set; }
-    List<LLProducts> quotebook = new List<LLProducts>();
-    String term = 'All';
-    
-    public String getterm() {
-        return term;
-    }
-    
-    public void setterm(String t) {
-        this.term = t;
-    }
-    
-    public PageReference filter(){
-        PageReference pageRef = ApexPages.currentPage();
-        pageRef.setRedirect(false);
-        return pageRef;
-    }    
-    
-    List<LLProducts> talktalkproducts;
-    List<LLProducts> virginproducts;
-    List<LLProducts> btproducts;
-    
+
     public TalkTalkQuotes(ApexPages.StandardController controller) {
         this.oppt = (Opportunity)controller.getRecord();
     }
     
-    public List<SelectOption> getterms(){
-        List<SelectOption> options = new List<SelectOption>();
-        options.add(new SelectOption('All','All'));
-        options.add(new SelectOption('1','1'));
-        options.add(new SelectOption('2','2'));
-        options.add(new SelectOption('3','3'));
-        options.add(new SelectOption('4','4'));
-        options.add(new SelectOption('5','5'));
-        return options;
-    }
-    
     public pageReference Quotes(){
         return Page.linecheckerresults;
-        
-        //PageReference pageRef = new PageReference('/apex/linecheckerresults?id='+oppt.id);
-        //pageRef.setRedirect(true);
-        //return pageRef;
     }
     
     public PageReference addQuote(){
         List<LLProducts> sp = new List<LLProducts>();
         
-        Quote quo = new Quote(name = 'TalkTalk Quote', 
+        Quote quo = new Quote(name = 'TalkTalk Quote2', 
                               opportunityid = oppt.id, 
-                              pricebook2id = '01sb0000000Im2zAAC');
+                              pricebook2id = '01sJ00000000GMUIA2');
         insert quo;
         
-        for(LLProducts cCon:gettalktalkproducts())
+        for(LLProducts cCon:getproducts())
         {
             if(cCon.selected==true){
-              sp.add(cCon);
+            	sp.add(cCon);
             }
-        } 
-        
-        for(LLProducts cCon:getvirginproducts())
-        {
-            if(cCon.selected==true){
-              sp.add(cCon);
-            }
-        } 
-
-        for(LLProducts cCon:getbtproducts())
-        {
-            if(cCon.selected==true){
-              sp.add(cCon);
-            }
-        }         
+        }
         
         for(LLProducts con: sp) {
         
         QuoteLineItem qli = new QuoteLineItem(QuoteId = quo.id, 
                                               PriceBookEntryId = con.id, 
+<<<<<<< HEAD
                                               UnitPrice = con.unitprice, 
                                               Quantity = 1);
         insert qli; 
@@ -95,13 +47,19 @@ public class TalkTalkQuotes {
                                               Quantity = 1);
         insert qli2; 
             }
+=======
+                                              UnitPrice = 50.11, 
+                                              Quantity = 4);
+        insert qli;
+            
+>>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
         }
-                
         PageReference pageRef = new PageReference('/'+quo.id);
         pageRef.setRedirect(false);
         return pageRef;
     }
     
+<<<<<<< HEAD
     public List<LLProducts> getTalkTalkProducts() {
             talktalkproducts = new List<LLProducts>();
             
@@ -160,11 +118,13 @@ public class TalkTalkQuotes {
         return btproducts;
     }        
     
+=======
+>>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
     public List<LLProducts> getProducts() {
         if (products == null) {
             products = new List<LLProducts>();
             for(PricebookEntry prod : [
-            SELECT Id, Name, UnitPrice, Product2.Term__c, Product2.lineProvider__c FROM PricebookEntry WHERE Pricebook2Id = '01sb0000000Im2zAAC']) {
+            SELECT Id, Name FROM PricebookEntry WHERE Pricebook2Id = '01sJ00000000GMUIA2']) {
                 products.add(new LLProducts(prod));   
             }
         }
@@ -180,9 +140,10 @@ public class TalkTalkQuotes {
                 selectedproducts.add(cCon);
             }
         }
-       return selectedproducts;   
+     	return selectedproducts;   
     }
     
+<<<<<<< HEAD
     public PageReference addToQuoteBook() {
                 for(LLProducts t : talktalkproducts) {
                         if(t.selected==true) {
@@ -216,23 +177,13 @@ public class TalkTalkQuotes {
         return msg;
         }
     
+=======
+>>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
     public class LLProducts {
         
         private PricebookEntry product;
         public LLProducts(PricebookEntry prod){
             this.product = prod;
-        }
-        
-        public String term {
-            get { return product.product2.term__c; }
-        }
-        
-        public String lineprovider {
-            get { return product.product2.lineprovider__C; }
-        }
-        
-        public decimal unitprice {
-            get {return product.unitprice; }   
         }
         
         public String id {
@@ -243,7 +194,14 @@ public class TalkTalkQuotes {
             get { return product.name; }  
         }
         
+<<<<<<< HEAD
         public Boolean selected
                 { get; set; }
     } 
+=======
+        public Boolean selected { get; set; }
+    }
+    
+    
+>>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
 }
