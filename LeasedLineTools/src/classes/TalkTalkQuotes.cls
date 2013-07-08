@@ -32,8 +32,7 @@ public class TalkTalkQuotes {
         for(LLProducts con: sp) {
         
         QuoteLineItem qli = new QuoteLineItem(QuoteId = quo.id, 
-                                              PriceBookEntryId = con.id, 
-<<<<<<< HEAD
+                                              PriceBookEntryId = con.id,
                                               UnitPrice = con.unitprice, 
                                               Quantity = 1);
         insert qli; 
@@ -47,19 +46,12 @@ public class TalkTalkQuotes {
                                               Quantity = 1);
         insert qli2; 
             }
-=======
-                                              UnitPrice = 50.11, 
-                                              Quantity = 4);
-        insert qli;
-            
->>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
         }
         PageReference pageRef = new PageReference('/'+quo.id);
         pageRef.setRedirect(false);
         return pageRef;
     }
     
-<<<<<<< HEAD
     public List<LLProducts> getTalkTalkProducts() {
             talktalkproducts = new List<LLProducts>();
             
@@ -118,8 +110,6 @@ public class TalkTalkQuotes {
         return btproducts;
     }        
     
-=======
->>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
     public List<LLProducts> getProducts() {
         if (products == null) {
             products = new List<LLProducts>();
@@ -143,7 +133,6 @@ public class TalkTalkQuotes {
      	return selectedproducts;   
     }
     
-<<<<<<< HEAD
     public PageReference addToQuoteBook() {
                 for(LLProducts t : talktalkproducts) {
                         if(t.selected==true) {
@@ -177,8 +166,6 @@ public class TalkTalkQuotes {
         return msg;
         }
     
-=======
->>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
     public class LLProducts {
         
         private PricebookEntry product;
@@ -194,14 +181,6 @@ public class TalkTalkQuotes {
             get { return product.name; }  
         }
         
-<<<<<<< HEAD
-        public Boolean selected
-                { get; set; }
-    } 
-=======
         public Boolean selected { get; set; }
     }
-    
-    
->>>>>>> bb04e6d1b5560b0005fe245b2fcb35e589cbd8bc
 }
