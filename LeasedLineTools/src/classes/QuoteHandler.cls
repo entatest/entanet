@@ -2,12 +2,13 @@ global class QuoteHandler
 {
     webservice String response;
     static private JSONParser parser;
-    static private List<QuoteProduct> products;
+    static private List<QuoteResponseParser> products;
+    static private Boolean ready = false;
     
     static webservice String parseQuote(String response)
     {
         String status = 'Data loaded successfully on carloguli sandbox';
-        products = new List<QuoteProduct>();
+        products = new List<QuoteResponseParser>();
         String provider;
         ProductParserFactory factory = new ProductParserFactory();
         try {
@@ -23,7 +24,7 @@ global class QuoteHandler
                         // Advance to the start object marker
                         if (parser.getCurrentToken() == JSONToken.START_OBJECT) {
                             // Read object
-                            QuoteProduct product = factory.getProductParser(provider);
+                            QuoteResponseParser product = factory.getProductParser(provider);
                             products.add(product);
                             // For debugging purposes, serialize again to verify what was parsed.
                             String s = JSON.serialize(product);
@@ -44,75 +45,164 @@ global class QuoteHandler
     
     static private void loadProductObjects()
     {
-        for (QuoteProduct qProd: products) {
-            qProd.parsePayload();
-            Map<String,String> fields = qProd.getFieldMap();
-            System.debug(fields);
+        for (QuoteResponseParser qProd: products) {
+        	qProd.parsePayload();
         }
     }
     
-    public class TalktalkProduct extends QuoteProduct
+    static public Boolean isReady()
     {
-        public TalktalkProduct(String siteRef, String payload, String error)
+    	return ready;
+    }
+    
+    public class TalktalkResponseParser extends QuoteResponseParser
+    {
+		public String collectorExchangeName;
+		public String distance;
+		public String ethernetExchangeName;
+		public String fibreExchangeName;
+		public String zone;
+		public List<TalktalkQuoteParser> quotes;
+		
+		public TalktalkResponseParser(String siteRef, String xml, String error)
         {
-        	super(siteRef, payload, error);
+        	super(siteRef, xml, error);
         }
         
         override public void parsePayload()
     	{
+    		quotes = new List<TalktalkQuoteParser>();
+    		XMLDom dom = new XMLDom(xml);
+    		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
+    		if (searchResponseDetail != null) {
+    			collectorExchangeName = searchResponseDetail.getValue('ns:CollectorExchangeName');
+    			distance = searchResponseDetail.getValue('ns:Distance');
+    			ethernetExchangeName = searchResponseDetail.getValue('ns:EthernetExchangeName');
+    			fibreExchangeName = searchResponseDetail.getValue('ns:FibreExchangeName');
+    			zone = searchResponseDetail.getValue('ns:Zone');
+    		}
+    		List<XMLDom.Element> circuits = dom.getElementsByTagName('ns:Circuit');
+    		if (circuits != null) {
+	    		for (XMLDom.Element circuit: circuits) {
+	    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit);
+	    			quoteParser.parsePayload();
+	    			quotes.add(quoteParser);
+	    		}
+    		}
+    		System.debug(distance);
+    		System.debug(quotes);
+    		createObjects();
         }
+    	
+    	private void createObjects()
+    	{
+    		Leased_Line_Quote_Request__c llQuote = Database.query('SELECT OwnerId, Opportunity_ID__c FROM Leased_Line_Quote_Request__c WHERE ID = :siteRef');
+    		String opportunityId = llQuote.Opportunity_ID__c;
+    		String ownerId = llQuote.OwnerId;
+    		System.debug(llQuote);
+    		System.debug(ownerId);
+    		System.debug(opportunityId);
+    		System.debug(opportunityId);
+    		for (TalktalkQuoteParser quoteParser: quotes) {
+    			Talk_talk_Product__c product = new Talk_talk_Product__c(
+    				OwnerId = ownerId,
+    				Collector_Exchange_Name__c = collectorExchangeName,
+    				Connection_Price_1_Year__c = Decimal.valueOf(quoteParser.setUp1yr),
+    				Connection_Price_3_Year__c = Decimal.valueOf(quoteParser.setUp3yr),
+    				Distance__c = Decimal.valueOf(distance),
+    				Ethernet_Exchange_Name__c = ethernetExchangeName,
+    				Fibre_Exchange_Name__c = fibreExchangeName,
+    				Opportunity_ID__c = opportunityId,
+    				Product__c = quoteParser.service,
+    				Rental_Price__c = Decimal.valueOf(quoteParser.annualPrice),
+    				Zone__c = zone
+    			);
+    			System.debug(product);
+    			Database.upsert(product);
+    		}
+    	}
+    }
+        
+    public class TalktalkQuoteParser
+    {
+    	public String service;
+    	public String annualPrice;
+    	public String setUp1yr;
+    	public String setUp3yr;
+    	
+    	private XMLDom.Element xml;
+    	
+    	public TalktalkQuoteParser(XMLDom.Element xml)
+    	{
+    		this.xml = xml;
+    	}
+    	
+    	public void parsePayload()
+    	{
+    		if (xml != null) {
+    			service  = xml.getValue('ns:Service');
+    			annualPrice  = xml.getValue('ns:AnnualPrice');
+    			setUp1yr  = xml.getValue('ns:SetUp1yr');
+    			setUp3yr  = xml.getValue('ns:SetUp3yr');
+    		}
+    	}
     }
     
-    public class VirginProduct extends QuoteProduct
+    public class VirginResponseParser extends QuoteResponseParser
     {
-    	public VirginProduct(String siteRef, String payload, String error)
+    	private String BPTQuote;
+    	private String flavour;
+    	private String connectionPrice;
+    	private String rentalPrice;
+    	private String totalPrice;    	
+    	
+    	public VirginResponseParser(String siteRef, String xml, String error)
         {
-        	super(siteRef, payload, error);
+        	super(siteRef, xml, error);
         }
     	
     	override public void parsePayload()
     	{
-            fieldMap = new Map<String,String>();
-    		XMLDom dom = new XMLDom(payload);
+    		XMLDom dom = new XMLDom(xml);
             XMLDom.Element quotePricing = dom.getElementByTagName('QuotePricing');
             if (quotePricing != null) {
-            	fieldMap.put('BPT_Quote__c', quotePricing.getAttribute('BPTQuoteRefNo'));
+            	//fieldMap.put('BPT_Quote__c', quotePricing.getAttribute('BPTQuoteRefNo'));
+            	BPTQuote = quotePricing.getAttribute('BPTQuoteRefNo');
             }
             List<XMLDom.Element> sites = dom.getElementsByTagName('Site');
             if (sites != null && sites.size() > 1) {
-            	fieldMap.put('Flavour__c', sites[1].getAttribute('AccessFlavour'));
+            	//fieldMap.put('Flavour__c', sites[1].getAttribute('AccessFlavour'));
+            	flavour = sites[1].getAttribute('AccessFlavour');
             }
             XMLDom.Element totalPricing = dom.getElementByTagName('TotalPricing');
             if (totalPricing != null) {
-                fieldMap.put('Connection_Price__c', totalPricing.getValue('InstallRevenue'));
-                fieldMap.put('Rental_Price__c', totalPricing.getValue('RentalRevenue'));
-                fieldMap.put('Total_Pricing_Summary__c', totalPricing.getValue('TariffSummary'));
+                //fieldMap.put('Connection_Price__c', totalPricing.getValue('InstallRevenue'));
+                //fieldMap.put('Rental_Price__c', totalPricing.getValue('RentalRevenue'));
+                //fieldMap.put('Total_Pricing_Summary__c', totalPricing.getValue('TariffSummary'));
+                connectionPrice = totalPricing.getValue('InstallRevenue');
+                rentalPrice = totalPricing.getValue('TariffSummary');
+                totalPrice = totalPricing.getValue('TariffSummary');
             }
-            Set<String> keys = fieldMap.keySet();
-            for (String key: keys) {
-                
-            }
+    	}
+    	
+    	private void createObject()
+    	{
+    		
     	}
     } 
     
     // Inner class used for serialization by readValuesAs()
-    abstract public class QuoteProduct
+    abstract public class QuoteResponseParser
     {
         public String siteRef;
-        public String payload;
+        public String xml;
         public String error;
-        protected Map<String,String> fieldMap;
         
-        public QuoteProduct(String siteRef, String payload, String error)
+        public QuoteResponseParser(String siteRef, String xml, String error)
         {
             this.siteRef = siteRef;
-            this.payload = payload;
+            this.xml = xml;
             this.error = error;
-        }
-        
-        public Map<String,String> getFieldMap()
-        {
-            return fieldMap;
         }
         
         abstract public void parsePayload();
@@ -120,12 +210,12 @@ global class QuoteHandler
     
     public class ProductParserFactory
     {
-    	public QuoteProduct getProductParser(String parserType)
+    	public QuoteResponseParser getProductParser(String parserType)
     	{
     		if (parserType == 'virgin') {
-    			return (VirginProduct)parser.readValueAs(VirginProduct.class);
+    			return (VirginResponseParser)parser.readValueAs(VirginResponseParser.class);
     		}
-    		return (TalktalkProduct)parser.readValueAs(TalktalkProduct.class);
+    		return (TalktalkResponseParser)parser.readValueAs(TalktalkResponseParser.class);
     	}
     }
 }
