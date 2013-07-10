@@ -12,6 +12,7 @@
         <members>TalkTalkQuotes</members>
         <members>TestTalkTalkQuotes</members>
         <members>TrialCustomerPortalHomePageController</members>
+        <members>XMLDom</members>
         <members>applications</members>
         <members>filter</members>
         <members>leasedLinesQuotes</members>
