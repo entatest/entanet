@@ -37,6 +37,10 @@
         <name>ApexTrigger</name>
     </types>
     <types>
+        <members>Quote.IncludeInSummary__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>BT_Wholesale_Product__c</members>
         <members>Leased_Line_Product__c</members>
         <members>Leased_Line_Quote_Request__c</members>
