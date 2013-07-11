@@ -3,13 +3,25 @@ public class LeasedLineQuotes {
     //public List<Leased_Line_Quote_Request__c> quoteoptions;
     Leased_Line_Quote_Request__c llqr;
     String[] applications = new String[]{};
+    List<Leased_Line_Quote_Request__c> savedllqr;
     
     public PageReference save(){
     //PageReference pageRef = new PageReference('http://www.google.com');
     //pageRef.setredirect(true);
     //return pageRef;
+        //construct an HTTP request
+    HttpRequest req = new HttpRequest();
+    req.setEndpoint('http://sfgw.enta.net/rest/quotes');
+    req.setMethod('GET');
+
+    //send the request
+    Http http = new Http();
+    HttpResponse res = http.send(req);
+    String xml = res.getBody();
+    
+    llqr.xml__c = this.llqrxml();
     llqr.Opportunity_ID__c = ApexPages.currentPage().getParameters().get('Id');
-    insert llqr;
+    insert llqr;  
     return page.linecheckerresults;
     }       
 
@@ -253,5 +265,31 @@ public class LeasedLineQuotes {
     public Leased_Line_Quote_Request__c getllqr(){
         if (llqr == null) llqr = new Leased_Line_Quote_Request__c();
         return llqr;
-    }           
+    }      
+    
+    public List<Leased_Line_Quote_Request__c> getsavedllqr(){
+        savedllqr = [SELECT Id, Name, TOID__c, Postcode__c, Street__c FROM Leased_Line_Quote_Request__c WHERE Opportunity_ID__c =: ApexPages.currentPage().getParameters().get('Id')];
+        return savedllqr;
+    }   
+    
+    public String llqrxml(){
+          XmlStreamWriter w = new XmlStreamWriter();
+          w.writeStartDocument(null, '1.0');
+          w.writeProcessingInstruction('target', 'data');
+          w.writeStartElement('m', 'Library', 'http://www.book.com');
+          w.writeNamespace('m', 'http://www.book.com');
+          w.writeComment('Book starts here');
+          w.setDefaultNamespace('http://www.defns.com');
+          w.writeCData('<Cdata> I like CData </Cdata>');
+          w.writeStartElement(null, 'book', null);
+          w.writedefaultNamespace('http://www.defns.com');
+          w.writeAttribute(null, null, 'author', 'Manoj');
+          w.writeCharacters('This is my book');
+          w.writeEndElement(); //end book
+          w.writeEmptyElement(null, 'ISBN', null);
+          w.writeEndElement(); //end library
+          w.writeEndDocument();
+          String xmlOutput = w.getXmlString();
+          return xmlOutput;        
+    }
 }

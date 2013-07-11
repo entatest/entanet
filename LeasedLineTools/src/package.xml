@@ -23,6 +23,7 @@
         <members>sendEmail</members>
         <members>so</members>
         <members>superSort</members>
+        <members>xmlwriter</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -53,7 +54,11 @@
         <name>CustomObject</name>
     </types>
     <types>
+        <members>BT_Wholesale_Product__c-Virgin Media Product Layout</members>
+        <members>Leased_Line_Quote_Request__c-Leased Line Quote Request Layout</members>
         <members>Opportunity-Opportunity Layout</members>
+        <members>Talk_Talk_Product__c-Talk Talk Product Layout</members>
+        <members>Virgin_Media_Product__c-BT Wholesale Product Layout</members>
         <name>Layout</name>
     </types>
     <types>
