@@ -7,7 +7,7 @@ global class QuoteHandler
     
     static webservice String parseQuote(String response)
     {
-        String status = 'Data loaded successfully on carloguli sandbox';
+        String status = 'Data loaded successfully';
         products = new List<QuoteResponseParser>();
         String provider;
         ProductParserFactory factory = new ProductParserFactory();
@@ -39,6 +39,8 @@ global class QuoteHandler
             loadProductObjects();
         } catch (System.NullPointerException e) {
             status = e.getMessage();
+        } catch (UnknownProviderException e) {
+        	status = e.getMessage();
         }
         return status;
     }
@@ -64,9 +66,9 @@ global class QuoteHandler
 		public String zone;
 		public List<TalktalkQuoteParser> quotes;
 		
-		public TalktalkResponseParser(String siteRef, String xml, String error)
+		public TalktalkResponseParser(String siteRef, String bearer, String bandwidth, String term, String xml, String error)
         {
-        	super(siteRef, xml, error);
+        	super(siteRef, bearer, bandwidth, term, xml, error);
         }
         
         override public void parsePayload()
@@ -147,9 +149,9 @@ global class QuoteHandler
     	private String rentalPrice;
     	private String totalPrice;    	
     	
-    	public VirginResponseParser(String siteRef, String xml, String error)
+    	public VirginResponseParser(String siteRef, String bearer, String bandwidth, String term, String xml, String error)
         {
-        	super(siteRef, xml, error);
+        	super(siteRef, bearer, bandwidth, term, xml, error);
         }
     	
     	override public void parsePayload()
@@ -176,31 +178,46 @@ global class QuoteHandler
     	{
     		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
     			Site_Ref__c = siteRef,
-				Unique__c = siteRef + ' - ',
+				Unique__c = siteRef + ' - ' + bandwidth + '/' + bearer,
     			BPT_Quote__c = BPTQuote,
-				Bandwidth__c = '',
-				Bearer__c = '',
+				Bandwidth__c = bandwidth,
+				Bearer__c = bearer,
 				Connection_Price__c = Decimal.valueOf(connectionPrice),
 				Flavour__c = flavour,
-				Product_term__c = '',
+				Product_term__c = term,
 				Rental_Price__c = Decimal.valueOf(rentalPrice),
 				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice)
 			);
 			System.debug(product);
 			upsert product Unique__c;
     	}
-    } 
+    }
+    
+    public class VoidResponseParser extends QuoteResponseParser
+    {
+    	override public void parsePayload() {
+    		throw new UnknownProviderException('Unknown provider');
+    	}
+    }
     
     // Inner class used for serialization by readValuesAs()
     abstract public class QuoteResponseParser
     {
         public String siteRef;
+        public String bearer;
+        public String bandwidth;
+        public String term;
         public String xml;
         public String error;
         
-        public QuoteResponseParser(String siteRef, String xml, String error)
+        public QuoteResponseParser() {}
+        
+        public QuoteResponseParser(String siteRef, String bearer, String bandwidth, String term, String xml, String error)
         {
             this.siteRef = siteRef;
+            this.bearer = bearer;
+            this.bandwidth = bandwidth;
+            this.term = term;
             this.xml = xml;
             this.error = error;
         }
@@ -212,10 +229,15 @@ global class QuoteHandler
     {
     	public QuoteResponseParser getProductParser(String parserType)
     	{
+    		if (parserType == 'talktalk') {
+    			return (TalktalkResponseParser)parser.readValueAs(TalktalkResponseParser.class);
+    		}
     		if (parserType == 'virgin') {
     			return (VirginResponseParser)parser.readValueAs(VirginResponseParser.class);
     		}
-    		return (TalktalkResponseParser)parser.readValueAs(TalktalkResponseParser.class);
+    		return (VoidResponseParser)parser.readValueAs(VoidResponseParser.class);
     	}
     }
+
+	public class UnknownProviderException extends Exception {}
 }
