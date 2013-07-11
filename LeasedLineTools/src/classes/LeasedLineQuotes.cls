@@ -3,7 +3,7 @@ public class LeasedLineQuotes {
     //public List<Leased_Line_Quote_Request__c> quoteoptions;
     Leased_Line_Quote_Request__c llqr;
     String[] applications = new String[]{};
-    Leased_Line_Quote_Request__c savedllqr;
+    List<Leased_Line_Quote_Request__c> savedllqr;
     
     public PageReference save(){
     //PageReference pageRef = new PageReference('http://www.google.com');
@@ -267,10 +267,9 @@ public class LeasedLineQuotes {
         return llqr;
     }      
     
-    public Leased_Line_Quote_Request__c getsavedllqr(){
-        //savedllqr = [SELECT Id, Name, TOID__c FROM Leased_Line_Quote_Request__c WHERE Opportunity_ID__c =: ApexPages.currentPage().getParameters().get('Id')];
-        //return savedllqr;
-        return null;
+    public List<Leased_Line_Quote_Request__c> getsavedllqr(){
+        savedllqr = [SELECT Id, Name, TOID__c, Postcode__c, Street__c FROM Leased_Line_Quote_Request__c WHERE Opportunity_ID__c =: ApexPages.currentPage().getParameters().get('Id')];
+        return savedllqr;
     }   
     
     public String llqrxml(){

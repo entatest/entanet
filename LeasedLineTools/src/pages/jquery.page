@@ -1,0 +1,19 @@
+<apex:page showHeader="false" >
+    <body>
+        <ul>
+            <li class="account">Account 1</li>
+            <li class="account">Account 2</li>
+            <li class="account">Account 3</li>
+        </ul>
+<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" />
+    <script>
+        
+    $j = jQuery.noConflict();
+    alert($j);
+    
+    $j(".account").click(function() {
+        alert("goodbye");
+        });
+    </script>
+    </body>
+</apex:page>

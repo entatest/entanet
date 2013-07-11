@@ -66,12 +66,16 @@ public class xmlwriter {
     HttpRequest req = new HttpRequest();
     req.setEndpoint('http://sfgw.enta.net/rest/quotes');
     req.setMethod('POST');
-    req.setBody(xmlOutput);    
+    req.setBody(xmlOutput); 
     //send the request
     Http http = new Http();
     HttpResponse res = http.send(req);
-    String xml = res.getBody();    
+    Integer statuscode = res.getStatusCode();
+    String xml = res.getBody();  
         
+    system.debug(statuscode);
     system.debug(xmlOutput);
+    system.debug(xml);
+
     }
 }
