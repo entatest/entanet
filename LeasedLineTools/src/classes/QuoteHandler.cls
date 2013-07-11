@@ -94,25 +94,22 @@ global class QuoteHandler
     	
     	private void createObjects()
     	{
-    		Leased_Line_Quote_Request__c llQuote = Database.query('SELECT OwnerId, Opportunity_ID__c FROM Leased_Line_Quote_Request__c WHERE ID = :siteRef');
-    		String opportunityId = llQuote.Opportunity_ID__c;
-    		String ownerId = llQuote.OwnerId;
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			Talk_talk_Product__c product = new Talk_talk_Product__c(
-    				OwnerId = ownerId,
+    				Leased_Line_Quote_Request__c = siteRef,
+    				Unique__c = siteRef + ' - ' + quoteParser.service,
     				Collector_Exchange_Name__c = collectorExchangeName,
     				Connection_Price_1_Year__c = Decimal.valueOf(quoteParser.setUp1yr),
     				Connection_Price_3_Year__c = Decimal.valueOf(quoteParser.setUp3yr),
     				Distance__c = Decimal.valueOf(distance),
     				Ethernet_Exchange_Name__c = ethernetExchangeName,
     				Fibre_Exchange_Name__c = fibreExchangeName,
-    				Opportunity_ID__c = opportunityId,
     				Product__c = quoteParser.service,
     				Rental_Price__c = Decimal.valueOf(quoteParser.annualPrice),
     				Zone__c = zone
     			);
     			System.debug(product);
-    			Database.upsert(product);
+    			upsert product Unique__c;
     		}
     	}
     }
@@ -185,13 +182,13 @@ global class QuoteHandler
 				BPT_Quote__c = BPTQuote,
 				Bandwidth__c = '',
 				Bearer__c = '',
-				Connection_Price__c = connectionPrice,
+				Connection_Price__c = Decimal.valueOf(connectionPrice),
 				Flavour__c = flavour,
 				Opportunity_ID__c = opportunityId,
 				Product_term__c = '',
-				Rental_Price__c = rentalPrice,
+				Rental_Price__c = Decimal.valueOf(rentalPrice),
 				Site_Ref__c = siteRef,
-				Total_Pricing_Summary__c = totalPrice
+				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice)
 			);
 			System.debug(product);
 			Database.upsert(product);
