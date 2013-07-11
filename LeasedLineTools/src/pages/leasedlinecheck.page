@@ -35,7 +35,9 @@ jQuery.noConflict();
     </style>
     <apex:form >
     
-    <p>Test</p>
+    <apex:repeat value="{!savedllqr}" var="string" id="theRepeat">
+        <apex:outputText value="{!savedllqr.TOID__c}" id="theValue"/><br/>
+    </apex:repeat>
     
     <apex:pageBlock title="New Quote Request" mode="new">
         <apex:pageBlockButtons >
@@ -103,4 +105,5 @@ jQuery.noConflict();
         </apex:pageBlockSection>
     </apex:pageBlock>
     </apex:form>
+    
 </apex:page>
