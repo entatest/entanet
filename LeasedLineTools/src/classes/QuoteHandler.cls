@@ -89,8 +89,6 @@ global class QuoteHandler
 	    			quotes.add(quoteParser);
 	    		}
     		}
-    		System.debug(distance);
-    		System.debug(quotes);
     		createObjects();
         }
     	
@@ -99,10 +97,6 @@ global class QuoteHandler
     		Leased_Line_Quote_Request__c llQuote = Database.query('SELECT OwnerId, Opportunity_ID__c FROM Leased_Line_Quote_Request__c WHERE ID = :siteRef');
     		String opportunityId = llQuote.Opportunity_ID__c;
     		String ownerId = llQuote.OwnerId;
-    		System.debug(llQuote);
-    		System.debug(ownerId);
-    		System.debug(opportunityId);
-    		System.debug(opportunityId);
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			Talk_talk_Product__c product = new Talk_talk_Product__c(
     				OwnerId = ownerId,
@@ -130,20 +124,20 @@ global class QuoteHandler
     	public String setUp1yr;
     	public String setUp3yr;
     	
-    	private XMLDom.Element xml;
+    	private XMLDom.Element element;
     	
-    	public TalktalkQuoteParser(XMLDom.Element xml)
+    	public TalktalkQuoteParser(XMLDom.Element element)
     	{
-    		this.xml = xml;
+    		this.element = element;
     	}
     	
     	public void parsePayload()
     	{
-    		if (xml != null) {
-    			service  = xml.getValue('ns:Service');
-    			annualPrice  = xml.getValue('ns:AnnualPrice');
-    			setUp1yr  = xml.getValue('ns:SetUp1yr');
-    			setUp3yr  = xml.getValue('ns:SetUp3yr');
+    		if (element != null) {
+    			service  = element.getValue('ns:Service');
+    			annualPrice  = element.getValue('ns:AnnualPrice');
+    			setUp1yr  = element.getValue('ns:SetUp1yr');
+    			setUp3yr  = element.getValue('ns:SetUp3yr');
     		}
     	}
     }
@@ -166,28 +160,41 @@ global class QuoteHandler
     		XMLDom dom = new XMLDom(xml);
             XMLDom.Element quotePricing = dom.getElementByTagName('QuotePricing');
             if (quotePricing != null) {
-            	//fieldMap.put('BPT_Quote__c', quotePricing.getAttribute('BPTQuoteRefNo'));
             	BPTQuote = quotePricing.getAttribute('BPTQuoteRefNo');
             }
             List<XMLDom.Element> sites = dom.getElementsByTagName('Site');
             if (sites != null && sites.size() > 1) {
-            	//fieldMap.put('Flavour__c', sites[1].getAttribute('AccessFlavour'));
             	flavour = sites[1].getAttribute('AccessFlavour');
             }
             XMLDom.Element totalPricing = dom.getElementByTagName('TotalPricing');
             if (totalPricing != null) {
-                //fieldMap.put('Connection_Price__c', totalPricing.getValue('InstallRevenue'));
-                //fieldMap.put('Rental_Price__c', totalPricing.getValue('RentalRevenue'));
-                //fieldMap.put('Total_Pricing_Summary__c', totalPricing.getValue('TariffSummary'));
                 connectionPrice = totalPricing.getValue('InstallRevenue');
                 rentalPrice = totalPricing.getValue('TariffSummary');
                 totalPrice = totalPricing.getValue('TariffSummary');
             }
+            createObject();
     	}
     	
     	private void createObject()
     	{
-    		
+    		Leased_Line_Quote_Request__c llQuote = Database.query('SELECT OwnerId, Opportunity_ID__c FROM Leased_Line_Quote_Request__c WHERE ID = :siteRef');
+    		String opportunityId = llQuote.Opportunity_ID__c;
+    		String ownerId = llQuote.OwnerId;
+    		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
+    			OwnerId = ownerId,
+				BPT_Quote__c = BPTQuote,
+				Bandwidth__c = '',
+				Bearer__c = '',
+				Connection_Price__c = connectionPrice,
+				Flavour__c = flavour,
+				Opportunity_ID__c = opportunityId,
+				Product_term__c = '',
+				Rental_Price__c = rentalPrice,
+				Site_Ref__c = siteRef,
+				Total_Pricing_Summary__c = totalPrice
+			);
+			System.debug(product);
+			Database.upsert(product);
     	}
     } 
     
