@@ -94,19 +94,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Leased_Line_Quote_Request__c</fullName>
-        <description>Leased Line Quote Request foreign key</description>
-        <externalId>false</externalId>
-        <label>Site Reference</label>
-        <referenceTo>Leased_Line_Quote_Request__c</referenceTo>
-        <relationshipLabel>Talk Talk Products</relationshipLabel>
-        <relationshipName>Talk_Talk_Products</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Opportunity_ID__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>Opportunity foreign key</description>
@@ -159,6 +146,19 @@
         <required>false</required>
         <scale>2</scale>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Site_Ref__c</fullName>
+        <description>Leased Line Quote Request foreign key</description>
+        <externalId>false</externalId>
+        <label>Site Ref</label>
+        <referenceTo>Leased_Line_Quote_Request__c</referenceTo>
+        <relationshipLabel>Talk Talk Products</relationshipLabel>
+        <relationshipName>Talk_Talk_Products</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Unique__c</fullName>

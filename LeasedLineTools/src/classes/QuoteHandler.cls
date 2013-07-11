@@ -96,7 +96,7 @@ global class QuoteHandler
     	{
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			Talk_talk_Product__c product = new Talk_talk_Product__c(
-    				Leased_Line_Quote_Request__c = siteRef,
+    				Site_Ref__c = siteRef,
     				Unique__c = siteRef + ' - ' + quoteParser.service,
     				Collector_Exchange_Name__c = collectorExchangeName,
     				Connection_Price_1_Year__c = Decimal.valueOf(quoteParser.setUp1yr),
@@ -174,24 +174,20 @@ global class QuoteHandler
     	
     	private void createObject()
     	{
-    		Leased_Line_Quote_Request__c llQuote = Database.query('SELECT OwnerId, Opportunity_ID__c FROM Leased_Line_Quote_Request__c WHERE ID = :siteRef');
-    		String opportunityId = llQuote.Opportunity_ID__c;
-    		String ownerId = llQuote.OwnerId;
     		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
-    			OwnerId = ownerId,
-				BPT_Quote__c = BPTQuote,
+    			Site_Ref__c = siteRef,
+				Unique__c = siteRef + ' - ',
+    			BPT_Quote__c = BPTQuote,
 				Bandwidth__c = '',
 				Bearer__c = '',
 				Connection_Price__c = Decimal.valueOf(connectionPrice),
 				Flavour__c = flavour,
-				Opportunity_ID__c = opportunityId,
 				Product_term__c = '',
 				Rental_Price__c = Decimal.valueOf(rentalPrice),
-				Site_Ref__c = siteRef,
 				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice)
 			);
 			System.debug(product);
-			Database.upsert(product);
+			upsert product Unique__c;
     	}
     } 
     
