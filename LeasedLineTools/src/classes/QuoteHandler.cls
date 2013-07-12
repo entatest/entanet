@@ -6,7 +6,7 @@ global class QuoteHandler
     
     static webservice String parseQuote(String response)
     {
-        String status = 'Data loaded successfully carlo';
+        String status = 'Data loaded successfully';
         products = new List<QuoteResponseParser>();
         String ready = 'pending';
         String provider = 'unknown';
@@ -58,15 +58,18 @@ global class QuoteHandler
         }
     }
     
-    static private void setReadyStatus(String siteRef, String provider, String ready)
+    static public void setReadyStatus(String siteRef, String provider, String ready)
     {
     	if (siteRef != null) {
-    		Product_Loaded_Status__c status = new Product_Loaded_Status__c(
-    			Leased_Line_Quote_Request__c = siteRef,
-    			Provider__c = provider,
-    			Status__c = ready
-    		);
-    		insert status;
+    		Leased_Line_Quote_Request__c llqr = Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
+    		if (llqr != null) {
+	    		Product_Loaded_Status__c status = new Product_Loaded_Status__c(
+	    			Leased_Line_Quote_Request__c = siteRef,
+	    			Provider__c = provider,
+	    			Status__c = ready
+	    		);
+	    		insert status;
+    		}
     	}
     }
     

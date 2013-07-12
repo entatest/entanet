@@ -10,6 +10,7 @@
         <members>LineCheckerResults</members>
         <members>QuoteHandler</members>
         <members>TalkTalkQuotes</members>
+        <members>TestQuoteHandler</members>
         <members>TestTalkTalkQuotes</members>
         <members>TrialCustomerPortalHomePageController</members>
         <members>XMLDom</members>
