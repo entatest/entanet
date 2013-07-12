@@ -3,13 +3,14 @@ global class QuoteHandler
     webservice String response;
     static private JSONParser parser;
     static private List<QuoteResponseParser> products;
-    static private Boolean ready = false;
     
     static webservice String parseQuote(String response)
     {
-        String status = 'Data loaded successfully';
+        String status = 'Data loaded successfully carlo';
         products = new List<QuoteResponseParser>();
-        String provider;
+        String ready = 'pending';
+        String provider = 'unknown';
+        String siteRef;
         ProductParserFactory factory = new ProductParserFactory();
         try {
             parser = JSON.createParser(response);
@@ -25,6 +26,7 @@ global class QuoteHandler
                         if (parser.getCurrentToken() == JSONToken.START_OBJECT) {
                             // Read object
                             QuoteResponseParser product = factory.getProductParser(provider);
+                            siteRef = product.siteRef;
                             products.add(product);
                             // For debugging purposes, serialize again to verify what was parsed.
                             String s = JSON.serialize(product);
@@ -37,11 +39,15 @@ global class QuoteHandler
                 }
             }
             loadProductObjects();
+            ready = 'success';
         } catch (System.NullPointerException e) {
             status = e.getMessage();
+            ready = 'failure';
         } catch (UnknownProviderException e) {
         	status = e.getMessage();
+            ready = 'failure';
         }
+        setReadyStatus(siteRef, provider, ready);
         return status;
     }
     
@@ -52,9 +58,16 @@ global class QuoteHandler
         }
     }
     
-    static public Boolean isReady()
+    static private void setReadyStatus(String siteRef, String provider, String ready)
     {
-    	return ready;
+    	if (siteRef != null) {
+    		Product_Loaded_Status__c status = new Product_Loaded_Status__c(
+    			Leased_Line_Quote_Request__c = siteRef,
+    			Provider__c = provider,
+    			Status__c = ready
+    		);
+    		insert status;
+    	}
     }
     
     public class TalktalkResponseParser extends QuoteResponseParser

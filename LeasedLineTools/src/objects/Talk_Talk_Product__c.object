@@ -186,6 +186,15 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>View_Details</fullName>
+        <columns>NAME</columns>
+        <columns>Site_Ref__c</columns>
+        <columns>Product__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>View Details</label>
+    </listViews>
     <nameField>
         <label>Talk Name</label>
         <type>Text</type>
