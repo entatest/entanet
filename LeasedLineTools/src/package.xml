@@ -39,15 +39,12 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>Quote.IncludeInSummary__c</members>
-        <name>CustomField</name>
-    </types>
-    <types>
         <members>BT_Wholesale_Product__c</members>
         <members>Leased_Line_Product__c</members>
         <members>Leased_Line_Quote_Request__c</members>
         <members>Opportunity</members>
         <members>Product2</members>
+        <members>Product_Loaded_Status__c</members>
         <members>Sales_Order_Option__c</members>
         <members>Talk_Talk_Product__c</members>
         <members>Virgin_Media_Product__c</members>

@@ -34,6 +34,7 @@
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
@@ -95,6 +96,7 @@
     <fields>
         <fullName>Opportunity_ID__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
+        <description>Opportunity foreign key</description>
         <externalId>false</externalId>
         <label>Opportunity ID</label>
         <referenceTo>Opportunity</referenceTo>
@@ -146,6 +148,30 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Site_Ref__c</fullName>
+        <description>Leased Line Quote Request foreign key</description>
+        <externalId>false</externalId>
+        <label>Site Ref</label>
+        <referenceTo>Leased_Line_Quote_Request__c</referenceTo>
+        <relationshipLabel>Talk Talk Products</relationshipLabel>
+        <relationshipName>Talk_Talk_Products</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Unique__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <description>Field used by the upsert function - a combination of Leased_Line_Quote_Request__c and Product__c</description>
+        <externalId>true</externalId>
+        <label>Unique</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>Zone__c</fullName>
         <externalId>false</externalId>
         <label>Zone</label>
@@ -160,11 +186,20 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>View_Details</fullName>
+        <columns>NAME</columns>
+        <columns>Site_Ref__c</columns>
+        <columns>Product__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>View Details</label>
+    </listViews>
     <nameField>
         <label>Talk Name</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Talk Talk Products</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>
