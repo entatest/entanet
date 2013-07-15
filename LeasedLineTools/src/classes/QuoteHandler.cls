@@ -40,11 +40,8 @@ global class QuoteHandler
             }
             loadProductObjects();
             ready = 'success';
-        } catch (System.NullPointerException e) {
+        } catch (Exception e) {
             status = e.getMessage();
-            ready = 'failure';
-        } catch (UnknownProviderException e) {
-        	status = e.getMessage();
             ready = 'failure';
         }
         setReadyStatus(siteRef, provider, ready);
@@ -58,19 +55,14 @@ global class QuoteHandler
         }
     }
     
-    static public void setReadyStatus(String siteRef, String provider, String ready)
+    static private void setReadyStatus(String siteRef, String provider, String ready)
     {
-    	if (siteRef != null) {
-    		Leased_Line_Quote_Request__c llqr = Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
-    		if (llqr != null) {
-	    		Product_Loaded_Status__c status = new Product_Loaded_Status__c(
-	    			Leased_Line_Quote_Request__c = siteRef,
-	    			Provider__c = provider,
-	    			Status__c = ready
-	    		);
-	    		insert status;
-    		}
-    	}
+    	Product_Loaded_Status__c status = new Product_Loaded_Status__c(
+			Leased_Line_Quote_Request__c = siteRef,
+			Provider__c = provider,
+			Status__c = ready
+		);
+		insert status;
     }
     
     public class TalktalkResponseParser extends QuoteResponseParser
@@ -128,6 +120,7 @@ global class QuoteHandler
     			);
     			System.debug(product);
     			upsert product Unique__c;
+    			System.debug(product.Id);
     		}
     	}
     }
@@ -236,9 +229,23 @@ global class QuoteHandler
             this.term = term;
             this.xml = xml;
             this.error = error;
+            checkSiteRef();
         }
         
         abstract public void parsePayload();
+    
+	    private void checkSiteRef()
+	    {
+	    	if (siteRef != null) {
+	    		try {
+	    			Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
+	    			return;
+	    		} catch (QueryException e) {
+    				throw new InvalidSiteReferenceException('Invalid Site Reference');
+	    		}
+    		}
+    		throw new InvalidSiteReferenceException('Invalid Site Reference');
+	    }
     }
     
     public class ProductParserFactory
@@ -256,4 +263,6 @@ global class QuoteHandler
     }
 
 	public class UnknownProviderException extends Exception {}
+	
+	public class InvalidSiteReferenceException extends Exception {}
 }
