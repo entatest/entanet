@@ -1,12 +1,11 @@
 global class QuoteHandler
 {
-    webservice String response;
     static private JSONParser parser;
     static private List<QuoteResponseParser> products;
     
     static webservice String parseQuote(String response)
     {
-        String status = 'Data loaded successfully';
+        String status = 'Data not loaded';
         products = new List<QuoteResponseParser>();
         String ready = 'pending';
         String provider = 'unknown';
@@ -27,11 +26,11 @@ global class QuoteHandler
                             // Read object
                             QuoteResponseParser product = factory.getProductParser(provider);
                             siteRef = product.siteRef;
-                            System.debug(product);
+                            //System.debug(product);
                             products.add(product);
-                            // For debugging purposes, serialize again to verify what was parsed.
+                            /* For debugging purposes, serialize again to verify what was parsed.
                             String s = JSON.serialize(product);
-                            System.debug('Serialized product: ' + s);
+                            System.debug('Serialized product: ' + s);*/
         
                             // Skip the child start array and start object markers
                             parser.skipChildren();
@@ -41,9 +40,13 @@ global class QuoteHandler
             }
             loadProductObjects();
             ready = 'success';
+        	status = 'Data loaded successfully';
         	setReadyStatus(siteRef, provider, ready);
         } catch (Exception e) {
             status = e.getMessage();
+    		if (e instanceof System.Xmlexception) {
+    			status = 'Invalid XML';
+    		}
             ready = 'failure';
         	setReadyStatus(siteRef, provider, ready);
         }
@@ -90,6 +93,7 @@ global class QuoteHandler
     		checkSiteRef();
     		quotes = new List<TalktalkQuoteParser>();
     		XMLDom dom = new XMLDom(xml);
+    		System.debug(dom);
     		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
     		if (searchResponseDetail != null) {
     			collectorExchangeName = searchResponseDetail.getValue('ns:CollectorExchangeName');
@@ -125,9 +129,9 @@ global class QuoteHandler
     				Rental_Price__c = Decimal.valueOf(quoteParser.annualPrice),
     				Zone__c = zone
     			);
-    			System.debug(product);
+    			//System.debug(product);
     			upsert product Unique__c;
-    			System.debug(product.Id);
+    			//System.debug(product.Id);
     		}
     	}
     }
@@ -172,6 +176,7 @@ global class QuoteHandler
     	
     	override public void parsePayload()
     	{
+    		checkSiteRef();
     		XMLDom dom = new XMLDom(xml);
             XMLDom.Element quotePricing = dom.getElementByTagName('QuotePricing');
             if (quotePricing != null) {
@@ -242,16 +247,16 @@ global class QuoteHandler
     
 	    protected void checkSiteRef()
 	    {
-	    	System.debug(siteRef);
-	    	if (siteRef != null) {
-	    		try {
-	    			Leased_Line_Quote_Request__c llqr = Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
-	    			return;
-	    		} catch (QueryException e) {
-    				throw new InvalidSiteReferenceException('Invalid Site Reference');
-	    		}
+	    	if (siteRef == null) {
+	    		throw new InvalidSiteReferenceException('Invalid Site Reference');
     		}
-    		throw new InvalidSiteReferenceException('Invalid Site Reference');
+    		try {
+    			Leased_Line_Quote_Request__c llqr = Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
+    			return;
+    		} catch (QueryException e) {
+				throw new InvalidSiteReferenceException('Invalid Site Reference');
+    		}
+    		
 	    }
     }
     
