@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>ChatterAnswers</members>
@@ -40,6 +40,71 @@
         <name>ApexTrigger</name>
     </types>
     <types>
+        <members>Quote.IncludeInSummary__c</members>
+        <members>BT_Wholesale_Product__c.Access_Type__c</members>
+        <members>BT_Wholesale_Product__c.Bandwidth__c</members>
+        <members>BT_Wholesale_Product__c.Bearer__c</members>
+        <members>BT_Wholesale_Product__c.Connection_Price__c</members>
+        <members>BT_Wholesale_Product__c.Etherflow_Pricing__c</members>
+        <members>BT_Wholesale_Product__c.Hub_Site_Postcode__c</members>
+        <members>BT_Wholesale_Product__c.Opportunity__c</members>
+        <members>BT_Wholesale_Product__c.Product_Term__c</members>
+        <members>BT_Wholesale_Product__c.Rental_Price__c</members>
+        <members>Leased_Line_Product__c.Line_Provider__c</members>
+        <members>Leased_Line_Product__c.opportunity_id__c</members>
+        <members>Leased_Line_Product__c.Postcode__c</members>
+        <members>Leased_Line_Product__c.Term__c</members>
+        <members>Leased_Line_Product__c.TOID__c</members>
+        <members>Leased_Line_Product__c.Unit_Price__c</members>
+        <members>Leased_Line_Quote_Request__c.Bandwidth__c</members>
+        <members>Leased_Line_Quote_Request__c.Bearer__c</members>
+        <members>Leased_Line_Quote_Request__c.Contract_Term__c</members>
+        <members>Leased_Line_Quote_Request__c.County__c</members>
+        <members>Leased_Line_Quote_Request__c.Diverse_Circuit__c</members>
+        <members>Leased_Line_Quote_Request__c.Etherflow_Bandwidth__c</members>
+        <members>Leased_Line_Quote_Request__c.Opportunity_ID__c</members>
+        <members>Leased_Line_Quote_Request__c.Point_2_Point__c</members>
+        <members>Leased_Line_Quote_Request__c.Postcode__c</members>
+        <members>Leased_Line_Quote_Request__c.Product_Option__c</members>
+        <members>Leased_Line_Quote_Request__c.Site_A_Postcode_BT__c</members>
+        <members>Leased_Line_Quote_Request__c.Site_A_Postcode_Virgin__c</members>
+        <members>Leased_Line_Quote_Request__c.Site_Reference__c</members>
+        <members>Leased_Line_Quote_Request__c.Street__c</members>
+        <members>Leased_Line_Quote_Request__c.TOID__c</members>
+        <members>Leased_Line_Quote_Request__c.Town__c</members>
+        <members>Leased_Line_Quote_Request__c.xml__c</members>
+        <members>Product_Loaded_Status__c.Leased_Line_Quote_Request__c</members>
+        <members>Product_Loaded_Status__c.Provider__c</members>
+        <members>Product_Loaded_Status__c.Status__c</members>
+        <members>Sales_Order_Option__c.Detail__c</members>
+        <members>Talk_Talk_Product__c.Collector_Exchange_Name__c</members>
+        <members>Talk_Talk_Product__c.Connection_Price_1_Year__c</members>
+        <members>Talk_Talk_Product__c.Connection_Price_3_Year__c</members>
+        <members>Talk_Talk_Product__c.Distance__c</members>
+        <members>Talk_Talk_Product__c.Ethernet_Exchange_Name__c</members>
+        <members>Talk_Talk_Product__c.Fibre_Exchange_Name__c</members>
+        <members>Talk_Talk_Product__c.Opportunity_ID__c</members>
+        <members>Talk_Talk_Product__c.Product__c</members>
+        <members>Talk_Talk_Product__c.Rental_Price__c</members>
+        <members>Talk_Talk_Product__c.Site_Ref__c</members>
+        <members>Talk_Talk_Product__c.Unique__c</members>
+        <members>Talk_Talk_Product__c.Zone__c</members>
+        <members>Virgin_Media_Product__c.Bandwidth__c</members>
+        <members>Virgin_Media_Product__c.Bearer__c</members>
+        <members>Virgin_Media_Product__c.BPT_Quote__c</members>
+        <members>Virgin_Media_Product__c.Connection_Price__c</members>
+        <members>Virgin_Media_Product__c.Flavour__c</members>
+        <members>Virgin_Media_Product__c.Opportunity_ID__c</members>
+        <members>Virgin_Media_Product__c.Product_Term__c</members>
+        <members>Virgin_Media_Product__c.Reference__c</members>
+        <members>Virgin_Media_Product__c.Rental_Price__c</members>
+        <members>Virgin_Media_Product__c.Site_B_Access__c</members>
+        <members>Virgin_Media_Product__c.Site_Ref__c</members>
+        <members>Virgin_Media_Product__c.Total_Pricing_Summary__c</members>
+        <members>Virgin_Media_Product__c.Unique__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>BT_Wholesale_Product__c</members>
         <members>Leased_Line_Product__c</members>
         <members>Leased_Line_Quote_Request__c</members>
@@ -67,5 +132,6 @@
         <members>Opportunity.Get_Pricing</members>
         <name>WebLink</name>
     </types>
-    <version>27.0</version>
+    <version>28.0</version>
 </Package>
+
