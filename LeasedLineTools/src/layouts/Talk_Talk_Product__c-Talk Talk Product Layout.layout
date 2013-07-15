@@ -47,12 +47,12 @@
                 <field>Distance__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Leased_Line_Quote_Request__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Opportunity_ID__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Site_Ref__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>

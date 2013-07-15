@@ -1,6 +1,8 @@
 <apex:page standardController="Opportunity" extensions="LeasedLineQuotes" >
-    
+    <body>
+<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" />
 <apex:sectionHeader title="Leased Line Pricing Tool" subtitle="Quote Options"/>
+
     <style>
     #llheader {font-size:15px;}
     #custref {margin-left:10px;}
@@ -11,14 +13,16 @@
     #savedsiterequests { display:inline; style:none; margin: 0; padding: 0px; }
     #savedsiterequests li { display:inline; style:none; margin: 0; padding: 4px 6px; background: #DDB929; color: #fff; }
     #sitescontainer { margin: 10px 4px; float:left; }
-    #whitex { margin-left:4px; cursor: hand; cursor: pointer; }
+    #whitex { margin-left:4px; padding-right:4px; cursor: hand; cursor: pointer; }
     #siterequestlink { color: #FFF; cursor: hand; cursor: pointer; }    
     </style>
     <apex:form >
-    
+        <h1 class="account">Test</h1>
     <apex:repeat value="{!savedllqr}" var="string" id="theRepeat">
         <div id="sitescontainer"><ul id="savedsiterequests"><li>
-       <a id="siterequestlink">{!string.Postcode__c} - {!string.Street__c} </a><img id="whitex" src="{!$Resource.whitex}" width="10" height="10"/>
+       <apex:commandLink id="siterequestlink" style="color: #FFF; text-decoration:none;">{!string.Postcode__c} - {!string.Street__c}<img id="whitex" src="{!$Resource.whitex}" width="10" height="10"/>
+           <apex:param name="siteid" value="{!string.Id}"/>    
+       </apex:commandLink>     
        </li></ul></div>
     </apex:repeat>
     
@@ -78,12 +82,23 @@
      </apex:selectCheckboxes>            
         
         <!-- Bandwidth -->
-     <apex:selectCheckboxes label="Diverse Circuit" value="{!BandwidthItems}" layout="pageDirection" id="bandwidthreq">
+     <apex:selectCheckboxes label="Bandwidth" value="{!BandwidthItems}" layout="pageDirection" id="bandwidthreq">
        <apex:selectOptions value="{!BandwidthOptions}"/>
      </apex:selectCheckboxes>
         
         </apex:pageBlockSection>
     </apex:pageBlock>
     </apex:form>
+    <script>
+    $j = jQuery.noConflict();
+    alert($j);
     
+    $j(".account").click(function() {
+        alert("Hello");
+        });
+    $j("#siterequestlink").click(function() {
+        alert("Hello");
+        });        
+    </script>        
+    </body>
 </apex:page>

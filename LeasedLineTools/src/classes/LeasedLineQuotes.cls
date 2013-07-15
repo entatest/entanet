@@ -10,6 +10,7 @@ public class LeasedLineQuotes {
     //pageRef.setredirect(true);
     //return pageRef;
         //construct an HTTP request
+        
     HttpRequest req = new HttpRequest();
     req.setEndpoint('http://sfgw.enta.net/rest/quotes');
     req.setMethod('GET');
@@ -117,7 +118,7 @@ public class LeasedLineQuotes {
     public String[] BearerItems { 
      get {
         String[] selected = new List<String>();
-        List<SelectOption> sos = this.CTOptions;
+        List<SelectOption> sos = this.BearerOptions;
         for(SelectOption s : sos) {
         if (this.llqr.Bearer__c!=null && this.llqr.Bearer__c.contains(s.getValue()))
            selected.add(s.getValue());
@@ -272,24 +273,150 @@ public class LeasedLineQuotes {
         return savedllqr;
     }   
     
+    public pageReference showSite(){
+        String selectedSite = ApexPages.currentPage().getParameters().get('siteid');
+        PageReference pageRef = new PageReference('/apex/leasedlinecheck?siteref='+selectedsite);
+        pageRef.setredirect(true);
+        return pageRef;
+    }
+    
     public String llqrxml(){
           XmlStreamWriter w = new XmlStreamWriter();
           w.writeStartDocument(null, '1.0');
-          w.writeProcessingInstruction('target', 'data');
-          w.writeStartElement('m', 'Library', 'http://www.book.com');
-          w.writeNamespace('m', 'http://www.book.com');
-          w.writeComment('Book starts here');
-          w.setDefaultNamespace('http://www.defns.com');
-          w.writeCData('<Cdata> I like CData </Cdata>');
-          w.writeStartElement(null, 'book', null);
-          w.writedefaultNamespace('http://www.defns.com');
-          w.writeAttribute(null, null, 'author', 'Manoj');
-          w.writeCharacters('This is my book');
-          w.writeEndElement(); //end book
-          w.writeEmptyElement(null, 'ISBN', null);
-          w.writeEndElement(); //end library
+          w.writeStartElement('', 'LeasedLineQuoteRequest', '');
+          w.writeStartElement('', 'RequestersId', '');        
+          w.writeCharacters(llqr.Site_Reference__c);
+          w.writeEndElement(); //end requestorsid
+          w.writeStartElement('', 'LeasedLineQuoteSites', ''); 
+          w.writeStartElement('', 'LeasedLineQuoteSite', '');
+		  w.writeStartElement('', 'SiteReference', '');
+          w.writeCharacters(llqr.Site_Reference__c);
+		  w.writeEndElement(); //end SiteReferemce
+		  w.writeStartElement('', 'AEndPostCode', '');
+          w.writeCharacters(llqr.Postcode__c);
+		  w.writeEndElement(); //end AEndPostCode
+		  w.writeStartElement('', 'AEndToid', '');
+          w.writeCharacters(llqr.TOID__c);
+		  w.writeEndElement(); //end AEndToid
+		  w.writeStartElement('', 'BEndPostCode', '');
+          w.writeCharacters(llqr.Postcode__c);
+		  w.writeEndElement(); //end BEndPostCode
+		  w.writeStartElement('', 'BEndToid', '');
+          w.writeCharacters(llqr.Postcode__c);
+		  w.writeEndElement(); //end BEndToid
+		  w.writeStartElement('', 'LeasedLineQuoteSuppliers', '');
+		  w.writeStartElement('', 'LeasedLineQuoteSupplier', '');
+          w.writeStartElement('', 'Name', '');
+          w.writeCharacters('Virgin');
+		  w.writeEndElement(); //end name 
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOptions', '');
+          
+          
+        
+          //Supplier Product Options
+          List<SelectOption> supplieros = this.ProdOptions;
+          for(SelectOption prodo : supplieros) {
+          if (this.llqr.Product_Option__c!=null && this.llqr.Product_Option__c.contains(prodo.getValue()))
+          {   
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
+          w.writeStartElement('', 'Name', ''); 
+          w.writeCharacters('Some Option'); 
+          w.writeEndElement(); //end name 
+          w.writeStartElement('', 'Value', '');
+          w.writeCharacters(prodo.getValue());
+		  w.writeEndElement(); //end value     
+          w.writeEndElement(); //end leasedlinequotesupplieroption              
+          } 
+          }
+        
+        //Supplier Bearer Options
+        List<SelectOption> beareros  = this.BearerOptions;
+        for(SelectOption bearero : beareros) {
+        if (this.llqr.Bearer__c!=null && this.llqr.Bearer__c.contains(bearero.getValue()))
+        {
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
+          w.writeStartElement('', 'Name', ''); 
+          w.writeCharacters('Some Option'); 
+          w.writeEndElement(); //end name 
+          w.writeStartElement('', 'Value', '');
+          w.writeCharacters(bearero.getValue());
+		  w.writeEndElement(); //end value     
+          w.writeEndElement(); //end leasedlinequotesupplieroption    
+        }
+        }  
+        
+        
+         List<SelectOption> etheros = this.EtherOptions;
+        for(SelectOption ethero : etheros) {
+        if (this.llqr.Etherflow_Bandwidth__c!=null && this.llqr.Etherflow_Bandwidth__c.contains(ethero.getValue()))
+        {
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
+          w.writeStartElement('', 'Name', ''); 
+          w.writeCharacters('Some Option'); 
+          w.writeEndElement(); //end name 
+          w.writeStartElement('', 'Value', '');
+          w.writeCharacters(ethero.getValue());
+		  w.writeEndElement(); //end value     
+          w.writeEndElement(); //end leasedlinequotesupplieroption    
+        }           
+        }
+        
+        List<SelectOption> dcos = this.DCOptions;
+        for(SelectOption dco : dcos) {
+        if (this.llqr.Product_Option__c!=null && this.llqr.Diverse_Circuit__c.contains(dco.getValue()))
+        {
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
+          w.writeStartElement('', 'Name', ''); 
+          w.writeCharacters('Some Option'); 
+          w.writeEndElement(); //end name 
+          w.writeStartElement('', 'Value', '');
+          w.writeCharacters(dco.getValue());
+		  w.writeEndElement(); //end value     
+          w.writeEndElement(); //end leasedlinequotesupplieroption    
+        }      
+        }   
+        
+        
+                List<SelectOption> bandwidthos = this.BandwidthOptions;
+        for(SelectOption bandwidtho : bandwidthos) {
+        if (this.llqr.Bandwidth__c!=null && this.llqr.Bandwidth__c.contains(bandwidtho.getValue()))
+        {
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
+          w.writeStartElement('', 'Name', ''); 
+          w.writeCharacters('Some Option'); 
+          w.writeEndElement(); //end name 
+          w.writeStartElement('', 'Value', '');
+          w.writeCharacters(bandwidtho.getValue());
+		  w.writeEndElement(); //end value     
+          w.writeEndElement(); //end leasedlinequotesupplieroption    
+        }   
+        }
+        
+        
+          w.writeEndElement(); //end leasedlinequotesupplieroptions
+          w.writeEndElement(); //end leasedlinequotesupplier
+          w.writeEndElement(); //end leasedlinequotesuppliers
+          w.writeStartElement('', 'LeasedLineContractTerms', '');
+          
+          //Contract Term Options
+		  List<SelectOption> sos = this.CTOptions;
+          for(SelectOption s : sos) {
+          if (this.llqr.Contract_Term__c!=null && this.llqr.Contract_Term__c.contains(s.getValue())){
+          w.writeStartElement('', 'LeasedLineContractTerm', '');
+          w.writeCharacters(s.getValue());
+          w.writeEndElement(); //end leasedlinecontractterm 
+          }
+          }
+    
+        
+          w.writeEndElement(); //end leasedlinecontractterms
+          w.writeEndElement(); //end leasedlinequotesite
+          w.writeEndElement(); //end leasedlinequotesites        
+          w.writeEndElement(); //end leasedlinequoterequest
           w.writeEndDocument();
           String xmlOutput = w.getXmlString();
+          w.close();
+        
           return xmlOutput;        
     }
 }
