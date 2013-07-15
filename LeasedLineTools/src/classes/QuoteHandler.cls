@@ -27,6 +27,7 @@ global class QuoteHandler
                             // Read object
                             QuoteResponseParser product = factory.getProductParser(provider);
                             siteRef = product.siteRef;
+                            System.debug(product);
                             products.add(product);
                             // For debugging purposes, serialize again to verify what was parsed.
                             String s = JSON.serialize(product);
@@ -40,11 +41,12 @@ global class QuoteHandler
             }
             loadProductObjects();
             ready = 'success';
+        	setReadyStatus(siteRef, provider, ready);
         } catch (Exception e) {
             status = e.getMessage();
             ready = 'failure';
+        	setReadyStatus(siteRef, provider, ready);
         }
-        setReadyStatus(siteRef, provider, ready);
         return status;
     }
     
@@ -57,12 +59,16 @@ global class QuoteHandler
     
     static private void setReadyStatus(String siteRef, String provider, String ready)
     {
-    	Product_Loaded_Status__c status = new Product_Loaded_Status__c(
-			Leased_Line_Quote_Request__c = siteRef,
-			Provider__c = provider,
-			Status__c = ready
-		);
-		insert status;
+    	try {
+	    	Product_Loaded_Status__c status = new Product_Loaded_Status__c(
+				Leased_Line_Quote_Request__c = siteRef,
+				Provider__c = provider,
+				Status__c = ready
+			);
+			insert status;
+    	} catch (Exception e) {
+    		// Log exception
+    	}
     }
     
     public class TalktalkResponseParser extends QuoteResponseParser
@@ -81,6 +87,7 @@ global class QuoteHandler
         
         override public void parsePayload()
     	{
+    		checkSiteRef();
     		quotes = new List<TalktalkQuoteParser>();
     		XMLDom dom = new XMLDom(xml);
     		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
@@ -229,16 +236,16 @@ global class QuoteHandler
             this.term = term;
             this.xml = xml;
             this.error = error;
-            checkSiteRef();
         }
         
         abstract public void parsePayload();
     
-	    private void checkSiteRef()
+	    protected void checkSiteRef()
 	    {
+	    	System.debug(siteRef);
 	    	if (siteRef != null) {
 	    		try {
-	    			Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
+	    			Leased_Line_Quote_Request__c llqr = Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
 	    			return;
 	    		} catch (QueryException e) {
     				throw new InvalidSiteReferenceException('Invalid Site Reference');
