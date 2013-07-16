@@ -51,7 +51,7 @@ private class TestQuoteHandler
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
-    	String response = '{"virgin":[{"siteRef":"' + siteRef + '","xml":"","error":""}]}';
+    	String response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"100 Mb","term":"3","xml":"","error":""}]}';
     	String status = QuoteHandler.parseQuote(response);
     	System.assertEquals(QuoteHandler.INCOMPLETE_DATA, status);
     }
