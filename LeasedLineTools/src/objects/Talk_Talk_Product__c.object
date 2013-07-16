@@ -76,6 +76,14 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Error_Message__c</fullName>
+        <externalId>false</externalId>
+        <label>Error Message</label>
+        <length>2000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Ethernet_Exchange_Name__c</fullName>
         <externalId>false</externalId>
         <label>Ethernet Exchange Name</label>

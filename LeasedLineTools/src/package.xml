@@ -81,6 +81,7 @@
         <members>Talk_Talk_Product__c.Connection_Price_1_Year__c</members>
         <members>Talk_Talk_Product__c.Connection_Price_3_Year__c</members>
         <members>Talk_Talk_Product__c.Distance__c</members>
+        <members>Talk_Talk_Product__c.Error_Message__c</members>
         <members>Talk_Talk_Product__c.Ethernet_Exchange_Name__c</members>
         <members>Talk_Talk_Product__c.Fibre_Exchange_Name__c</members>
         <members>Talk_Talk_Product__c.Opportunity_ID__c</members>
@@ -93,6 +94,7 @@
         <members>Virgin_Media_Product__c.Bandwidth__c</members>
         <members>Virgin_Media_Product__c.Bearer__c</members>
         <members>Virgin_Media_Product__c.Connection_Price__c</members>
+        <members>Virgin_Media_Product__c.Error_Message__c</members>
         <members>Virgin_Media_Product__c.Flavour__c</members>
         <members>Virgin_Media_Product__c.Opportunity_ID__c</members>
         <members>Virgin_Media_Product__c.Product_Term__c</members>
