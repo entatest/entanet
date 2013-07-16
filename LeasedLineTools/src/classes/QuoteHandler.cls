@@ -134,9 +134,7 @@ global class QuoteHandler
     				Rental_Price__c = Decimal.valueOf(quoteParser.annualPrice),
     				Zone__c = zone
     			);
-    			//System.debug(product);
     			upsert product Unique__c;
-    			//System.debug(product.Id);
     		}
     	}
     }
@@ -199,12 +197,20 @@ global class QuoteHandler
             }
             createObject();
     	}
+        
+        override protected void checkResponse()
+        {
+        	Boolean condition = String.isBlank(xml) || String.isBlank(bearer) || String.isBlank(bandwidth) || String.isBlank(term);
+        	if (condition && String.isBlank(error)) {
+        		throw new IncompleteDataException(INCOMPLETE_DATA);
+        	}
+        }
     	
     	private void createObject()
     	{
     		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
     			Site_Ref__c = siteRef,
-				Unique__c = siteRef + ' - ' + bandwidth + '/' + bearer,
+				Unique__c = siteRef + ' - ' + bandwidth + '/' + bearer + ' - ' + term,
     			BPT_Quote__c = BPTQuote,
 				Bandwidth__c = bandwidth,
 				Bearer__c = bearer,
@@ -267,9 +273,9 @@ global class QuoteHandler
     		
 	    }
         
-        protected void checkResponse()
+        virtual protected void checkResponse()
         {
-        	if (String.isEmpty(xml) && String.isEmpty(error)) {
+        	if (String.isBlank(xml) && String.isBlank(error)) {
         		throw new IncompleteDataException(INCOMPLETE_DATA);
         	}
         }
