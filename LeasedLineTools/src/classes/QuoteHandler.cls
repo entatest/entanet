@@ -49,7 +49,7 @@ global class QuoteHandler
         	setReadyStatus(siteRef, provider, ready);
         } catch (Exception e) {
             status = e.getMessage();
-    		if (e instanceof System.XmlException) {
+    		if (e instanceof XmlException) {
     			status = INVALID_XML;
     		}
             ready = 'failure';
@@ -95,27 +95,35 @@ global class QuoteHandler
         
         override public void parsePayload()
     	{
-    		validate();
-    		quotes = new List<TalktalkQuoteParser>();
-    		XMLDom dom = new XMLDom(xml);
-    		System.debug(dom);
-    		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
-    		if (searchResponseDetail != null) {
-    			collectorExchangeName = searchResponseDetail.getValue('ns:CollectorExchangeName');
-    			distance = searchResponseDetail.getValue('ns:Distance');
-    			ethernetExchangeName = searchResponseDetail.getValue('ns:EthernetExchangeName');
-    			fibreExchangeName = searchResponseDetail.getValue('ns:FibreExchangeName');
-    			zone = searchResponseDetail.getValue('ns:Zone');
-    		}
-    		List<XMLDom.Element> circuits = dom.getElementsByTagName('ns:Circuit');
-    		if (circuits != null) {
-	    		for (XMLDom.Element circuit: circuits) {
-	    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit);
-	    			quoteParser.parsePayload();
-	    			quotes.add(quoteParser);
+    		if (isValid()) {
+	    		quotes = new List<TalktalkQuoteParser>();
+	    		XMLDom dom = new XMLDom(xml);
+	    		System.debug(dom);
+	    		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
+	    		if (searchResponseDetail != null) {
+	    			collectorExchangeName = searchResponseDetail.getValue('ns:CollectorExchangeName');
+	    			distance = searchResponseDetail.getValue('ns:Distance');
+	    			ethernetExchangeName = searchResponseDetail.getValue('ns:EthernetExchangeName');
+	    			fibreExchangeName = searchResponseDetail.getValue('ns:FibreExchangeName');
+	    			zone = searchResponseDetail.getValue('ns:Zone');
 	    		}
+	    		List<XMLDom.Element> circuits = dom.getElementsByTagName('ns:Circuit');
+	    		if (circuits != null) {
+		    		for (XMLDom.Element circuit: circuits) {
+		    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit);
+		    			quoteParser.parsePayload();
+		    			quotes.add(quoteParser);
+		    		}
+	    		}
+    			deleteErrorObject();
+	    		createObjects();
     		}
-    		createObjects();
+        }
+        
+        override protected void checkError()
+        {
+    		deleteObjects();
+        	createErrorObject();
         }
     	
     	private void createObjects()
@@ -123,7 +131,7 @@ global class QuoteHandler
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			Talk_talk_Product__c product = new Talk_talk_Product__c(
     				Site_Ref__c = siteRef,
-    				Unique__c = siteRef + ' - ' + quoteParser.service,
+    				Unique__c = emptyUnique + ' ' + quoteParser.service,
     				Collector_Exchange_Name__c = collectorExchangeName,
     				Connection_Price_1_Year__c = Decimal.valueOf(quoteParser.setUp1yr),
     				Connection_Price_3_Year__c = Decimal.valueOf(quoteParser.setUp3yr),
@@ -137,6 +145,38 @@ global class QuoteHandler
     			upsert product Unique__c;
     		}
     	}
+    	
+    	private void deleteObjects()
+    	{
+    		String query = 'SELECT Id FROM Talk_talk_Product__c WHERE Site_Ref__c = :siteRef ALL ROWS';
+    		runDeleteQuery(query);
+    	}
+    	
+    	private void createErrorObject()
+    	{
+    		Talk_talk_Product__c product = new Talk_talk_Product__c(
+				Site_Ref__c = siteRef,
+				Unique__c = emptyUnique,
+				Error_Message__c = error
+			);
+			upsert product Unique__c;
+    	}
+    	
+    	private void deleteErrorObject()
+    	{
+    		String query = 'SELECT Id FROM Talk_talk_Product__c WHERE Unique__c = :emptyUnique';
+    		runDeleteQuery(query);
+    	}
+        
+        private void runDeleteQuery(String query)
+        {
+    		Talk_talk_Product__c[] deleteProducts = Database.query(query);
+        	try {
+    			delete deleteProducts;
+    		} catch (DmlException e) {
+    			// Log exception
+    		}
+        }
     }
         
     public class TalktalkQuoteParser
@@ -179,38 +219,45 @@ global class QuoteHandler
     	
     	override public void parsePayload()
     	{
-    		validate();
-    		XMLDom dom = new XMLDom(xml);
-            XMLDom.Element quotePricing = dom.getElementByTagName('QuotePricing');
-            if (quotePricing != null) {
-            	BPTQuote = quotePricing.getAttribute('BPTQuoteRefNo');
-            }
-            List<XMLDom.Element> sites = dom.getElementsByTagName('Site');
-            if (sites != null && sites.size() > 1) {
-            	flavour = sites[1].getAttribute('AccessFlavour');
-            }
-            XMLDom.Element totalPricing = dom.getElementByTagName('TotalPricing');
-            if (totalPricing != null) {
-                connectionPrice = totalPricing.getValue('InstallRevenue');
-                rentalPrice = totalPricing.getValue('TariffSummary');
-                totalPrice = totalPricing.getValue('TariffSummary');
-            }
-            createObject();
+    		if (isValid()) {
+	    		XMLDom dom = new XMLDom(xml);
+	            XMLDom.Element quotePricing = dom.getElementByTagName('QuotePricing');
+	            if (quotePricing != null) {
+	            	BPTQuote = quotePricing.getAttribute('BPTQuoteRefNo');
+	            }
+	            List<XMLDom.Element> sites = dom.getElementsByTagName('Site');
+	            if (sites != null && sites.size() > 1) {
+	            	flavour = sites[1].getAttribute('AccessFlavour');
+	            }
+	            XMLDom.Element totalPricing = dom.getElementByTagName('TotalPricing');
+	            if (totalPricing != null) {
+	                connectionPrice = totalPricing.getValue('InstallRevenue');
+	                rentalPrice = totalPricing.getValue('TariffSummary');
+	                totalPrice = totalPricing.getValue('TariffSummary');
+	            }
+	            createObject();
+    		}
     	}
         
-        override protected void checkResponse()
+        override protected Boolean checkResponse()
         {
         	Boolean condition = String.isBlank(xml) || String.isBlank(bearer) || String.isBlank(bandwidth) || String.isBlank(term);
         	if (condition && String.isBlank(error)) {
         		throw new IncompleteDataException(INCOMPLETE_DATA);
         	}
+        	return !condition;
+        }
+        
+        override protected void checkError()
+        {
+        	
         }
     	
     	private void createObject()
     	{
     		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
     			Site_Ref__c = siteRef,
-				Unique__c = siteRef + ' - ' + bandwidth + '/' + bearer + ' - ' + term,
+				Unique__c = emptyUnique + ' ' + bandwidth + '/' + bearer + ' - ' + term,
     			BPT_Quote__c = BPTQuote,
 				Bandwidth__c = bandwidth,
 				Bearer__c = bearer,
@@ -241,6 +288,7 @@ global class QuoteHandler
         public String term;
         public String xml;
         public String error;
+        public String emptyUnique;
         
         public QuoteResponseParser() {}
         
@@ -252,14 +300,19 @@ global class QuoteHandler
             this.term = term;
             this.xml = xml;
             this.error = error;
+            this.emptyUnique = siteRef + ' -';
         }
         
         abstract public void parsePayload();
         
-        protected void validate()
+        protected Boolean isValid()
         {
         	checkSiteRef();
-        	checkResponse();
+        	Boolean valid = checkResponse();
+        	if (!valid) {
+        		checkError();
+        	}
+        	return valid;
         }
     
 	    protected void checkSiteRef()
@@ -273,12 +326,16 @@ global class QuoteHandler
     		
 	    }
         
-        virtual protected void checkResponse()
+        virtual protected Boolean checkResponse()
         {
-        	if (String.isBlank(xml) && String.isBlank(error)) {
+        	Boolean condition = String.isBlank(xml);
+        	if (condition && String.isBlank(error)) {
         		throw new IncompleteDataException(INCOMPLETE_DATA);
         	}
+        	return !condition;
         }
+        
+        virtual protected void checkError() {}
     }
     
     public class ProductParserFactory

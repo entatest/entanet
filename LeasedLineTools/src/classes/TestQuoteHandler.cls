@@ -2,7 +2,7 @@
 private class TestQuoteHandler
 {
     private static String virginXml = '<QuotePricing BPTQuoteRefNo="3640190"><SitePricing><Site /><Site AccessFlavour="On Net" /></SitePricing><TotalPricing><InstallRevenue>0</InstallRevenue><RentalRevenue>4751.125</RentalRevenue><AncillaryCharges><Install>0</Install><Rental>0</Rental></AncillaryCharges><QosCost><Install>0</Install><Rental>0</Rental></QosCost><ReportingCost><Install>0</Install><Rental>0</Rental></ReportingCost><TariffSummary>14253.375</TariffSummary></TotalPricing></QuotePricing>';
-    private static String talktalkXml = '<ns:SearchResponseDetail xmlns:ns="http://www.Opal.Org/EthernetPrice/schema"><ns:PostCode>TF3 3AT</ns:PostCode><ns:RequestType>STD</ns:RequestType><ns:FibreExchangeName>HOLLINSWOOD</ns:FibreExchangeName><ns:FibreExchangeCode>WNHLN</ns:FibreExchangeCode><ns:EthernetExchangeName>OAKENGATES</ns:EthernetExchangeName><ns:EthernetExchangeCode>WNOAK</ns:EthernetExchangeCode><ns:CollectorExchangeName>WOLVERHAMPTON</ns:CollectorExchangeName><ns:CollectorExchangeCode>CMWV</ns:CollectorExchangeCode><ns:Zone>2</ns:Zone><ns:Distance>2540.55</ns:Distance><ns:RAG>G</ns:RAG><ns:PriceName>Wholesale &#163;1M-&#163;3M</ns:PriceName><ns:ErrorCode>0</ns:ErrorCode><ns:ErrorMsg/><ns:DataReference>June 2013</ns:DataReference><ns:AccountList><ns:Circuit><ns:Service>10Mb / 100Mb</ns:Service><ns:AnnualPrice>7232</ns:AnnualPrice><ns:SetUp1yr>975</ns:SetUp1yr><ns:SetUp3yr>0</ns:SetUp3yr><ns:SortLevel>1</ns:SortLevel></ns:Circuit></ns:AccountList></ns:SearchResponseDetail>';
+    private static String talktalkXml = '<ns:SearchResponseDetail xmlns:ns="http://www.Opal.Org/EthernetPrice/schema"><ns:PostCode>TF3 3AT</ns:PostCode><ns:RequestType>STD</ns:RequestType><ns:FibreExchangeName>HOLLINSWOOD</ns:FibreExchangeName><ns:FibreExchangeCode>WNHLN</ns:FibreExchangeCode><ns:EthernetExchangeName>OAKENGATES</ns:EthernetExchangeName><ns:EthernetExchangeCode>WNOAK</ns:EthernetExchangeCode><ns:CollectorExchangeName>WOLVERHAMPTON</ns:CollectorExchangeName><ns:CollectorExchangeCode>CMWV</ns:CollectorExchangeCode><ns:Zone>2</ns:Zone><ns:Distance>2540.55</ns:Distance><ns:RAG>G</ns:RAG><ns:PriceName>Wholesale &#163;1M-&#163;3M</ns:PriceName><ns:ErrorCode>0</ns:ErrorCode><ns:ErrorMsg/><ns:DataReference>June 2013</ns:DataReference><ns:AccountList><ns:Circuit><ns:Service>10Mb / 100Mb</ns:Service><ns:AnnualPrice>7232</ns:AnnualPrice><ns:SetUp1yr>975</ns:SetUp1yr><ns:SetUp3yr>0</ns:SetUp3yr><ns:SortLevel>1</ns:SortLevel></ns:Circuit><ns:Circuit><ns:Service>20Mb / 100Mb</ns:Service><ns:AnnualPrice>7602</ns:AnnualPrice><ns:SetUp1yr>975</ns:SetUp1yr><ns:SetUp3yr>0</ns:SetUp3yr><ns:SortLevel>2</ns:SortLevel></ns:Circuit></ns:AccountList></ns:SearchResponseDetail>';
     
     @isTest static void unknownProviderTest()
     {
@@ -101,7 +101,7 @@ private class TestQuoteHandler
     	);
     	parser.parsePayload();
     	List<Talk_Talk_Product__c> products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
-    	System.assert(products.size() == 1);
+    	System.assert(products.size() == 2);
     }
     
     @isTest static void virginResponseParserTest()
@@ -141,5 +141,68 @@ private class TestQuoteHandler
     	parser.parsePayload();
     	products = Database.query('SELECT Distance__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
     	System.assertNotEquals(oldDistance, products[0].Distance__c);
+    }
+    
+    @isTest static void talktalkErrorTest()
+    {
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	String xml = '';
+    	String error = 'Any old error';
+    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
+    		siteRef, null, null, null, xml, error
+    	);
+    	parser.parsePayload();
+    	List<Talk_Talk_Product__c> products = Database.query('SELECT Error_Message__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
+    	System.assert(products.size() == 1);
+    	System.assertEquals(error, products[0].Error_Message__c);
+    }
+    
+    @isTest static void talktalkErrorWithExistingProductsTest()
+    {
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	String error = '';
+    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
+    		siteRef, null, null, null, talktalkXml, error
+    	);
+    	parser.parsePayload();
+    	List<Talk_Talk_Product__c> products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
+    	System.assert(products.size() == 2);
+    	String xml = '';
+    	error = 'Any old error';
+    	parser = new QuoteHandler.TalktalkResponseParser(
+    		siteRef, null, null, null, xml, error
+    	);
+    	parser.parsePayload();
+    	products = Database.query('SELECT Error_Message__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
+    	System.assert(products.size() == 1);
+    	System.assertEquals(error, products[0].Error_Message__c);
+    }
+    
+    @isTest static void talktalkResponseParserAfterErrorTest()
+    {
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	String xml = '';
+    	String error = 'Any old error';
+    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
+    		siteRef, null, null, null, xml, error
+    	);
+    	parser.parsePayload();
+    	List<Talk_Talk_Product__c> products = Database.query('SELECT Error_Message__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
+    	System.assert(products.size() == 1);
+    	System.assertEquals(error, products[0].Error_Message__c);
+    	error = '';
+    	parser = new QuoteHandler.TalktalkResponseParser(
+    		siteRef, null, null, null, talktalkXml, error
+    	);
+    	parser.parsePayload();
+    	products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
+    	System.debug(products.size());
+    	System.assert(products.size() == 2);
     }
 }
