@@ -1,5 +1,10 @@
 global class QuoteHandler
 {
+    static public final String INVALID_XML = 'Invalid XML';
+    static public final String INCOMPLETE_DATA = 'Incomplete Data';
+    static public final String INVALID_PROVIDER = 'Unknown provider';
+    static public final String INVALID_SITE_REF = 'Invalid Site Reference';
+    
     static private JSONParser parser;
     static private List<QuoteResponseParser> products;
     
@@ -44,8 +49,8 @@ global class QuoteHandler
         	setReadyStatus(siteRef, provider, ready);
         } catch (Exception e) {
             status = e.getMessage();
-    		if (e instanceof System.Xmlexception) {
-    			status = 'Invalid XML';
+    		if (e instanceof System.XmlException) {
+    			status = INVALID_XML;
     		}
             ready = 'failure';
         	setReadyStatus(siteRef, provider, ready);
@@ -90,7 +95,7 @@ global class QuoteHandler
         
         override public void parsePayload()
     	{
-    		checkSiteRef();
+    		validate();
     		quotes = new List<TalktalkQuoteParser>();
     		XMLDom dom = new XMLDom(xml);
     		System.debug(dom);
@@ -176,7 +181,7 @@ global class QuoteHandler
     	
     	override public void parsePayload()
     	{
-    		checkSiteRef();
+    		validate();
     		XMLDom dom = new XMLDom(xml);
             XMLDom.Element quotePricing = dom.getElementByTagName('QuotePricing');
             if (quotePricing != null) {
@@ -217,7 +222,7 @@ global class QuoteHandler
     public class VoidResponseParser extends QuoteResponseParser
     {
     	override public void parsePayload() {
-    		throw new UnknownProviderException('Unknown provider');
+    		throw new UnknownProviderException(INVALID_PROVIDER);
     	}
     }
     
@@ -244,20 +249,30 @@ global class QuoteHandler
         }
         
         abstract public void parsePayload();
+        
+        protected void validate()
+        {
+        	checkSiteRef();
+        	checkResponse();
+        }
     
 	    protected void checkSiteRef()
 	    {
-	    	if (siteRef == null) {
-	    		throw new InvalidSiteReferenceException('Invalid Site Reference');
-    		}
-    		try {
+	    	try {
     			Leased_Line_Quote_Request__c llqr = Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
     			return;
     		} catch (QueryException e) {
-				throw new InvalidSiteReferenceException('Invalid Site Reference');
+				throw new InvalidSiteReferenceException(INVALID_SITE_REF);
     		}
     		
 	    }
+        
+        protected void checkResponse()
+        {
+        	if (String.isEmpty(xml) && String.isEmpty(error)) {
+        		throw new IncompleteDataException(INCOMPLETE_DATA);
+        	}
+        }
     }
     
     public class ProductParserFactory
@@ -277,4 +292,6 @@ global class QuoteHandler
 	public class UnknownProviderException extends Exception {}
 	
 	public class InvalidSiteReferenceException extends Exception {}
+	
+	public class IncompleteDataException extends Exception {}
 }
