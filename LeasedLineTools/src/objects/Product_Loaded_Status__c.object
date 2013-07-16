@@ -35,7 +35,6 @@
     <deploymentStatus>InDevelopment</deploymentStatus>
     <description>Reporting on whether product loading has been successful or otherwise for a site reference and provider</description>
     <enableActivities>false</enableActivities>
-    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>

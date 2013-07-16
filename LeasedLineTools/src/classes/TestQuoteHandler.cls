@@ -211,14 +211,117 @@ private class TestQuoteHandler
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
-    	String xml = '';
-    	String error = 'Any old error';
+    	// Create 2 products the second of which has an error
+    	String bearer = '100 Mb';
+    	String bandwidth = '10 Mb';
+    	String term = '3';
+    	String error = '';
     	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, null, null, null, xml, error
+    		siteRef, bearer, bandwidth, term, virginXml, error
     	);
     	parser.parsePayload();
-    	List<Virgin_Media_Product__c> products = Database.query('SELECT Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef');
-    	System.assert(products.size() == 1);
-    	System.assertEquals(error, products[0].Error_Message__c);
+    	String xml = '';
+    	term = '5';
+    	error = 'Any old error';
+    	parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, bearer, bandwidth, term, xml, error
+    	);
+    	parser.parsePayload();
+    	List<Virgin_Media_Product__c> products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
+    	// Cannot filter a SOQL by text area values
+    	List<Virgin_Media_Product__c> errorProducts = new List<Virgin_Media_Product__c>();
+    	for (Virgin_Media_Product__c product : products) {
+    		if (product.Error_Message__c == error) {
+    			errorProducts.add(product);
+    		}
+    	}
+    	System.assert(products.size() == 2);
+    	System.assert(errorProducts.size() == 1);
+    }
+    
+    @isTest static void virginErrorWithExistingProductsTest()
+    {
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	// Create 2 valid products
+    	String bearer = '100 Mb';
+    	String bandwidth = '10 Mb';
+    	String term = '3';
+    	String error = '';
+    	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, bearer, bandwidth, term, virginXml, error
+    	);
+    	parser.parsePayload();
+    	term = '5';
+    	parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, bearer, bandwidth, term, virginXml, error
+    	);
+    	parser.parsePayload();
+    	// Parse error response for same product as the second existing valid
+    	String xml = '';
+    	error = 'Any old error';
+    	parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, bearer, bandwidth, term, xml, error
+    	);
+    	parser.parsePayload();
+    	// We stiil have 2 products 1 of which overridden with error
+    	List<Virgin_Media_Product__c> products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
+    	List<Virgin_Media_Product__c> errorProducts = new List<Virgin_Media_Product__c>();
+    	for (Virgin_Media_Product__c product : products) {
+    		if (product.Error_Message__c == error) {
+    			errorProducts.add(product);
+    		}
+    	}
+    	System.assert(products.size() == 2);
+    	System.assert(errorProducts.size() == 1);
+    }
+    
+    @isTest static void virginResponseParserAfterErrorTest()
+    {
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	// Create 2 products the second of which has an error
+    	String bearer = '100 Mb';
+    	String bandwidth = '10 Mb';
+    	String term = '3';
+    	String error = '';
+    	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, bearer, bandwidth, term, virginXml, error
+    	);
+    	parser.parsePayload();
+    	String xml = '';
+    	term = '5';
+    	error = 'Any old error';
+    	parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, bearer, bandwidth, term, xml, error
+    	);
+    	parser.parsePayload();
+    	List<Virgin_Media_Product__c> products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
+    	List<Virgin_Media_Product__c> errorProducts = new List<Virgin_Media_Product__c>();
+    	for (Virgin_Media_Product__c product : products) {
+    		if (product.Error_Message__c == error) {
+    			errorProducts.add(product);
+    		}
+    	}
+    	System.assert(products.size() == 2);
+    	System.assert(errorProducts.size() == 1);
+    	// Now overwrite error product with valid one
+    	error = '';
+    	parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, bearer, bandwidth, term, virginXml, error
+    	);
+    	parser.parsePayload();
+    	// Both products are now valid products
+    	products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
+    	errorProducts = new List<Virgin_Media_Product__c>();
+    	for (Virgin_Media_Product__c product : products) {
+    		if (product.Error_Message__c == error) {
+    			errorProducts.add(product);
+    		}
+    	}
+    	System.assert(products.size() == 2);
+    	System.assert(errorProducts.size() == 0);
     }
 }

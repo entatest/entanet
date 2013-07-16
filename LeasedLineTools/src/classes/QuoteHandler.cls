@@ -279,7 +279,7 @@ global class QuoteHandler
     	{
     		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
 				Site_Ref__c = siteRef,
-				Unique__c = emptyUnique,
+				Unique__c = emptyUnique + ' ' + bandwidth + '/' + bearer + ' - ' + term,
 				Error_Message__c = error
 			);
 			upsert product Unique__c;
