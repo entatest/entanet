@@ -205,4 +205,20 @@ private class TestQuoteHandler
     	System.debug(products.size());
     	System.assert(products.size() == 2);
     }
+    
+    @isTest static void virginMediaErrorTest()
+    {
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	String xml = '';
+    	String error = 'Any old error';
+    	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
+    		siteRef, null, null, null, xml, error
+    	);
+    	parser.parsePayload();
+    	List<Virgin_Media_Product__c> products = Database.query('SELECT Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef');
+    	System.assert(products.size() == 1);
+    	System.assertEquals(error, products[0].Error_Message__c);
+    }
 }

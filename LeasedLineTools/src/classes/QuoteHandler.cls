@@ -241,7 +241,11 @@ global class QuoteHandler
         
         override protected Boolean checkResponse()
         {
-        	Boolean condition = String.isBlank(xml) || String.isBlank(bearer) || String.isBlank(bandwidth) || String.isBlank(term);
+        	Boolean condition = String.isBlank(bearer) || String.isBlank(bandwidth) || String.isBlank(term);
+        	if (condition) {
+        		throw new IncompleteDataException(INCOMPLETE_DATA);
+        	}
+        	condition = String.isBlank(xml);
         	if (condition && String.isBlank(error)) {
         		throw new IncompleteDataException(INCOMPLETE_DATA);
         	}
@@ -250,7 +254,7 @@ global class QuoteHandler
         
         override protected void checkError()
         {
-        	
+    		createErrorObject();
         }
     	
     	private void createObject()
@@ -268,6 +272,16 @@ global class QuoteHandler
 				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice)
 			);
 			System.debug(product);
+			upsert product Unique__c;
+    	}
+    	
+    	private void createErrorObject()
+    	{
+    		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
+				Site_Ref__c = siteRef,
+				Unique__c = emptyUnique,
+				Error_Message__c = error
+			);
 			upsert product Unique__c;
     	}
     }
