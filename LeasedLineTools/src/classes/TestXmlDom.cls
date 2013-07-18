@@ -74,18 +74,35 @@ private class TestXmlDom
     	System.assertEquals(targetChild, firstChild);
     }
     
-    @isTest static void testMiscellaneousUtilities()
+    @isTest static void testCloneNode()
     {
     	XMLDom dom = new XMLDom(xmlTestString);
     	XMLDom.Element testElement = dom.getElementByTagName('xml');
     	XMLDom.Element clonedNode = testElement.cloneNode();
     	System.assert(testElement.isEqualNode(clonedNode));
-    	
+    }
+    
+    @isTest static void testNodeTextContent()
+    {	
+    	XMLDom dom = new XMLDom(xmlTestString);
+    	XMLDom.Element testElement = dom.getElementByTagName('xml');
     	XMLDom.Element textTag = testElement.getElementByTagName('secondNode').getElementByTagName('value');
     	System.assertEquals('Nineteen', textTag.textContent());
+    }
+    
+    @isTest static void testGetAttributes()
+    {
+    	XMLDom dom = new XMLDom(xmlTestString);
+    	XMLDom.Element testElement = dom.getElementByTagName('xml');
+    	XMLDom.Element textTag = testElement.getElementByTagName('secondNode').getElementByTagName('value');
     	System.assert(textTag.hasAttributes());
-    	
-    	System.assertEquals('/xml/secondNode/value', textTag.path());
+    }
+    
+    @isTest static void testGetOwnerDocument()
+    {
+    	XMLDom dom = new XMLDom(xmlTestString);
+    	XMLDom.Element testElement = dom.getElementByTagName('xml');
+    	XMLDom.Element textTag = testElement.getElementByTagName('secondNode').getElementByTagName('value');
     	
     	XMLDom.Element ownerDoc = textTag.ownerDocument();
     	System.assertEquals('#document', ownerDoc.nodeName);
@@ -93,11 +110,14 @@ private class TestXmlDom
     	System.assertEquals('#document', dom.ownerDocument().nodeName);
     }
     
-    @isTest static void testFindByPath()
+    @isTest static void testGetPathAndFindByPath()
     {
     	XMLDom dom = new XMLDom(xmlTestString);
-    	string path = '/xml/secondNode';
     	XMLDom.Element testElement = dom.getElementByTagName('xml');
+    	XMLDom.Element textTag = testElement.getElementByTagName('secondNode').getElementByTagName('value');
+    	System.assertEquals('/xml/secondNode/value', textTag.path());
+    	
+    	string path = '/xml/secondNode';
     	List<XMLDom.Element> testResult = testElement.getElementsByPath(path);
     	
     	System.assertEquals(1, testResult.size());
