@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>ChatterAnswers</members>
-        <members>ChatterAnswersEscalationTriggerTest</members>
-        <members>LeasedLineQuoteResults</members>
-        <members>LeasedLineQuotes</members>
-        <members>LeasedLinesQuotes</members>
-        <members>LeasedLinesQuotesController</members>
-        <members>LineCheckerResults</members>
-        <members>QuoteHandler</members>
-        <members>TalkTalkQuotes</members>
-        <members>TestQuoteHandler</members>
-        <members>TestTalkTalkQuotes</members>
-        <members>TrialCustomerPortalHomePageController</members>
-        <members>XMLDom</members>
-        <members>applications</members>
-        <members>filter</members>
-        <members>leasedLinesQuotes</members>
-        <members>lineChecker</members>
-        <members>linecheck</members>
-        <members>llqr</members>
-        <members>salesorder</members>
-        <members>sendEmail</members>
-        <members>so</members>
-        <members>superSort</members>
-        <members>xmlwriter</members>
+        <members>*</members>
         <name>ApexClass</name>
     </types>
     <types>
