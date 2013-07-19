@@ -5,26 +5,56 @@ public class LeasedLineQuotes {
     String[] applications = new String[]{};
     List<Leased_Line_Quote_Request__c> savedllqr;
     
+    public String savedsiteref { get; set; }
+    public String savedoppid { get; set; }    
+    
     public PageReference save(){
     //PageReference pageRef = new PageReference('http://www.google.com');
     //pageRef.setredirect(true);
     //return pageRef;
-        //construct an HTTP request
-        
+    //construct an HTTP request
+      
+    llqr.xml__c = this.llqrxml('test');
+    llqr.Opportunity_ID__c = ApexPages.currentPage().getParameters().get('Id');        
+	insert llqr;
+    String idresult = llqr.id;    
+    String xml = this.llqrxml(idresult);    
+    LeasedLineQuotes.restreq(xml);    
+    
+	PageReference page = new PageReference('/apex/llPriceResults?siteref='+idresult+'&opportunityid='+llqr.Opportunity_ID__c);
+    return page;
+    }  
+    
+    public PageReference saveandnew(){  
+    	llqr.xml__c = this.llqrxml('test');
+    	llqr.Opportunity_ID__c = ApexPages.currentPage().getParameters().get('Id');        
+		insert llqr;
+    	String idresult = llqr.id;    
+    	String xml = this.llqrxml(idresult);    
+    	LeasedLineQuotes.restreq(xml);    
+    
+		PageReference page = new PageReference('/apex/leasedlinecheck?id='+llqr.Opportunity_ID__c);
+    	return page;
+    }
+
+	@future (callout=true)
+    static void restreq(string xml) {
     HttpRequest req = new HttpRequest();
     req.setEndpoint('http://sfgw.enta.net/rest/quotes');
-    req.setMethod('GET');
+    req.setMethod('POST');
+    req.setBody(xml);    
 
     //send the request
     Http http = new Http();
-    HttpResponse res = http.send(req);
-    String xml = res.getBody();
+    HttpResponse res = http.send(req);           
+        }
     
-    llqr.xml__c = this.llqrxml();
-    llqr.Opportunity_ID__c = ApexPages.currentPage().getParameters().get('Id');
-    insert llqr;  
-    return page.linecheckerresults;
-    }       
+    public PageReference loadquotes(){
+     	
+        PageReference page = new PageReference('/apex/llPriceResults?siteref='+savedsiteref+'&opportunityid='+savedoppid);
+        return page;
+    }
+    
 
     public LeasedLineQuotes(ApexPages.StandardController controller) {
         this.oppt = (Opportunity)controller.getRecord();
@@ -243,7 +273,7 @@ public class LeasedLineQuotes {
     //    return quoteoptions;
     //}
     
-          public String[] getcrmAppplications() {
+    public String[] getcrmAppplications() {
         return applications;
     }
  
@@ -269,7 +299,7 @@ public class LeasedLineQuotes {
     }      
     
     public List<Leased_Line_Quote_Request__c> getsavedllqr(){
-        savedllqr = [SELECT Id, Name, TOID__c, Postcode__c, Street__c FROM Leased_Line_Quote_Request__c WHERE Opportunity_ID__c =: ApexPages.currentPage().getParameters().get('Id')];
+        savedllqr = [SELECT Id, Name, TOID__c, Postcode__c, Street__c, Opportunity_ID__c, Site_Reference__c FROM Leased_Line_Quote_Request__c WHERE Opportunity_ID__c =: ApexPages.currentPage().getParameters().get('Id')];
         return savedllqr;
     }   
     
@@ -280,17 +310,17 @@ public class LeasedLineQuotes {
         return pageRef;
     }
     
-    public String llqrxml(){
+    public String llqrxml(string llqrid){
           XmlStreamWriter w = new XmlStreamWriter();
           w.writeStartDocument(null, '1.0');
           w.writeStartElement('', 'LeasedLineQuoteRequest', '');
           w.writeStartElement('', 'RequestersId', '');        
-          w.writeCharacters(llqr.Site_Reference__c);
+          w.writeCharacters(llqrid);
           w.writeEndElement(); //end requestorsid
           w.writeStartElement('', 'LeasedLineQuoteSites', ''); 
           w.writeStartElement('', 'LeasedLineQuoteSite', '');
 		  w.writeStartElement('', 'SiteReference', '');
-          w.writeCharacters(llqr.Site_Reference__c);
+          w.writeCharacters(llqrid);
 		  w.writeEndElement(); //end SiteReferemce
 		  w.writeStartElement('', 'AEndPostCode', '');
           w.writeCharacters(llqr.Postcode__c);
@@ -302,13 +332,14 @@ public class LeasedLineQuotes {
           w.writeCharacters(llqr.Postcode__c);
 		  w.writeEndElement(); //end BEndPostCode
 		  w.writeStartElement('', 'BEndToid', '');
-          w.writeCharacters(llqr.Postcode__c);
+          w.writeCharacters(llqr.TOID__c);
 		  w.writeEndElement(); //end BEndToid
 		  w.writeStartElement('', 'LeasedLineQuoteSuppliers', '');
 		  w.writeStartElement('', 'LeasedLineQuoteSupplier', '');
           w.writeStartElement('', 'Name', '');
-          w.writeCharacters('Virgin');
-		  w.writeEndElement(); //end name 
+          w.writeCharacters('TalkTalk');
+		  w.writeEndElement(); //end name
+          /**
           w.writeStartElement('', 'LeasedLineQuoteSupplierOptions', '');
           
           
@@ -394,6 +425,8 @@ public class LeasedLineQuotes {
         
         
           w.writeEndElement(); //end leasedlinequotesupplieroptions
+		  **/
+
           w.writeEndElement(); //end leasedlinequotesupplier
           w.writeEndElement(); //end leasedlinequotesuppliers
           w.writeStartElement('', 'LeasedLineContractTerms', '');
@@ -407,7 +440,6 @@ public class LeasedLineQuotes {
           w.writeEndElement(); //end leasedlinecontractterm 
           }
           }
-    
         
           w.writeEndElement(); //end leasedlinecontractterms
           w.writeEndElement(); //end leasedlinequotesite
@@ -418,5 +450,5 @@ public class LeasedLineQuotes {
           w.close();
         
           return xmlOutput;        
-    }
+    } 
 }

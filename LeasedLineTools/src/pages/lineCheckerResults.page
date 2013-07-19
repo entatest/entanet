@@ -1,11 +1,16 @@
 <apex:page standardController="Opportunity" extensions="TalkTalkQuotes">
     <apex:form >
+    <apex:pageBlock mode="mainDetail">
+    <apex:pageBlockSection title="Request Details">
+    
+        </apex:pageBlockSection>
+    </apex:pageBlock>
         <style>
             #filters { list-style: none; margin: 6px 0; padding: 0; }
             #filters li { list-style: none; margin: 0; padding: 0; display:inline;}
             #filtersmenu { font-size: 16px; }
         </style>
-        <h1 id="filtersmenu">Leased Line Quotes for {!opportunity.name} Opportunity</h1>
+        <h1 id="filtersmenu">Leased line prices for {!opportunity.name}</h1>
         <ul id="filters">
             <li>Speed: <select><option>All Speeds</option><option>10Mb /100Mb</option><option>20Mb /100Mb</option><option>30Mb /100Mb</option><option>40Mb /100Mb</option><option>50Mb /100Mb</option><option>100Mb /100Mb</option></select></li>
             <apex:selectList id="chooseTerm" value="{!term}" size="1">

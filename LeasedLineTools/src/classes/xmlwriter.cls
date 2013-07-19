@@ -26,8 +26,9 @@ public class xmlwriter {
 		  w.writeStartElement('', 'LeasedLineQuoteSuppliers', '');
 		  w.writeStartElement('', 'LeasedLineQuoteSupplier', '');
           w.writeStartElement('', 'Name', '');
-          w.writeCharacters('Virgin');
+          w.writeCharacters('TalkTalk');
 		  w.writeEndElement(); //end name 
+          /**
           w.writeStartElement('', 'LeasedLineQuoteSupplierOptions', '');
           w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
           w.writeStartElement('', 'Name', '');
@@ -46,6 +47,7 @@ public class xmlwriter {
 		  w.writeEndElement(); //end value         
           w.writeEndElement(); //end leasedlinequotesupplieroption        
           w.writeEndElement(); //end leasedlinequotesupplieroptions
+		  **/
           w.writeEndElement(); //end leasedlinequotesupplier
           w.writeEndElement(); //end leasedlinequotesuppliers
           w.writeStartElement('', 'LeasedLineContractTerms', '');
