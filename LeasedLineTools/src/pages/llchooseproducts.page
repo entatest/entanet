@@ -1,0 +1,21 @@
+<apex:page standardController="Opportunity" extensions="LeasedLineResults">
+<style>
+.bPageBlock .pbTitle { width: 100%; }
+#chosenprodheader { font-size:14px; }
+</style>
+    <apex:form >
+    <apex:commandButton id="quotepricebuttons" style="margin: 6px" value="Back" action="{!backpriceresults}"/>
+        <apex:pageBlock title="Extra Items">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!chooseproducts}" value="Add to Opportunity" id="theButton"/>
+        	</apex:pageBlockButtons>
+            <apex:repeat value="{!selectedproducts}" var="selectedprod">
+                <p id="chosenprodheader">{!selectedprod.productname}</p>
+                <p>Router</p>
+                <p>Backup</p>
+                <p>Transit</p>
+                <p>Install</p>
+            </apex:repeat>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

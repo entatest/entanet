@@ -1,0 +1,49 @@
+<apex:page standardController="Opportunity" extensions="LeasedLineResults">
+    <style>
+        #talktalktable img { width:60px; height:20px; }
+        #talktalktable { width:100%; }
+    </style>
+    <apex:form >
+    <apex:commandButton id="quotepricebuttons" style="margin: 6px" value="Delete" action="{!deleterequest}"/>
+    <apex:commandButton style="margin-right: 6px" value="New Pricing Request" action="{!newPricingRequest}"/>
+
+    <apex:pageBlock mode="mainDetail">
+            <apex:pageBlockSection title="Request Details">
+               
+                <apex:outputText id="ll_siteref" label="Site Ref" value="{!llqr.name}"/>
+                <apex:outputText id="ll_street" label="Street" value="{!llqr.Street__c}"/>
+                <apex:outputText id="ll_town" label="Town" value="{!llqr.Town__c}"/>
+                <apex:outputText id="ll_county" label="County" value="{!llqr.County__c}"/>
+                <apex:outputText id="ll_postcode" label="Postcode" value="{!llqr.Postcode__c}"/>
+                <apex:outputText id="ll_toid" label="TOID" value="{!llqr.TOID__c}"/>
+            </apex:pageBlockSection>
+    </apex:pageBlock>
+        <apex:commandButton style="margin:6px" value="Add to Opportunity" action="{!chooseProducts}"/>
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="1">
+            <table id="talktalktable"><tr>
+                <td><img src="{!$Resource.TalkTalk}"/></td>
+                <td align="right" id="choosedetails">Show All Columns +</td>
+            </tr></table>
+            <apex:pageBlockTable value="{!talktalkproducts}" var="talkprod">
+                <apex:column headerValue="Product">
+                    <apex:outputText value="{!talkprod.productname}"/>
+                </apex:column>
+                <apex:column headerValue="Connection Price 1 Year">
+                    <apex:outputText value="{!talkprod.connectionprice1year}"/>
+                </apex:column>
+                <apex:column headerValue="Connection Price 3 Year">
+                    <apex:outputText value="{!talkprod.connectionprice3year}"/>
+                </apex:column>
+                <apex:column headerValue="Rental Price">
+                    <apex:outputText value="{!talkprod.rentalprice}"/>
+                </apex:column>                
+                <apex:column headerValue="Include On Quote">
+                    <apex:inputCheckbox value="{!talkprod.selected}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>                 
+        <apex:commandButton style="" value="Add to Opportunity" action="{!chooseProducts}"/>        
+    </apex:form>
+</apex:page>
