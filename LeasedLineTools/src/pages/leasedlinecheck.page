@@ -11,30 +11,41 @@
     #siteapostcodes {font-size:14px; margin: 0; padding: 0}
     .bPageBlock .pbTitle { width: 80%; }
     #savedsiterequests { display:inline; style:none; margin: 0; padding: 0px; }
-    #savedsiterequests li { display:inline; style:none; margin: 0; padding: 4px 6px; background: #DDB929; color: #fff; }
-    #sitescontainer { margin: 10px 4px; float:left; }
-    #whitex { margin-left:4px; padding-right:4px; cursor: hand; cursor: pointer; }
-    #siterequestlink { color: #FFF; cursor: hand; cursor: pointer; }    
+    #savedsiterequests li { display:inline; style:none; margin: 0 10px 0 0;
+        padding: 4px 6px; background: #DDB929; color: #fff; font-weight:bold; }
+    #sitescontainer { margin: 10px 4px; float:left; width:100%;}
+    #siterequestlink { color: #FFF; cursor: hand; cursor: pointer;} 
+    #prevquotetitle { margin-right: 4px; }
     </style>
+   
     <apex:form >
-        <h1 class="account">Test</h1>
+        <div id="sitescontainer">
+            <h1 id="prevquotetitle">Previous Quote Requests:</h1>
+            
+            <apex:outputPanel rendered="{!savedllqr.size = 0}">
+                <h1> None</h1>
+</apex:outputPanel>    
+            <ul id="savedsiterequests">
     <apex:repeat value="{!savedllqr}" var="string" id="theRepeat">
-        <div id="sitescontainer"><ul id="savedsiterequests"><li>
-       <apex:commandLink id="siterequestlink" style="color: #FFF; text-decoration:none;">{!string.Postcode__c} - {!string.Street__c}<img id="whitex" src="{!$Resource.whitex}" width="10" height="10"/>
-           <apex:param name="siteid" value="{!string.Id}"/>    
-       </apex:commandLink>     
-       </li></ul></div>
-    </apex:repeat>
     
+       <li id="reqlink">
+       <apex:commandLink action="{!loadquotes}" id="siterequestlink" style="color: #FFF; text-decoration:none;">
+           <apex:param name="siterefparam" value="{!String.name}" assignTo="{!savedsiteref}"/>
+           <apex:param name="oppidparam" value="{!String.Opportunity_ID__c}" assignTo="{!savedoppid}"/>
+           {!string.Postcode__c} - {!string.Street__c}
+       </apex:commandLink>     
+       </li>
+    </apex:repeat>
+    </ul></div>
     <apex:pageBlock title="New Quote Request" mode="new">
         <apex:pageBlockButtons >
         <apex:commandButton action="{!save}" value="Save" id="theButton"/>
-        <apex:commandButton action="{!save}" value="Save & New" id="theButtonnew"/>
+        <apex:commandButton action="{!saveandnew}" value="Save & New" id="theButtonnew" />
         </apex:pageBlockButtons>
         <apex:pageBlockSection columns="2" id="pbs1">
-        <apex:inputText label="Site Ref" value="{!llqr.Site_Reference__c}"/>
-        <apex:inputText id="ll_street" label="Street" value="{!llqr.Street__c}"/>
         <apex:inputText id="ll_postcode" label="Postcode" value="{!llqr.Postcode__c}"/>
+        <apex:inputText id="ll_street" label="Street" value="{!llqr.Street__c}"/>
+        <p></p>
         <apex:inputText id="ll_town" label="Town" value="{!llqr.Town__c}"/>
         <p></p>
         <apex:inputText id="ll_county" label="County" value="{!llqr.County__c}"/> 
@@ -91,14 +102,8 @@
     </apex:form>
     <script>
     $j = jQuery.noConflict();
-    alert($j);
     
-    $j(".account").click(function() {
-        alert("Hello");
-        });
-    $j("#siterequestlink").click(function() {
-        alert("Hello");
-        });        
+        
     </script>        
     </body>
 </apex:page>
