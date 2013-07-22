@@ -84,41 +84,36 @@ public class LeasedLineResults{
         pageRef.setRedirect(false);
         return pageRef; 
         **/
+        List<PricebookEntry> pbes = [SELECT Product2Id FROM PricebookEntry];
         for(LLProducts cCon:gettalktalkproducts())
         {
-            if(cCon.selected==true && cCon.term == '1 year'){
-                String pid = '';
-                if (cCon.productname == '10MB / 100MB'){
-                    pid = '01ug0000003qBzqAAE';
+            if (cCon.selected==true && cCon.term == '1 year') {
+                String pid = getPricebookEntryId(pbes, cCon.productid);
+                if (pid.length() > 0) {
+					OpportunityLineItem oli = new OpportunityLineItem(
+						OpportunityId = oppid, 
+						PriceBookEntryId = pid, 
+						UnitPrice = cCon.connectionprice, 
+						Quantity = 1
+					);
+					insert oli;
                 }
-                if (cCon.productname == '20MB / 100MB'){
-                    pid = '01ug0000003qBzrAAE';
-                }  
-                if (cCon.productname == '30MB / 100MB'){
-                    pid = '01ug0000003qBzsAAE';
-                }       
-                if (cCon.productname == '40MB / 100MB'){
-                    pid = '01ug0000003qBztAAE';
-                } 
-                if (cCon.productname == '50MB / 100MB'){
-                    pid = '01ug0000003qBzuAAE';
-                }  
-                if (cCon.productname == '100MB / 100MB'){
-                    pid = '01ug0000003qBzvAAE';
-                }                  
-				OpportunityLineItem oli = new OpportunityLineItem(
-					OpportunityId = oppid, 
-					PriceBookEntryId = pid, 
-					UnitPrice = cCon.connectionprice, 
-					Quantity = 1
-				);
-				insert oli;                
             }
         }          
         
         PageReference pageRef = new PageReference('/'+oppid);
         pageRef.setRedirect(false);
         return pageRef;
+    }
+    
+    private String getPricebookEntryId(List<PricebookEntry> pbes, String productId)
+    {
+    	for (PricebookEntry pbe: pbes) {
+    		if (pbe.Product2Id == productId) {
+    			return pbe.Id;
+    		}
+    	}
+    	return '';
     }
     
     public PageReference newPricingRequest(){
@@ -185,6 +180,10 @@ public class LeasedLineResults{
         
         public Decimal rentalprice {
             get { return product.Rental_Price__c; }  
+        }
+        
+        public String productid {
+        	get { return product.Product_Id__c; }
         }
         
         public Boolean selected
