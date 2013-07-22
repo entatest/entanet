@@ -3,8 +3,8 @@ public class xmlwriter {
           XmlStreamWriter w = new XmlStreamWriter();
           w.writeStartDocument(null, '1.0');
           w.writeStartElement('', 'LeasedLineQuoteRequest', '');
-          w.writeStartElement('', 'RequestorsId', '');        
-          w.writeCharacters('1234567');
+          w.writeStartElement('', 'RequestersId', '');        
+          w.writeCharacters('547433367');
           w.writeEndElement(); //end requestorsid
           w.writeStartElement('', 'LeasedLineQuoteSites', ''); 
           w.writeStartElement('', 'LeasedLineQuoteSite', '');
@@ -26,34 +26,53 @@ public class xmlwriter {
 		  w.writeStartElement('', 'LeasedLineQuoteSuppliers', '');
 		  w.writeStartElement('', 'LeasedLineQuoteSupplier', '');
           w.writeStartElement('', 'Name', '');
-          w.writeCharacters('BT');
+          w.writeCharacters('TalkTalk');
 		  w.writeEndElement(); //end name 
+          /**
           w.writeStartElement('', 'LeasedLineQuoteSupplierOptions', '');
           w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
           w.writeStartElement('', 'Name', '');
-          w.writeCharacters('Some option');
+          w.writeCharacters('Ethernet Speed');
 		  w.writeEndElement(); //end name 
           w.writeStartElement('', 'Value', '');
-          w.writeCharacters('Some value');
+          w.writeCharacters('10/100');
 		  w.writeEndElement(); //end value         
           w.writeEndElement(); //end leasedlinequotesupplieroption
           w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
           w.writeStartElement('', 'Name', '');
-          w.writeCharacters('Some option2');
+          w.writeCharacters('Ethernet Speed');
 		  w.writeEndElement(); //end name 
           w.writeStartElement('', 'Value', '');
-          w.writeCharacters('Some value2');
+          w.writeCharacters('20/100');
 		  w.writeEndElement(); //end value         
           w.writeEndElement(); //end leasedlinequotesupplieroption        
           w.writeEndElement(); //end leasedlinequotesupplieroptions
+		  **/
           w.writeEndElement(); //end leasedlinequotesupplier
+        
+		  w.writeStartElement('', 'LeasedLineQuoteSupplier', '');
+          w.writeStartElement('', 'Name', '');
+          w.writeCharacters('Virgin');
+		  w.writeEndElement(); //end name 
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOptions', '');
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOption', '');
+          w.writeStartElement('', 'Name', '');
+          w.writeCharacters('Ethernet Speed');
+          w.writeEndElement(); //end Name
+          w.writeStartElement('', 'Value', '');
+          w.writeCharacters('2/10');
+          w.writeEndElement(); //end Value        
+          w.writeEndElement(); //end LeasedLineSupplierOption
+          w.writeEndElement(); //end LeasedLineSupplierOptions
+          w.writeEndElement(); //end leasedlinequotesupplier        
+        
           w.writeEndElement(); //end leasedlinequotesuppliers
           w.writeStartElement('', 'LeasedLineContractTerms', '');
           w.writeStartElement('', 'LeasedLineContractTerm', '');
           w.writeCharacters('1 Year');
 		  w.writeEndElement(); //end leasedlinecontractterm  
           w.writeStartElement('', 'LeasedLineContractTerm', '');
-          w.writeCharacters('2 Years');
+          w.writeCharacters('3 Years');
 		  w.writeEndElement(); //end leasedlinecontractterm   
           w.writeEndElement(); //end leasedlinecontractterms
           w.writeEndElement(); //end leasedlinequotesite

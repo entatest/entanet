@@ -138,7 +138,7 @@
         <picklist>
             <picklistValues>
                 <fullName>Virgin</fullName>
-                <default>true</default>
+                <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>BT</fullName>

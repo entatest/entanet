@@ -1,50 +1,92 @@
 <apex:page standardController="Opportunity" extensions="TalkTalkQuotes">
     <apex:form >
+    <apex:pageBlock mode="mainDetail">
+    <apex:pageBlockSection title="Request Details">
+    
+        </apex:pageBlockSection>
+    </apex:pageBlock>
         <style>
             #filters { list-style: none; margin: 6px 0; padding: 0; }
-            #filters li { list-style: none; margin: 0; padding: 0; }
+            #filters li { list-style: none; margin: 0; padding: 0; display:inline;}
+            #filtersmenu { font-size: 16px; }
         </style>
-        <h1>Filters</h1>
+        <h1 id="filtersmenu">Leased line prices for {!opportunity.name}</h1>
         <ul id="filters">
-            <li>Speed <select><option>All</option><option>10Mb /100Mb</option><option>20Mb /100Mb</option><option>30Mb /100Mb</option><option>40Mb /100Mb</option><option>50Mb /100Mb</option><option>100Mb /100Mb</option></select></li>
-            <li></li>
-            <li></li>
+            <li>Speed: <select><option>All Speeds</option><option>10Mb /100Mb</option><option>20Mb /100Mb</option><option>30Mb /100Mb</option><option>40Mb /100Mb</option><option>50Mb /100Mb</option><option>100Mb /100Mb</option></select></li>
+            <apex:selectList id="chooseTerm" value="{!term}" size="1">
+            <apex:selectOption itemValue="1" itemLabel="1"/>
+            <apex:selectOption itemValue="2" itemLabel="2"/>
+            <apex:selectOption itemValue="3" itemLabel="3"/>
+            <apex:selectOption itemValue="4" itemLabel="4"/>
+            <apex:selectOption itemValue="5" itemLabel="5"/>
+            <apex:selectOption itemValue="All" itemLabel="All"/>
+            </apex:selectList>
+            <li><apex:commandButton value="Filter"/></li>
         </ul>
-    <apex:pageBlock title="Talk Talk Quotes for {!opportunity.name} Opportunity">
+    <apex:pageBlock title="Talk Talk Quotes">
         <apex:pageBlockSection columns="1">
-            <apex:pageBlockTable value="{!products}" var="pitem">
+            <apex:pageBlockTable value="{!talktalkproducts}" var="pitem">
                 <apex:column headerValue="Product">
                     <apex:outputText value="{!pitem.Name}"/>
                 </apex:column>
-                <apex:column headerValue="Product ID">
-                    <apex:outputText value="{!pitem.id}"/>
+                <apex:column headerValue="Term (Years)">
+                    <apex:outputText value="{!pitem.term}"/>
+                </apex:column>
+                <apex:column headerValue="Price">
+                    <apex:outputText value="{!pitem.unitprice}"/>
                 </apex:column>
                 <apex:column headerValue="Include On Quote">
                     <apex:inputCheckbox value="{!pitem.selected}"/>
                 </apex:column>
             </apex:pageBlockTable>
         </apex:pageBlockSection>
-        <apex:pageBlockSection >
-            <apex:commandButton action="{!addquote}" value="Add Quote"/>
-        </apex:pageBlockSection>
     </apex:pageBlock>
         <apex:pageBlock title="Virgin Quotes">
         <apex:pageBlockSection columns="1">
-           
+            <apex:pageBlockTable value="{!virginproducts}" var="pitem">
+                <apex:column headerValue="Product">
+                    <apex:outputText value="{!pitem.Name}"/>
+                </apex:column>
+                <apex:column headerValue="Term (Years)">
+                    <apex:outputText value="{!pitem.term}"/>
+                </apex:column>
+                <apex:column headerValue="Price">
+                    <apex:outputText value="{!pitem.unitprice}"/>
+                </apex:column>
+                <apex:column headerValue="Include On Quote">
+                    <apex:inputCheckbox value="{!pitem.selected}"/>
+                </apex:column>
+            </apex:pageBlockTable>
         </apex:pageBlockSection>
-    	</apex:pageBlock>
+        </apex:pageBlock>
         
         <apex:pageBlock title="BT Quotes">
         <apex:pageBlockSection columns="1">
-           
+            <apex:pageBlockTable value="{!btproducts}" var="pitem">
+                <apex:column headerValue="Product">
+                    <apex:outputText value="{!pitem.Name}"/>
+                </apex:column>
+                <apex:column headerValue="Term (Years)">
+                    <apex:outputText value="{!pitem.term}"/>
+                </apex:column>
+                <apex:column headerValue="Price">
+                    <apex:outputText value="{!pitem.unitprice}"/>
+                </apex:column>
+                <apex:column headerValue="Include On Quote">
+                    <apex:inputCheckbox value="{!pitem.selected}"/>
+                </apex:column>
+            </apex:pageBlockTable>
         </apex:pageBlockSection>
-    	</apex:pageBlock>
+        </apex:pageBlock>
         
-        <apex:pageBlock title="Quote Book">
+                    <apex:commandButton styleclass="savequote" style="margin: 0 10px 10px 0" action="{!addquote}" value="Save"/>
+            <apex:commandButton id="savequotenew" action="{!addtoquotebook}" value="Save & New"/>
+        
+        <apex:pageBlock title="Quote Book" id="quote_book">
         <apex:pageBlockSection columns="1">
-           
+            <apex:outputText value="{!quotebookcontents}" escape="false"/>
         </apex:pageBlockSection>
-    	</apex:pageBlock>
+        </apex:pageBlock>
         
     </apex:form>
 </apex:page>
