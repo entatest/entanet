@@ -49,7 +49,6 @@ public class XMLDom {
 	
 	// given a parent node and a stream reader, populates the tree below here (recursive)
 	void parseXmlReader( Element parent, XmlStreamReader reader ) {
-		try {
 		while(reader.hasNext()) {
 		
 			if (reader.getEventType() == XmlTag.START_ELEMENT) {
@@ -93,9 +92,6 @@ public class XMLDom {
 			else { 
 				reader.next(); 
 			} 	
-		}
-		} catch(Exception e) { // ParseError if we get a truncated response, allow it
-			system.debug(e);
 		}
 	}	
 	

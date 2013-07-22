@@ -75,6 +75,14 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Error_Message__c</fullName>
+        <externalId>false</externalId>
+        <label>Error Message</label>
+        <length>2000</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Ethernet_Exchange_Name__c</fullName>
         <externalId>false</externalId>
         <label>Ethernet Exchange Name</label>
@@ -184,6 +192,15 @@
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
         <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>View_Details</fullName>
+        <columns>NAME</columns>
+        <columns>Site_Ref__c</columns>
+        <columns>Product__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>View Details</label>
     </listViews>
     <nameField>
         <label>Talk Name</label>

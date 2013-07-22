@@ -339,6 +339,7 @@ public class LeasedLineQuotes {
           w.writeStartElement('', 'Name', '');
           w.writeCharacters('TalkTalk');
 		  w.writeEndElement(); //end name
+        
           /**
           w.writeStartElement('', 'LeasedLineQuoteSupplierOptions', '');
           
@@ -428,6 +429,27 @@ public class LeasedLineQuotes {
 		  **/
 
           w.writeEndElement(); //end leasedlinequotesupplier
+		  w.writeStartElement('', 'LeasedLineQuoteSupplier', '');
+          w.writeStartElement('', 'Name', '');
+          w.writeCharacters('Virgin');
+		  w.writeEndElement(); //end name
+          w.writeStartElement('', 'LeasedLineQuoteSupplierOptions', '');
+        
+          //Leased Line Supplier Options
+		  List<SelectOption> llso = this.BandwidthOptions;
+          for(SelectOption so : llso) {
+          if (this.llqr.Bandwidth__c!=null && this.llqr.Bandwidth__c.contains(so.getValue())){
+          w.writeStartElement('', 'Name', '');
+          w.writeCharacters('Ethernet Speed');
+          w.writeEndElement(); //end name
+          w.writeStartElement('', 'Value', '');
+          w.writeCharacters(so.getValue());
+          w.writeEndElement(); //end Value              
+          }
+          }
+        
+          w.writeEndElement(); //end LeasedLineSupplierOptions        
+          w.writeEndElement(); //end leasedlinequotesupplier        
           w.writeEndElement(); //end leasedlinequotesuppliers
           w.writeStartElement('', 'LeasedLineContractTerms', '');
           

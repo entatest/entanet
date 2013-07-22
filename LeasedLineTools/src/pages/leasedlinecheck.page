@@ -1,8 +1,30 @@
 <apex:page standardController="Opportunity" extensions="LeasedLineQuotes" >
     <body>
 <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" />
-<apex:sectionHeader title="Leased Line Pricing Tool" subtitle="Quote Options"/>
 
+<script type="text/javascript">
+    
+jQuery.noConflict();
+    
+    jQuery(document).ready(function($) {
+        
+        $("#pnl_details").hide();
+ 
+        $('#viewDetails').click(function () {
+            if ($("#pnl_details").is(":hidden")) {
+                $("#pnl_details").slideDown("slow");
+                $("#viewDetails").html("Show Less Details");
+                 return false;
+            } else {
+                $("#pnl_details").hide("slow");
+                $("#viewDetails").html("Show More Details");
+             return false;
+            }
+            });         
+    });
+</script>
+
+<apex:sectionHeader title="Leased Line Pricing Tool" subtitle="Quote Options"/>
     <style>
     #llheader {font-size:15px;}
     #custref {margin-left:10px;}
@@ -27,6 +49,9 @@
 </apex:outputPanel>    
             <ul id="savedsiterequests">
     <apex:repeat value="{!savedllqr}" var="string" id="theRepeat">
+
+    
+    <p>Test</p>
     
        <li id="reqlink">
        <apex:commandLink action="{!loadquotes}" id="siterequestlink" style="color: #FFF; text-decoration:none;">
@@ -43,6 +68,11 @@
         <apex:commandButton action="{!saveandnew}" value="Save & New" id="theButtonnew" />
         </apex:pageBlockButtons>
         <apex:pageBlockSection columns="2" id="pbs1">
+<<<<<<< HEAD
+=======
+        <apex:inputText label="Customer Ref" value="{!llqr.Site_Reference__c}"/>
+        <apex:inputText id="ll_street" label="Street" value="{!llqr.Street__c}"/>
+>>>>>>> 15c22de18a36fca024775f9a486fdcfdf0762727
         <apex:inputText id="ll_postcode" label="Postcode" value="{!llqr.Postcode__c}"/>
         <apex:inputText id="ll_street" label="Street" value="{!llqr.Street__c}"/>
         <p></p>
@@ -52,11 +82,14 @@
         <p></p>
         <apex:inputText id="ll_toid" label="TOID" value="{!llqr.TOID__c}"/>               
         
+        
+        
+
         </apex:pageBlockSection>
         <apex:pageBlockSection columns="1" >
         
         <!-- Contract Term -->
-     <apex:selectCheckboxes label="Contract Term" value="{!CTItems}" layout="lineDirection" id="prodreq">
+     <apex:selectCheckboxes label="Contract Term" value="{!CTItems}" layout="lineDirection" required="true" id="prodreq">
        <apex:selectOptions value="{!CTOptions}"/>
      </apex:selectCheckboxes>            
             
@@ -70,7 +103,7 @@
                 <apex:inputCheckbox label="Point 2 Point" value="{!llqr.Point_2_Point__c}"/>
                 <apex:inputText label="Virgin" value="{!llqr.Site_A_Postcode_Virgin__c}"/>
         </apex:pageBlockSection>
-        <apex:pageBlockSection title="BT Options">
+        <apex:pageBlockSection title="BT Options"  >
         
         <!-- Product Options -->
      <apex:selectCheckboxes label="Product Options" value="{!ProdItems}" layout="lineDirection" id="prodreq">
@@ -100,10 +133,13 @@
         </apex:pageBlockSection>
     </apex:pageBlock>
     </apex:form>
+<<<<<<< HEAD
     <script>
     $j = jQuery.noConflict();
     
         
     </script>        
     </body>
+=======
+>>>>>>> 15c22de18a36fca024775f9a486fdcfdf0762727
 </apex:page>

@@ -3,7 +3,7 @@ public class LeasedLineQuoteResults {
     public List<Virgin_Media_Product__c> virginproducts;
     public List<Talk_Talk_Product__c> talktalkproducts;   
     public List<BT_Wholesale_Product__c> btproducts;
-    public Opportunity oppt;    
+    public Opportunity oppt;
     
     public LeasedLineQuoteResults(ApexPages.StandardController controller) {
         this.oppt = (Opportunity)controller.getRecord();
