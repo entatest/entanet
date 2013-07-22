@@ -43,95 +43,103 @@
         <label>Bandwidth</label>
         <picklist>
             <picklistValues>
-                <fullName>2MB</fullName>
+                <fullName>2/10</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>4MB</fullName>
+                <fullName>4/10</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>6MB</fullName>
+                <fullName>6/10</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>8MB</fullName>
+                <fullName>8/10</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>10MB</fullName>
+                <fullName>10/10</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>20MB</fullName>
+                <fullName>10/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>30MB</fullName>
+                <fullName>20/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>40MB</fullName>
+                <fullName>30/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>50MB</fullName>
+                <fullName>40/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>60MB</fullName>
+                <fullName>50/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>70MB</fullName>
+                <fullName>60/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>80MB</fullName>
+                <fullName>70/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>90MB</fullName>
+                <fullName>80/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>100MB</fullName>
+                <fullName>90/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>200MB</fullName>
+                <fullName>100/100</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>300MB</fullName>
+                <fullName>100/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>400MB</fullName>
+                <fullName>200/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>500MB</fullName>
+                <fullName>300/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>600MB</fullName>
+                <fullName>400/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>700MB</fullName>
+                <fullName>500/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>800MB</fullName>
+                <fullName>600/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>900MB</fullName>
+                <fullName>700/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>1GB</fullName>
+                <fullName>800/1000</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>900/1000</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1000/1000</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
