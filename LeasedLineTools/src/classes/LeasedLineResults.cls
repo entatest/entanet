@@ -28,9 +28,9 @@ public class LeasedLineResults{
         //                   FROM Talk_Talk_Product__c
         //                    WHERE Site_Ref__c =: siteref
         //                   ];
-        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Connection_Price_1_Year__c, Connection_Price_3_Year__c,
+        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Connection_Price__c, Product_Term__c, Product_Id__c,
                                    Rental_Price__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
-                                   Collector_Exchange_Name__c, Zone__c, Distance__c
+                                   Collector_Exchange_Name__c, Zone__c, Distance__c, Error_Message__c
                            FROM Talk_Talk_Product__c
                             WHERE Site_Ref__c =: siteref
                            ]){
@@ -86,7 +86,7 @@ public class LeasedLineResults{
         **/
         for(LLProducts cCon:gettalktalkproducts())
         {
-            if(cCon.selected==true){
+            if(cCon.selected==true && cCon.term == '1 year'){
                 String pid = '';
                 if (cCon.productname == '10MB / 100MB'){
                     pid = '01ug0000003qBzqAAE';
@@ -106,11 +106,13 @@ public class LeasedLineResults{
                 if (cCon.productname == '100MB / 100MB'){
                     pid = '01ug0000003qBzvAAE';
                 }                  
-         OpportunityLineItem oli = new OpportunityLineItem(OpportunityId = oppid, 
-                                              PriceBookEntryId = pid, 
-                                              UnitPrice = cCon.connectionprice1year, 
-                                              Quantity = 1);
-        insert oli;                
+				OpportunityLineItem oli = new OpportunityLineItem(
+					OpportunityId = oppid, 
+					PriceBookEntryId = pid, 
+					UnitPrice = cCon.connectionprice, 
+					Quantity = 1
+				);
+				insert oli;                
             }
         }          
         
@@ -173,12 +175,12 @@ public class LeasedLineResults{
             get { return product.product__c; }
         }
         
-        public Decimal connectionprice1year {
-            get { return product.Connection_Price_1_Year__c; }
+        public String term {
+        	get { return product.Product_Term__c; }
         }
         
-        public Decimal connectionprice3year {
-            get { return product.Connection_Price_3_Year__c; }
+        public Decimal connectionprice {
+            get { return product.Connection_Price__c; }
         }
         
         public Decimal rentalprice {

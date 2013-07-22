@@ -29,11 +29,11 @@
                 <apex:column headerValue="Product">
                     <apex:outputText value="{!talkprod.productname}"/>
                 </apex:column>
-                <apex:column headerValue="Connection Price 1 Year">
-                    <apex:outputText value="{!talkprod.connectionprice1year}"/>
+                <apex:column headerValue="Connection Price">
+                    <apex:outputText value="{!talkprod.connectionprice}"/>
                 </apex:column>
-                <apex:column headerValue="Connection Price 3 Year">
-                    <apex:outputText value="{!talkprod.connectionprice3year}"/>
+                <apex:column headerValue="Term">
+                    <apex:outputText value="{!talkprod.term}"/>
                 </apex:column>
                 <apex:column headerValue="Rental Price">
                     <apex:outputText value="{!talkprod.rentalprice}"/>
