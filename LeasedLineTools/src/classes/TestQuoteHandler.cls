@@ -92,6 +92,7 @@ private class TestQuoteHandler
     
     @isTest static void talktalkResponseParserTest()
     {
+    	createTalktalkProducts();
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
@@ -100,11 +101,28 @@ private class TestQuoteHandler
     		siteRef, null, null, null, talktalkXml, error
     	);
     	parser.parsePayload();
-    	List<Talk_Talk_Product__c> products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
-    	System.assert(products.size() == 2);
+    	List<Talk_Talk_Product__c> products = [SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
+    	System.assert(products.size() == 4);
     }
     
-    @isTest static void virginResponseParserTest()
+    @isTest static void talktalkResponseParserProductTest()
+    {
+		createTalktalkProducts();
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	//llqr.Opportunity_ID__c = op.Id;
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	String error = '';
+    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
+    		siteRef, null, null, null, talktalkXml, error
+    	);
+    	parser.parsePayload();
+    	List<Talk_Talk_Product__c> products = [SELECT Product_Id__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
+    	System.debug(products);
+    	System.assert(products.size() == 4);
+    }
+    
+   @isTest static void virginResponseParserTest()
     {
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
@@ -123,6 +141,7 @@ private class TestQuoteHandler
     
     @isTest static void talktalkUpdateTest()
     {
+    	createTalktalkProducts();
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
@@ -132,14 +151,14 @@ private class TestQuoteHandler
     		siteRef, null, null, null, xml, error
     	);
     	parser.parsePayload();
-    	List<Talk_Talk_Product__c> products = Database.query('SELECT Distance__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
+    	List<Talk_Talk_Product__c> products = [SELECT Distance__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
     	Decimal oldDistance = products[0].Distance__c;
     	xml = talktalkXml.replace('<ns:Distance>2540.55</ns:Distance>', '<ns:Distance>2000</ns:Distance>');
     	parser = new QuoteHandler.TalktalkResponseParser(
     		siteRef, null, null, null, xml, error
     	);
     	parser.parsePayload();
-    	products = Database.query('SELECT Distance__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
+    	products = [SELECT Distance__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
     	System.assertNotEquals(oldDistance, products[0].Distance__c);
     }
     
@@ -161,6 +180,7 @@ private class TestQuoteHandler
     
     @isTest static void talktalkErrorWithExistingProductsTest()
     {
+    	createTalktalkProducts();
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
@@ -170,7 +190,7 @@ private class TestQuoteHandler
     	);
     	parser.parsePayload();
     	List<Talk_Talk_Product__c> products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
-    	System.assert(products.size() == 2);
+    	System.assert(products.size() == 4);
     	String xml = '';
     	error = 'Any old error';
     	parser = new QuoteHandler.TalktalkResponseParser(
@@ -184,6 +204,7 @@ private class TestQuoteHandler
     
     @isTest static void talktalkResponseParserAfterErrorTest()
     {
+    	createTalktalkProducts();
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
@@ -203,7 +224,7 @@ private class TestQuoteHandler
     	parser.parsePayload();
     	products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
     	System.debug(products.size());
-    	System.assert(products.size() == 2);
+    	System.assert(products.size() == 4);
     }
     
     @isTest static void virginMediaErrorTest()
@@ -324,4 +345,28 @@ private class TestQuoteHandler
     	System.assert(products.size() == 2);
     	System.assert(errorProducts.size() == 0);
     }
+    
+    static testMethod void createTalktalkProducts()
+	{
+		//String[] bearers = new String[]{'100Mb', '1Gb'};
+		//String[] bandwidths = new String[]{'10Mb', '20Mb', '30Mb', '40Mb', '50Mb', '100Mb', '200Mb', '300Mb', '500Mb', '1Gb'};
+		String[] bearers = new String[]{'100Mb'};
+		String[] bandwidths = new String[]{'10Mb', '20Mb'};
+		String[] terms = new String[]{'1', '3'};
+		for (String bearer: bearers) {
+			for (String bandwidth: bandwidths) {
+				for (String term: terms) {
+					Product2 prod = new Product2(
+			    		Name = bandwidth + ' / ' + bearer + ' - ' + term + ' year',
+			    		Bearer__c = bearer,
+			    		Bandwidth__c = bandwidth,
+			    		Term__c = term,
+			    		IsActive = true,
+			    		lineProvider__c = 'Talktalk'
+			    	);
+			    	insert prod;
+				}
+			}
+		}
+	}
 }

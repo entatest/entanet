@@ -62,6 +62,7 @@
         <members>Talk_Talk_Product__c.Ethernet_Exchange_Name__c</members>
         <members>Talk_Talk_Product__c.Fibre_Exchange_Name__c</members>
         <members>Talk_Talk_Product__c.Opportunity_ID__c</members>
+        <members>Talk_Talk_Product__c.Product_Id__c</members>
         <members>Talk_Talk_Product__c.Product__c</members>
         <members>Talk_Talk_Product__c.Rental_Price__c</members>
         <members>Talk_Talk_Product__c.Site_Ref__c</members>

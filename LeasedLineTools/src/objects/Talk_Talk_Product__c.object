@@ -48,18 +48,9 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Connection_Price_1_Year__c</fullName>
+        <fullName>Connection_Price__c</fullName>
         <externalId>false</externalId>
-        <label>Connection Price 1 Year</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Connection_Price_3_Year__c</fullName>
-        <externalId>false</externalId>
-        <label>Connection Price 3 Year</label>
+        <label>Connection Price</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -102,16 +93,32 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Opportunity_ID__c</fullName>
+        <fullName>Product_Id__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <description>Opportunity foreign key</description>
         <externalId>false</externalId>
-        <label>Opportunity ID</label>
-        <referenceTo>Opportunity</referenceTo>
+        <label>Product Id</label>
+        <referenceTo>Product2</referenceTo>
         <relationshipLabel>Talk Talk Products</relationshipLabel>
         <relationshipName>Talk_Talk_Products</relationshipName>
         <required>false</required>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Product_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Term</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1 year</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3 years</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
     </fields>
     <fields>
         <fullName>Product__c</fullName>

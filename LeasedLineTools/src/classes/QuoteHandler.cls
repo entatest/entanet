@@ -110,7 +110,10 @@ global class QuoteHandler
 	    		List<XMLDom.Element> circuits = dom.getElementsByTagName('ns:Circuit');
 	    		if (circuits != null) {
 		    		for (XMLDom.Element circuit: circuits) {
-		    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit);
+		    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit, 1);
+		    			quoteParser.parsePayload();
+		    			quotes.add(quoteParser);
+		    			quoteParser = new TalktalkQuoteParser(circuit, 3);
 		    			quoteParser.parsePayload();
 		    			quotes.add(quoteParser);
 		    		}
@@ -128,22 +131,39 @@ global class QuoteHandler
     	
     	private void createObjects()
     	{
+    		List<Product2> products2 = [SELECT Bearer__c, Bandwidth__c, Term__c FROM Product2 WHERE lineProvider__c = 'Talktalk' AND IsDeleted = false];
     		for (TalktalkQuoteParser quoteParser: quotes) {
-    			Talk_talk_Product__c product = new Talk_talk_Product__c(
-    				Site_Ref__c = siteRef,
-    				Unique__c = emptyUnique + ' ' + quoteParser.service,
-    				Collector_Exchange_Name__c = collectorExchangeName,
-    				Connection_Price_1_Year__c = Decimal.valueOf(quoteParser.setUp1yr),
-    				Connection_Price_3_Year__c = Decimal.valueOf(quoteParser.setUp3yr),
-    				Distance__c = Decimal.valueOf(distance),
-    				Ethernet_Exchange_Name__c = ethernetExchangeName,
-    				Fibre_Exchange_Name__c = fibreExchangeName,
-    				Product__c = quoteParser.service,
-    				Rental_Price__c = Decimal.valueOf(quoteParser.annualPrice),
-    				Zone__c = zone
-    			);
-    			upsert product Unique__c;
+    			String[] parts =  quoteParser.service.split('/');
+    			String productId = getProduct2Id(products2, parts[1].trim(), parts[0].trim(), quoteParser.productTerm);
+    			if (productId.length() > 0) {
+	    			Talk_talk_Product__c product = new Talk_talk_Product__c(
+	    				Site_Ref__c = siteRef,
+	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + quoteParser.productTerm,
+	    				Collector_Exchange_Name__c = collectorExchangeName,
+	    				Product_Term__c = quoteParser.productTerm,
+	    				Connection_Price__c = Decimal.valueOf(quoteParser.setUpPrice),
+	    				Distance__c = Decimal.valueOf(distance),
+	    				Ethernet_Exchange_Name__c = ethernetExchangeName,
+	    				Fibre_Exchange_Name__c = fibreExchangeName,
+	    				Product__c = quoteParser.service,
+	    				Rental_Price__c = Decimal.valueOf(quoteParser.annualPrice),
+	    				Zone__c = zone,
+	    				Product_Id__c = productId
+	    			);
+	    			upsert product Unique__c;
+    			}
     		}
+    	}
+    	
+    	private String getProduct2Id(List<Product2> products2, String bearer, String bandwidth, String term)
+    	{
+    		String[] termParts = term.splitByCharacterType();
+    		for (Product2 prod: products2) {
+    			if (prod.Bearer__c == bearer && prod.Bandwidth__c == bandwidth && prod.Term__c == termParts[0]) {
+    				return prod.Id;
+    			}
+    		}
+    		return '';
     	}
     	
     	private void deleteObjects()
@@ -183,14 +203,20 @@ global class QuoteHandler
     {
     	public String service;
     	public String annualPrice;
-    	public String setUp1yr;
-    	public String setUp3yr;
+    	public String setUpPrice;
+    	public String productTerm;
     	
+    	private Integer term;
     	private XMLDom.Element element;
+    	private Map<Integer, String> terms;
     	
-    	public TalktalkQuoteParser(XMLDom.Element element)
+    	public TalktalkQuoteParser(XMLDom.Element element, Integer term)
     	{
     		this.element = element;
+    		this.terms = new Map<Integer, String>();
+    		this.terms.put(1, '1 year');
+    		this.terms.put(3, '3 years');
+    		this.term = term;
     	}
     	
     	public void parsePayload()
@@ -198,8 +224,13 @@ global class QuoteHandler
     		if (element != null) {
     			service  = element.getValue('ns:Service');
     			annualPrice  = element.getValue('ns:AnnualPrice');
-    			setUp1yr  = element.getValue('ns:SetUp1yr');
-    			setUp3yr  = element.getValue('ns:SetUp3yr');
+    			if (term == 1) {
+    				setUpPrice = element.getValue('ns:SetUp1yr');
+    			}
+    			if (term == 3) {
+    				setUpPrice = element.getValue('ns:SetUp3yr');
+    			}
+    			productTerm = terms.get(term);
     		}
     	}
     }

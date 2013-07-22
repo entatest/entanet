@@ -30,6 +30,72 @@
     </actionOverrides>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>Bandwidth__c</fullName>
+        <externalId>false</externalId>
+        <label>Bandwidth</label>
+        <picklist>
+            <picklistValues>
+                <fullName>10Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>20Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>30Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>40Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>50Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>100Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>200Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>300Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>500Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1Gb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Bearer__c</fullName>
+        <externalId>false</externalId>
+        <label>Bearer</label>
+        <picklist>
+            <picklistValues>
+                <fullName>100Mb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>1Gb</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Family</fullName>
         <picklist>
             <sorted>false</sorted>
