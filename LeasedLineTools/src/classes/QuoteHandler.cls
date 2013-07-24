@@ -82,21 +82,17 @@ global class QuoteHandler
     public class Product2Handler
     {
     	private List<Product2> products2;
-    	private Map<String, String> families;
     	
     	public Product2Handler(String provider)
     	{
     		products2 = [SELECT Bearer__c, Bandwidth__c, Term__c, Family FROM Product2 WHERE lineProvider__c = :provider AND IsDeleted = false];
-    		families = new Map<String, String>();
-    		families.put('Connection', 'Installation Charges');
-    		families.put('Annual', 'Recurring Charges');
     	}
     	
     	public String getProduct2Id(String bearer, String bandwidth, String term, String family)
     	{
     		String[] termParts = term.splitByCharacterType();
     		for (Product2 prod: products2) {
-    			if (prod.Bearer__c == bearer && prod.Bandwidth__c == bandwidth && prod.Term__c == termParts[0] && prod.Family == families.get(family)) {
+    			if (prod.Bearer__c == bearer && prod.Bandwidth__c == bandwidth && prod.Term__c == termParts[0] && prod.Family == family) {
     				return prod.Id;
     			}
     		}
@@ -154,38 +150,38 @@ global class QuoteHandler
     		Product2Handler handler = new Product2Handler('Talktalk');
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			String[] parts =  quoteParser.service.split('/');
-    			String pricing = 'Connection';
-    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, pricing);
+    			String family = 'Installation Charges';
+    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
     			if (productId.length() > 0) {
 	    			Talk_talk_Product__c product = new Talk_talk_Product__c(
 	    				Site_Ref__c = siteRef,
-	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + pricing + ' ' + quoteParser.productTerm,
+	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + family + ' ' + quoteParser.productTerm,
 	    				Collector_Exchange_Name__c = collectorExchangeName,
 	    				Product_Term__c = quoteParser.productTerm,
 	    				Distance__c = Decimal.valueOf(distance),
 	    				Ethernet_Exchange_Name__c = ethernetExchangeName,
 	    				Fibre_Exchange_Name__c = fibreExchangeName,
 	    				Product__c = quoteParser.service,
-	    				Pricing__c = pricing,
+	    				Product_Family__c = family,
 	    				Price__c = Decimal.valueOf(quoteParser.setUpPrice),
 	    				Zone__c = zone,
 	    				Product_Id__c = productId
 	    			);
 	    			upsert product Unique__c;
     			}
-    			pricing = 'Annual';
-    			productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, pricing);
+    			family = 'Recurring Charges';
+    			productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
     			if (productId.length() > 0) {
 	    			Talk_talk_Product__c product = new Talk_talk_Product__c(
 	    				Site_Ref__c = siteRef,
-	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + pricing + ' ' + quoteParser.productTerm,
+	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + family + ' ' + quoteParser.productTerm,
 	    				Collector_Exchange_Name__c = collectorExchangeName,
 	    				Product_Term__c = quoteParser.productTerm,
 	    				Distance__c = Decimal.valueOf(distance),
 	    				Ethernet_Exchange_Name__c = ethernetExchangeName,
 	    				Fibre_Exchange_Name__c = fibreExchangeName,
 	    				Product__c = quoteParser.service,
-	    				Pricing__c = pricing,
+	    				Product_Family__c = family,
 	    				Price__c = Decimal.valueOf(quoteParser.annualPrice),
 	    				Zone__c = zone,
 	    				Product_Id__c = productId

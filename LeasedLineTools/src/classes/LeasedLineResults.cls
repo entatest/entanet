@@ -22,7 +22,7 @@ public class LeasedLineResults{
             talktalkproducts = new List<LLProducts>();
 	        String oppid = ApexPages.currentPage().getParameters().get('opportunityid');
 	        String siteref = ApexPages.currentPage().getParameters().get('siteref');
-	        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Price__c, Pricing__c, Product_Term__c,
+	        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Price__c, Product_Family__c, Product_Term__c,
 				Product_Id__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
 				Collector_Exchange_Name__c, Zone__c, Distance__c, Error_Message__c
 				FROM Talk_Talk_Product__c
@@ -172,8 +172,8 @@ public class LeasedLineResults{
             get { return product.Price__c; }
         }
         
-        public String pricing {
-        	get { return product.Pricing__c; }
+        public String family {
+        	get { return product.Product_Family__c; }
         }
         
         public String productid {

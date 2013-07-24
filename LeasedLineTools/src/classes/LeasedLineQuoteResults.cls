@@ -20,7 +20,7 @@ public class LeasedLineQuoteResults {
     
     public List<Talk_Talk_Product__c> gettalktalkproducts() {
         talktalkproducts = new List<Talk_Talk_Product__c>();
-        talktalkproducts = [SELECT Product__c, Product_Term__c, Price__c, Pricing__c,
+        talktalkproducts = [SELECT Product__c, Product_Term__c, Price__c, Product_Family__c,
                                    Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
                                    Collector_Exchange_Name__c, Zone__c, Distance__c, Error_Message__c
                             FROM Talk_Talk_Product__c];
