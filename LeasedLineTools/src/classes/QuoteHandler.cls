@@ -153,20 +153,20 @@ global class QuoteHandler
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			for (Schema.PicklistEntry entry: entries) {
     				String family = entry.getValue();
-	    			String[] parts =  quoteParser.service.split('/');
+	    			String[] parts =  quoteParser.getService().split('/');
 	    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
 	    			if (productId.length() > 0) {
 		    			Talk_talk_Product__c product = new Talk_talk_Product__c(
 		    				Site_Ref__c = siteRef,
-		    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + family + ' ' + quoteParser.productTerm,
+		    				Unique__c = emptyUnique + ' ' + quoteParser.getService() + ' - ' + family + ' ' + quoteParser.productTerm,
 		    				Collector_Exchange_Name__c = collectorExchangeName,
-		    				Product_Term__c = quoteParser.productTerm,
+		    				Product_Term__c = quoteParser.getProductTerm(),
 		    				Distance__c = Decimal.valueOf(distance),
 		    				Ethernet_Exchange_Name__c = ethernetExchangeName,
 		    				Fibre_Exchange_Name__c = fibreExchangeName,
-		    				Product__c = quoteParser.service,
+		    				Product__c = quoteParser.getService(),
 		    				Product_Family__c = family,
-		    				Price__c = Decimal.valueOf(quoteParser.setUpPrice),
+		    				Price__c = Decimal.valueOf(quoteParser.getPrice(family)),
 		    				Zone__c = zone,
 		    				Product_Id__c = productId
 		    			);
@@ -212,11 +212,10 @@ global class QuoteHandler
         
     public class TalktalkQuoteParser
     {
-    	public String service;
-    	public String annualPrice;
-    	public String setUpPrice;
-    	public String productTerm;
-    	
+    	private String service;
+    	private String annualPrice;
+    	private String setUpPrice;
+    	private String productTerm;
     	private Integer term;
     	private XMLDom.Element element;
     	private map<Integer, String> terms;
@@ -243,6 +242,27 @@ global class QuoteHandler
     			}
     			productTerm = terms.get(term);
     		}
+    	}
+    	
+    	public String getService()
+    	{
+    		return service;
+    	}
+    	
+    	public String getProductTerm()
+    	{
+    		return productTerm;
+    	}
+    	
+    	public String getPrice(String family)
+    	{
+    		if (family.containsIgnoreCase('installation')) {
+    			return setUpPrice;
+    		}
+    		if (family.containsIgnoreCase('recurring')) {
+    			return annualPrice;
+    		}
+    		return '0';
     	}
     }
     
