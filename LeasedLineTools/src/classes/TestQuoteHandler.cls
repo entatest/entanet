@@ -96,30 +96,11 @@ private class TestQuoteHandler
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
-    	String error = '';
-    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, talktalkXml, error
-    	);
-    	parser.parsePayload();
-    	List<Talk_Talk_Product__c> products = [SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
-    	System.assert(products.size() == 4);
-    }
-    
-    @isTest static void talktalkResponseParserProductTest()
-    {
-		createTalktalkProducts();
-    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
-    	//llqr.Opportunity_ID__c = op.Id;
-    	insert llqr;
-    	String siteRef = llqr.Id;
-    	String error = '';
-    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, talktalkXml, error
-    	);
-    	parser.parsePayload();
+    	String xml = talktalkXml.escapeEcmaScript();
+    	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Talk_Talk_Product__c> products = [SELECT Product_Id__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
-    	System.debug(products);
-    	System.assert(products.size() == 4);
+    	System.assert(products.size() == 8);
     }
     
    @isTest static void virginResponseParserTest()
@@ -127,14 +108,9 @@ private class TestQuoteHandler
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
-    	String bearer = '100 Mb';
-    	String bandwidth = '10 Mb';
-    	String term = '3';
-    	String error = '';
-    	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, virginXml, error
-    	);
-    	parser.parsePayload();
+    	String xml = virginXml.escapeEcmaScript();
+    	String response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"3","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Virgin_Media_Product__c> products = Database.query('SELECT Id FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef');
     	System.assert(products.size() == 1);
     }
@@ -146,18 +122,15 @@ private class TestQuoteHandler
     	insert llqr;
     	String siteRef = llqr.Id;
     	String xml = talktalkXml.replace('<ns:Distance>2540.55</ns:Distance>', '<ns:Distance>1000</ns:Distance>');
-    	String error = '';
-    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, xml, error
-    	);
-    	parser.parsePayload();
+    	xml = xml.escapeEcmaScript();
+    	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Talk_Talk_Product__c> products = [SELECT Distance__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
     	Decimal oldDistance = products[0].Distance__c;
     	xml = talktalkXml.replace('<ns:Distance>2540.55</ns:Distance>', '<ns:Distance>2000</ns:Distance>');
-    	parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, xml, error
-    	);
-    	parser.parsePayload();
+    	xml = xml.escapeEcmaScript();
+    	response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	products = [SELECT Distance__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef];
     	System.assertNotEquals(oldDistance, products[0].Distance__c);
     }
@@ -167,12 +140,9 @@ private class TestQuoteHandler
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
-    	String xml = '';
     	String error = 'Any old error';
-    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, xml, error
-    	);
-    	parser.parsePayload();
+    	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"","error":"' + error + '"}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Talk_Talk_Product__c> products = Database.query('SELECT Error_Message__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
     	System.assert(products.size() == 1);
     	System.assertEquals(error, products[0].Error_Message__c);
@@ -184,19 +154,14 @@ private class TestQuoteHandler
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
-    	String error = '';
-    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, talktalkXml, error
-    	);
-    	parser.parsePayload();
+    	String xml = talktalkXml.escapeEcmaScript();
+    	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Talk_Talk_Product__c> products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
-    	System.assert(products.size() == 4);
-    	String xml = '';
-    	error = 'Any old error';
-    	parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, xml, error
-    	);
-    	parser.parsePayload();
+    	System.assert(products.size() == 8);
+    	String error = 'Any old error';
+    	response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"","error":"' + error + '"}]}';
+    	QuoteHandler.parseQuote(response);
     	products = Database.query('SELECT Error_Message__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
     	System.assert(products.size() == 1);
     	System.assertEquals(error, products[0].Error_Message__c);
@@ -208,23 +173,18 @@ private class TestQuoteHandler
     	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
     	insert llqr;
     	String siteRef = llqr.Id;
-    	String xml = '';
     	String error = 'Any old error';
-    	QuoteHandler.TalktalkResponseParser parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, xml, error
-    	);
-    	parser.parsePayload();
+    	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"","error":"' + error + '"}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Talk_Talk_Product__c> products = Database.query('SELECT Error_Message__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
     	System.assert(products.size() == 1);
     	System.assertEquals(error, products[0].Error_Message__c);
-    	error = '';
-    	parser = new QuoteHandler.TalktalkResponseParser(
-    		siteRef, null, null, null, talktalkXml, error
-    	);
-    	parser.parsePayload();
+    	String xml = talktalkXml.escapeEcmaScript();
+    	response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	products = Database.query('SELECT Id FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef');
     	System.debug(products.size());
-    	System.assert(products.size() == 4);
+    	System.assert(products.size() == 8);
     }
     
     @isTest static void virginMediaErrorTest()
@@ -233,21 +193,12 @@ private class TestQuoteHandler
     	insert llqr;
     	String siteRef = llqr.Id;
     	// Create 2 products the second of which has an error
-    	String bearer = '100 Mb';
-    	String bandwidth = '10 Mb';
-    	String term = '3';
-    	String error = '';
-    	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, virginXml, error
-    	);
-    	parser.parsePayload();
-    	String xml = '';
-    	term = '5';
-    	error = 'Any old error';
-    	parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, xml, error
-    	);
-    	parser.parsePayload();
+    	String xml = virginXml.escapeEcmaScript();
+    	String response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"3","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
+    	String error = 'Any old error';
+    	response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"5","xml":"","error":"' + error + '"}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Virgin_Media_Product__c> products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
     	// Cannot filter a SOQL by text area values
     	List<Virgin_Media_Product__c> errorProducts = new List<Virgin_Media_Product__c>();
@@ -266,26 +217,15 @@ private class TestQuoteHandler
     	insert llqr;
     	String siteRef = llqr.Id;
     	// Create 2 valid products
-    	String bearer = '100 Mb';
-    	String bandwidth = '10 Mb';
-    	String term = '3';
-    	String error = '';
-    	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, virginXml, error
-    	);
-    	parser.parsePayload();
-    	term = '5';
-    	parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, virginXml, error
-    	);
-    	parser.parsePayload();
+    	String xml = virginXml.escapeEcmaScript();
+    	String response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"3","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
+    	response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"5","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	// Parse error response for same product as the second existing valid
-    	String xml = '';
-    	error = 'Any old error';
-    	parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, xml, error
-    	);
-    	parser.parsePayload();
+    	String error = 'Any old error';
+    	response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"5","xml":"","error":"' + error + '"}]}';
+    	QuoteHandler.parseQuote(response);
     	// We stiil have 2 products 1 of which overridden with error
     	List<Virgin_Media_Product__c> products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
     	List<Virgin_Media_Product__c> errorProducts = new List<Virgin_Media_Product__c>();
@@ -304,21 +244,12 @@ private class TestQuoteHandler
     	insert llqr;
     	String siteRef = llqr.Id;
     	// Create 2 products the second of which has an error
-    	String bearer = '100 Mb';
-    	String bandwidth = '10 Mb';
-    	String term = '3';
-    	String error = '';
-    	QuoteHandler.VirginResponseParser parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, virginXml, error
-    	);
-    	parser.parsePayload();
-    	String xml = '';
-    	term = '5';
-    	error = 'Any old error';
-    	parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, xml, error
-    	);
-    	parser.parsePayload();
+    	String xml = virginXml.escapeEcmaScript();
+    	String response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"3","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
+    	String error = 'Any old error';
+    	response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"5","xml":"","error":"' + error + '"}]}';
+    	QuoteHandler.parseQuote(response);
     	List<Virgin_Media_Product__c> products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
     	List<Virgin_Media_Product__c> errorProducts = new List<Virgin_Media_Product__c>();
     	for (Virgin_Media_Product__c product : products) {
@@ -329,11 +260,8 @@ private class TestQuoteHandler
     	System.assert(products.size() == 2);
     	System.assert(errorProducts.size() == 1);
     	// Now overwrite error product with valid one
-    	error = '';
-    	parser = new QuoteHandler.VirginResponseParser(
-    		siteRef, bearer, bandwidth, term, virginXml, error
-    	);
-    	parser.parsePayload();
+    	response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"5","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
     	// Both products are now valid products
     	products = [SELECT Id, Error_Message__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
     	errorProducts = new List<Virgin_Media_Product__c>();
@@ -353,20 +281,26 @@ private class TestQuoteHandler
 		String[] bearers = new String[]{'100Mb'};
 		String[] bandwidths = new String[]{'10Mb', '20Mb'};
 		String[] terms = new String[]{'1', '3'};
+		String[] families = new String[]{'Installation Charges', 'Recurring Charges'};
+		List<Product2> products2 = new List<Product2>();
 		for (String bearer: bearers) {
 			for (String bandwidth: bandwidths) {
 				for (String term: terms) {
-					Product2 prod = new Product2(
-			    		Name = bandwidth + ' / ' + bearer + ' - ' + term + ' year',
-			    		Bearer__c = bearer,
-			    		Bandwidth__c = bandwidth,
-			    		Term__c = term,
-			    		IsActive = true,
-			    		lineProvider__c = 'Talktalk'
-			    	);
-			    	insert prod;
+					for (String family: families) {
+						Product2 prod = new Product2(
+				    		Name = bandwidth + ' / ' + bearer + ' - ' + term + ' year',
+				    		Bearer__c = bearer,
+				    		Bandwidth__c = bandwidth,
+				    		Term__c = term,
+				    		Family = family,
+				    		IsActive = true,
+				    		lineProvider__c = 'Talktalk'
+				    	);
+				    	products2.add(prod);
+					}
 				}
 			}
 		}
+		insert products2;
 	}
 }

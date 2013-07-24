@@ -20,22 +20,16 @@ public class LeasedLineResults{
     public List<LLProducts> gettalktalkproducts() {
         if(talktalkproducts == null){
             talktalkproducts = new List<LLProducts>();
-        String oppid = ApexPages.currentPage().getParameters().get('opportunityid');
-        String siteref = ApexPages.currentPage().getParameters().get('siteref');
-        //List<Talk_Talk_Product__c> talktalkproducts = [SELECT Product__c, Connection_Price_1_Year__c, Connection_Price_3_Year__c,
-        //                           Rental_Price__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
-        //                           Collector_Exchange_Name__c, Zone__c, Distance__c
-        //                   FROM Talk_Talk_Product__c
-        //                    WHERE Site_Ref__c =: siteref
-        //                   ];
-        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Connection_Price__c, Product_Term__c, Product_Id__c,
-                                   Rental_Price__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
-                                   Collector_Exchange_Name__c, Zone__c, Distance__c, Error_Message__c
-                           FROM Talk_Talk_Product__c
-                            WHERE Site_Ref__c =: siteref
-                           ]){
-                   talktalkproducts.add(new LLProducts(ttp));
-        }
+	        String oppid = ApexPages.currentPage().getParameters().get('opportunityid');
+	        String siteref = ApexPages.currentPage().getParameters().get('siteref');
+	        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Price__c, Pricing__c, Product_Term__c,
+				Product_Id__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
+				Collector_Exchange_Name__c, Zone__c, Distance__c, Error_Message__c
+				FROM Talk_Talk_Product__c
+				WHERE Site_Ref__c =: siteref
+	        ]){
+				talktalkproducts.add(new LLProducts(ttp));
+	        }
         }
         return talktalkproducts;   
     }    
@@ -93,7 +87,7 @@ public class LeasedLineResults{
 					OpportunityLineItem oli = new OpportunityLineItem(
 						OpportunityId = oppid, 
 						PriceBookEntryId = pid, 
-						UnitPrice = cCon.connectionprice, 
+						UnitPrice = cCon.price, 
 						Quantity = 1
 					);
 					insert oli;
@@ -174,12 +168,12 @@ public class LeasedLineResults{
         	get { return product.Product_Term__c; }
         }
         
-        public Decimal connectionprice {
-            get { return product.Connection_Price__c; }
+        public Decimal price {
+            get { return product.Price__c; }
         }
         
-        public Decimal rentalprice {
-            get { return product.Rental_Price__c; }  
+        public String pricing {
+        	get { return product.Pricing__c; }
         }
         
         public String productid {

@@ -79,6 +79,31 @@ global class QuoteHandler
     	}
     }
     
+    public class Product2Handler
+    {
+    	private List<Product2> products2;
+    	private Map<String, String> families;
+    	
+    	public Product2Handler(String provider)
+    	{
+    		products2 = [SELECT Bearer__c, Bandwidth__c, Term__c, Family FROM Product2 WHERE lineProvider__c = :provider AND IsDeleted = false];
+    		families = new Map<String, String>();
+    		families.put('Connection', 'Installation Charges');
+    		families.put('Annual', 'Recurring Charges');
+    	}
+    	
+    	public String getProduct2Id(String bearer, String bandwidth, String term, String family)
+    	{
+    		String[] termParts = term.splitByCharacterType();
+    		for (Product2 prod: products2) {
+    			if (prod.Bearer__c == bearer && prod.Bandwidth__c == bandwidth && prod.Term__c == termParts[0] && prod.Family == families.get(family)) {
+    				return prod.Id;
+    			}
+    		}
+    		return '';
+    	} 
+    }
+    
     public class TalktalkResponseParser extends QuoteResponseParser
     {
 		public String collectorExchangeName;
@@ -86,14 +111,9 @@ global class QuoteHandler
 		public String ethernetExchangeName;
 		public String fibreExchangeName;
 		public String zone;
-		public List<TalktalkQuoteParser> quotes;
+		private List<TalktalkQuoteParser> quotes;
 		
-		public TalktalkResponseParser(String siteRef, String bearer, String bandwidth, String term, String xml, String error)
-        {
-        	super(siteRef, bearer, bandwidth, term, xml, error);
-        }
-        
-        override public void parsePayload()
+		override public void parsePayload()
     	{
     		if (isValid()) {
 	    		quotes = new List<TalktalkQuoteParser>();
@@ -131,39 +151,48 @@ global class QuoteHandler
     	
     	private void createObjects()
     	{
-    		List<Product2> products2 = [SELECT Bearer__c, Bandwidth__c, Term__c FROM Product2 WHERE lineProvider__c = 'Talktalk' AND IsDeleted = false];
+    		Product2Handler handler = new Product2Handler('Talktalk');
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			String[] parts =  quoteParser.service.split('/');
-    			String productId = getProduct2Id(products2, parts[1].trim(), parts[0].trim(), quoteParser.productTerm);
+    			String pricing = 'Connection';
+    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, pricing);
     			if (productId.length() > 0) {
 	    			Talk_talk_Product__c product = new Talk_talk_Product__c(
 	    				Site_Ref__c = siteRef,
-	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + quoteParser.productTerm,
+	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + pricing + ' ' + quoteParser.productTerm,
 	    				Collector_Exchange_Name__c = collectorExchangeName,
 	    				Product_Term__c = quoteParser.productTerm,
-	    				Connection_Price__c = Decimal.valueOf(quoteParser.setUpPrice),
 	    				Distance__c = Decimal.valueOf(distance),
 	    				Ethernet_Exchange_Name__c = ethernetExchangeName,
 	    				Fibre_Exchange_Name__c = fibreExchangeName,
 	    				Product__c = quoteParser.service,
-	    				Rental_Price__c = Decimal.valueOf(quoteParser.annualPrice),
+	    				Pricing__c = pricing,
+	    				Price__c = Decimal.valueOf(quoteParser.setUpPrice),
+	    				Zone__c = zone,
+	    				Product_Id__c = productId
+	    			);
+	    			upsert product Unique__c;
+    			}
+    			pricing = 'Annual';
+    			productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, pricing);
+    			if (productId.length() > 0) {
+	    			Talk_talk_Product__c product = new Talk_talk_Product__c(
+	    				Site_Ref__c = siteRef,
+	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + pricing + ' ' + quoteParser.productTerm,
+	    				Collector_Exchange_Name__c = collectorExchangeName,
+	    				Product_Term__c = quoteParser.productTerm,
+	    				Distance__c = Decimal.valueOf(distance),
+	    				Ethernet_Exchange_Name__c = ethernetExchangeName,
+	    				Fibre_Exchange_Name__c = fibreExchangeName,
+	    				Product__c = quoteParser.service,
+	    				Pricing__c = pricing,
+	    				Price__c = Decimal.valueOf(quoteParser.annualPrice),
 	    				Zone__c = zone,
 	    				Product_Id__c = productId
 	    			);
 	    			upsert product Unique__c;
     			}
     		}
-    	}
-    	
-    	private String getProduct2Id(List<Product2> products2, String bearer, String bandwidth, String term)
-    	{
-    		String[] termParts = term.splitByCharacterType();
-    		for (Product2 prod: products2) {
-    			if (prod.Bearer__c == bearer && prod.Bandwidth__c == bandwidth && prod.Term__c == termParts[0]) {
-    				return prod.Id;
-    			}
-    		}
-    		return '';
     	}
     	
     	private void deleteObjects()
@@ -243,11 +272,6 @@ global class QuoteHandler
     	private String rentalPrice;
     	private String totalPrice;    	
     	
-    	public VirginResponseParser(String siteRef, String bearer, String bandwidth, String term, String xml, String error)
-        {
-        	super(siteRef, bearer, bandwidth, term, xml, error);
-        }
-    	
     	override public void parsePayload()
     	{
     		if (isValid()) {
@@ -300,9 +324,9 @@ global class QuoteHandler
 				Flavour__c = flavour,
 				Product_term__c = term,
 				Rental_Price__c = Decimal.valueOf(rentalPrice),
-				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice)
+				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice),
+				Error_Message__c = ''
 			);
-			System.debug(product);
 			upsert product Unique__c;
     	}
     	
@@ -335,18 +359,7 @@ global class QuoteHandler
         public String error;
         public String emptyUnique;
         
-        public QuoteResponseParser() {}
-        
-        public QuoteResponseParser(String siteRef, String bearer, String bandwidth, String term, String xml, String error)
-        {
-            this.siteRef = siteRef;
-            this.bearer = bearer;
-            this.bandwidth = bandwidth;
-            this.term = term;
-            this.xml = xml;
-            this.error = error;
-            this.emptyUnique = siteRef + ' -';
-        }
+        //public QuoteResponseParser() {System.debug('test');}
         
         abstract public void parsePayload();
         
@@ -364,6 +377,7 @@ global class QuoteHandler
 	    {
 	    	try {
     			Leased_Line_Quote_Request__c llqr = Database.query('SELECT Id FROM Leased_Line_Quote_Request__c WHERE Id = :siteRef');
+    			emptyUnique = siteRef + ' -';
     			return;
     		} catch (QueryException e) {
 				throw new InvalidSiteReferenceException(INVALID_SITE_REF);
