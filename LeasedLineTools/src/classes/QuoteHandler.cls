@@ -6,12 +6,12 @@ global class QuoteHandler
     static public final String INVALID_SITE_REF = 'Invalid Site Reference';
     
     static private JSONParser parser;
-    static private List<QuoteResponseParser> products;
+    static private list<QuoteResponseParser> products;
     
     static webservice String parseQuote(String response)
     {
         String status = 'Data not loaded';
-        products = new List<QuoteResponseParser>();
+        products = new list<QuoteResponseParser>();
         String ready = 'pending';
         String provider = 'unknown';
         String siteRef;
@@ -81,7 +81,7 @@ global class QuoteHandler
     
     public class Product2Handler
     {
-    	private List<Product2> products2;
+    	private list<Product2> products2;
     	
     	public Product2Handler(String provider)
     	{
@@ -107,12 +107,12 @@ global class QuoteHandler
 		public String ethernetExchangeName;
 		public String fibreExchangeName;
 		public String zone;
-		private List<TalktalkQuoteParser> quotes;
+		private list<TalktalkQuoteParser> quotes;
 		
 		override public void parsePayload()
     	{
     		if (isValid()) {
-	    		quotes = new List<TalktalkQuoteParser>();
+	    		quotes = new list<TalktalkQuoteParser>();
 	    		XMLDom dom = new XMLDom(xml);
 	    		System.debug(dom);
 	    		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
@@ -123,7 +123,7 @@ global class QuoteHandler
 	    			fibreExchangeName = searchResponseDetail.getValue('ns:FibreExchangeName');
 	    			zone = searchResponseDetail.getValue('ns:Zone');
 	    		}
-	    		List<XMLDom.Element> circuits = dom.getElementsByTagName('ns:Circuit');
+	    		list<XMLDom.Element> circuits = dom.getElementsByTagName('ns:Circuit');
 	    		if (circuits != null) {
 		    		for (XMLDom.Element circuit: circuits) {
 		    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit, 1);
@@ -147,47 +147,31 @@ global class QuoteHandler
     	
     	private void createObjects()
     	{
-    		List<Talk_talk_Product__c> allProducts = new List<Talk_talk_Product__c>();
+    		list<Talk_talk_Product__c> allProducts = new list<Talk_talk_Product__c>();
     		Product2Handler handler = new Product2Handler('Talktalk');
+    		list<Schema.PicklistEntry> entries = getPicklist('Talk_talk_Product__c', 'Product_Family__c');
     		for (TalktalkQuoteParser quoteParser: quotes) {
-    			String[] parts =  quoteParser.service.split('/');
-    			String family = 'Installation Charges';
-    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
-    			if (productId.length() > 0) {
-	    			Talk_talk_Product__c product = new Talk_talk_Product__c(
-	    				Site_Ref__c = siteRef,
-	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + family + ' ' + quoteParser.productTerm,
-	    				Collector_Exchange_Name__c = collectorExchangeName,
-	    				Product_Term__c = quoteParser.productTerm,
-	    				Distance__c = Decimal.valueOf(distance),
-	    				Ethernet_Exchange_Name__c = ethernetExchangeName,
-	    				Fibre_Exchange_Name__c = fibreExchangeName,
-	    				Product__c = quoteParser.service,
-	    				Product_Family__c = family,
-	    				Price__c = Decimal.valueOf(quoteParser.setUpPrice),
-	    				Zone__c = zone,
-	    				Product_Id__c = productId
-	    			);
-	    			allProducts.add(product);
-    			}
-    			family = 'Recurring Charges';
-    			productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
-    			if (productId.length() > 0) {
-	    			Talk_talk_Product__c product = new Talk_talk_Product__c(
-	    				Site_Ref__c = siteRef,
-	    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + family + ' ' + quoteParser.productTerm,
-	    				Collector_Exchange_Name__c = collectorExchangeName,
-	    				Product_Term__c = quoteParser.productTerm,
-	    				Distance__c = Decimal.valueOf(distance),
-	    				Ethernet_Exchange_Name__c = ethernetExchangeName,
-	    				Fibre_Exchange_Name__c = fibreExchangeName,
-	    				Product__c = quoteParser.service,
-	    				Product_Family__c = family,
-	    				Price__c = Decimal.valueOf(quoteParser.annualPrice),
-	    				Zone__c = zone,
-	    				Product_Id__c = productId
-	    			);
-	    			allProducts.add(product);
+    			for (Schema.PicklistEntry entry: entries) {
+    				String family = entry.getValue();
+	    			String[] parts =  quoteParser.service.split('/');
+	    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
+	    			if (productId.length() > 0) {
+		    			Talk_talk_Product__c product = new Talk_talk_Product__c(
+		    				Site_Ref__c = siteRef,
+		    				Unique__c = emptyUnique + ' ' + quoteParser.service + ' - ' + family + ' ' + quoteParser.productTerm,
+		    				Collector_Exchange_Name__c = collectorExchangeName,
+		    				Product_Term__c = quoteParser.productTerm,
+		    				Distance__c = Decimal.valueOf(distance),
+		    				Ethernet_Exchange_Name__c = ethernetExchangeName,
+		    				Fibre_Exchange_Name__c = fibreExchangeName,
+		    				Product__c = quoteParser.service,
+		    				Product_Family__c = family,
+		    				Price__c = Decimal.valueOf(quoteParser.setUpPrice),
+		    				Zone__c = zone,
+		    				Product_Id__c = productId
+		    			);
+		    			allProducts.add(product);
+	    			}
     			}
     		}
 	    	upsert allProducts Unique__c;
@@ -235,12 +219,12 @@ global class QuoteHandler
     	
     	private Integer term;
     	private XMLDom.Element element;
-    	private Map<Integer, String> terms;
+    	private map<Integer, String> terms;
     	
     	public TalktalkQuoteParser(XMLDom.Element element, Integer term)
     	{
     		this.element = element;
-    		this.terms = new Map<Integer, String>();
+    		this.terms = new map<Integer, String>();
     		this.terms.put(1, '1 year');
     		this.terms.put(3, '3 years');
     		this.term = term;
@@ -278,7 +262,7 @@ global class QuoteHandler
 	            if (quotePricing != null) {
 	            	BPTQuote = quotePricing.getAttribute('BPTQuoteRefNo');
 	            }
-	            List<XMLDom.Element> sites = dom.getElementsByTagName('Site');
+	            list<XMLDom.Element> sites = dom.getElementsByTagName('Site');
 	            if (sites != null && sites.size() > 1) {
 	            	flavour = sites[1].getAttribute('AccessFlavour');
 	            }
@@ -393,6 +377,14 @@ global class QuoteHandler
         }
         
         virtual protected void checkError() {}
+        
+	    protected list<Schema.PicklistEntry> getPicklist(String ObjectApi_name, String fieldName)
+	    {
+	    	Schema.SObjectType objType = Schema.getGlobalDescribe().get(ObjectApi_name);
+	    	Schema.DescribeSObjectResult objDescribe = objType.getDescribe();
+	    	map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
+	    	return fieldMap.get(fieldName).getDescribe().getPickListValues();
+	    }
     }
     
     public class ProductParserFactory
