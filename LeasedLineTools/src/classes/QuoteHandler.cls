@@ -147,6 +147,7 @@ global class QuoteHandler
     	
     	private void createObjects()
     	{
+    		List<Talk_talk_Product__c> allProducts = new List<Talk_talk_Product__c>();
     		Product2Handler handler = new Product2Handler('Talktalk');
     		for (TalktalkQuoteParser quoteParser: quotes) {
     			String[] parts =  quoteParser.service.split('/');
@@ -167,7 +168,7 @@ global class QuoteHandler
 	    				Zone__c = zone,
 	    				Product_Id__c = productId
 	    			);
-	    			upsert product Unique__c;
+	    			allProducts.add(product);
     			}
     			family = 'Recurring Charges';
     			productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
@@ -186,9 +187,10 @@ global class QuoteHandler
 	    				Zone__c = zone,
 	    				Product_Id__c = productId
 	    			);
-	    			upsert product Unique__c;
+	    			allProducts.add(product);
     			}
     		}
+	    	upsert allProducts Unique__c;
     	}
     	
     	private void deleteObjects()
