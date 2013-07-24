@@ -126,10 +126,7 @@ global class QuoteHandler
 	    		list<XMLDom.Element> circuits = dom.getElementsByTagName('ns:Circuit');
 	    		if (circuits != null) {
 		    		for (XMLDom.Element circuit: circuits) {
-		    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit, 1);
-		    			quoteParser.parsePayload();
-		    			quotes.add(quoteParser);
-		    			quoteParser = new TalktalkQuoteParser(circuit, 3);
+		    			TalktalkQuoteParser quoteParser = new TalktalkQuoteParser(circuit);
 		    			quoteParser.parsePayload();
 		    			quotes.add(quoteParser);
 		    		}
@@ -147,30 +144,34 @@ global class QuoteHandler
     	
     	private void createObjects()
     	{
-    		list<Talk_talk_Product__c> allProducts = new list<Talk_talk_Product__c>();
     		Product2Handler handler = new Product2Handler('Talktalk');
-    		list<Schema.PicklistEntry> entries = getPicklist('Talk_talk_Product__c', 'Product_Family__c');
+    		list<Talk_talk_Product__c> allProducts = new list<Talk_talk_Product__c>();
+    		list<Schema.PicklistEntry> familyEntries = getPicklist('Talk_talk_Product__c', 'Product_Family__c');
+    		list<Schema.PicklistEntry> termEntries = getPicklist('Talk_talk_Product__c', 'Product_Term__c');
     		for (TalktalkQuoteParser quoteParser: quotes) {
-    			for (Schema.PicklistEntry entry: entries) {
-    				String family = entry.getValue();
+    			for (Schema.PicklistEntry familyEntry: familyEntries) {
+    				String family = familyEntry.getValue();
 	    			String[] parts =  quoteParser.getService().split('/');
-	    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), quoteParser.productTerm, family);
-	    			if (productId.length() > 0) {
-		    			Talk_talk_Product__c product = new Talk_talk_Product__c(
-		    				Site_Ref__c = siteRef,
-		    				Unique__c = emptyUnique + ' ' + quoteParser.getService() + ' - ' + family + ' ' + quoteParser.productTerm,
-		    				Collector_Exchange_Name__c = collectorExchangeName,
-		    				Product_Term__c = quoteParser.getProductTerm(),
-		    				Distance__c = Decimal.valueOf(distance),
-		    				Ethernet_Exchange_Name__c = ethernetExchangeName,
-		    				Fibre_Exchange_Name__c = fibreExchangeName,
-		    				Product__c = quoteParser.getService(),
-		    				Product_Family__c = family,
-		    				Price__c = Decimal.valueOf(quoteParser.getPrice(family)),
-		    				Zone__c = zone,
-		    				Product_Id__c = productId
-		    			);
-		    			allProducts.add(product);
+	    			for (Schema.PicklistEntry termEntry: termEntries) {
+		    			String term = termEntry.getValue();
+		    			String productId = handler.getProduct2Id(parts[1].trim(), parts[0].trim(), term, family);
+		    			if (productId.length() > 0) {
+			    			Talk_talk_Product__c product = new Talk_talk_Product__c(
+			    				Site_Ref__c = siteRef,
+			    				Unique__c = emptyUnique + ' ' + quoteParser.getService() + ' - ' + family + ' - ' + term,
+			    				Collector_Exchange_Name__c = collectorExchangeName,
+			    				Product_Term__c = term,
+			    				Distance__c = Decimal.valueOf(distance),
+			    				Ethernet_Exchange_Name__c = ethernetExchangeName,
+			    				Fibre_Exchange_Name__c = fibreExchangeName,
+			    				Product__c = quoteParser.getService(),
+			    				Product_Family__c = family,
+			    				Price__c = Decimal.valueOf(quoteParser.getPrice(family, term)),
+			    				Zone__c = zone,
+			    				Product_Id__c = productId
+			    			);
+			    			allProducts.add(product);
+		    			}
 	    			}
     			}
     		}
@@ -214,19 +215,13 @@ global class QuoteHandler
     {
     	private String service;
     	private String annualPrice;
-    	private String setUpPrice;
-    	private String productTerm;
-    	private Integer term;
+    	private String SetUp1yr;
+    	private String SetUp3yr;
     	private XMLDom.Element element;
-    	private map<Integer, String> terms;
     	
-    	public TalktalkQuoteParser(XMLDom.Element element, Integer term)
+    	public TalktalkQuoteParser(XMLDom.Element element)
     	{
     		this.element = element;
-    		this.terms = new map<Integer, String>();
-    		this.terms.put(1, '1 year');
-    		this.terms.put(3, '3 years');
-    		this.term = term;
     	}
     	
     	public void parsePayload()
@@ -234,13 +229,8 @@ global class QuoteHandler
     		if (element != null) {
     			service  = element.getValue('ns:Service');
     			annualPrice  = element.getValue('ns:AnnualPrice');
-    			if (term == 1) {
-    				setUpPrice = element.getValue('ns:SetUp1yr');
-    			}
-    			if (term == 3) {
-    				setUpPrice = element.getValue('ns:SetUp3yr');
-    			}
-    			productTerm = terms.get(term);
+    			SetUp1yr = element.getValue('ns:SetUp1yr');
+    			SetUp3yr = element.getValue('ns:SetUp3yr');
     		}
     	}
     	
@@ -249,15 +239,16 @@ global class QuoteHandler
     		return service;
     	}
     	
-    	public String getProductTerm()
-    	{
-    		return productTerm;
-    	}
-    	
-    	public String getPrice(String family)
+    	public String getPrice(String family, String term)
     	{
     		if (family.containsIgnoreCase('installation')) {
-    			return setUpPrice;
+    			String[] termParts = term.splitByCharacterType();
+    			if (termParts[0] == '1') {
+    				return SetUp1yr;
+    			}
+    			if (termParts[0] == '3') {
+    				return SetUp3yr;
+    			}
     		}
     		if (family.containsIgnoreCase('recurring')) {
     			return annualPrice;
