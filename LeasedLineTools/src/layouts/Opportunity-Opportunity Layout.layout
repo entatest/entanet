@@ -203,10 +203,6 @@
         <fields>NAME</fields>
         <relatedList>BT_Wholesale_Product__c.Opportunity__c</relatedList>
     </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Talk_Talk_Product__c.Opportunity_ID__c</relatedList>
-    </relatedLists>
     <relatedObjects>AccountId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>

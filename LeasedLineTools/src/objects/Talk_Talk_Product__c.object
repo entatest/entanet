@@ -113,6 +113,77 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Pricing__c</fullName>
+        <externalId>false</externalId>
+        <label>Pricing</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Connection</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Product_Family__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Family</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Installation Charges</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Recurring Charges</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Product_Id__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Id</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Talk Talk Products</relationshipLabel>
+        <relationshipName>Talk_Talk_Products</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Product_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Term</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1 year</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3 years</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Product__c</fullName>
         <externalId>false</externalId>
         <label>Product</label>

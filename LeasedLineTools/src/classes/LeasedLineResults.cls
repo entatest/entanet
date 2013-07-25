@@ -20,22 +20,16 @@ public class LeasedLineResults{
     public List<LLProducts> gettalktalkproducts() {
         if(talktalkproducts == null){
             talktalkproducts = new List<LLProducts>();
-        String oppid = ApexPages.currentPage().getParameters().get('opportunityid');
-        String siteref = ApexPages.currentPage().getParameters().get('siteref');
-        //List<Talk_Talk_Product__c> talktalkproducts = [SELECT Product__c, Connection_Price_1_Year__c, Connection_Price_3_Year__c,
-        //                           Rental_Price__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
-        //                           Collector_Exchange_Name__c, Zone__c, Distance__c
-        //                   FROM Talk_Talk_Product__c
-        //                    WHERE Site_Ref__c =: siteref
-        //                   ];
-        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Connection_Price_1_Year__c, Connection_Price_3_Year__c,
-                                   Rental_Price__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
-                                   Collector_Exchange_Name__c, Zone__c, Distance__c
-                           FROM Talk_Talk_Product__c
-                            WHERE Site_Ref__c =: siteref
-                           ]){
-                   talktalkproducts.add(new LLProducts(ttp));
-        }
+	        String oppid = ApexPages.currentPage().getParameters().get('opportunityid');
+	        String siteref = ApexPages.currentPage().getParameters().get('siteref');
+	        for(Talk_Talk_Product__c ttp : [SELECT Product__c, Price__c, Product_Family__c, Product_Term__c,
+				Product_Id__c, Fibre_Exchange_Name__c, Ethernet_Exchange_Name__c,
+				Collector_Exchange_Name__c, Zone__c, Distance__c, Error_Message__c
+				FROM Talk_Talk_Product__c
+				WHERE Site_Ref__c =: siteref
+	        ]){
+				talktalkproducts.add(new LLProducts(ttp));
+	        }
         }
         return talktalkproducts;   
     }    
@@ -84,39 +78,36 @@ public class LeasedLineResults{
         pageRef.setRedirect(false);
         return pageRef; 
         **/
+        List<PricebookEntry> pbes = [SELECT Product2Id FROM PricebookEntry];
         for(LLProducts cCon:gettalktalkproducts())
         {
-            if(cCon.selected==true){
-                String pid = '';
-                if (cCon.productname == '10MB / 100MB'){
-                    pid = '01ug0000003qBzqAAE';
+            if (cCon.selected==true && cCon.term == '1 year') {
+                String pid = getPricebookEntryId(pbes, cCon.productid);
+                if (pid.length() > 0) {
+					OpportunityLineItem oli = new OpportunityLineItem(
+						OpportunityId = oppid, 
+						PriceBookEntryId = pid, 
+						UnitPrice = cCon.price, 
+						Quantity = 1
+					);
+					insert oli;
                 }
-                if (cCon.productname == '20MB / 100MB'){
-                    pid = '01ug0000003qBzrAAE';
-                }  
-                if (cCon.productname == '30MB / 100MB'){
-                    pid = '01ug0000003qBzsAAE';
-                }       
-                if (cCon.productname == '40MB / 100MB'){
-                    pid = '01ug0000003qBztAAE';
-                } 
-                if (cCon.productname == '50MB / 100MB'){
-                    pid = '01ug0000003qBzuAAE';
-                }  
-                if (cCon.productname == '100MB / 100MB'){
-                    pid = '01ug0000003qBzvAAE';
-                }                  
-         OpportunityLineItem oli = new OpportunityLineItem(OpportunityId = oppid, 
-                                              PriceBookEntryId = pid, 
-                                              UnitPrice = cCon.connectionprice1year, 
-                                              Quantity = 1);
-        insert oli;                
             }
         }          
         
         PageReference pageRef = new PageReference('/'+oppid);
         pageRef.setRedirect(false);
         return pageRef;
+    }
+    
+    private String getPricebookEntryId(List<PricebookEntry> pbes, String productId)
+    {
+    	for (PricebookEntry pbe: pbes) {
+    		if (pbe.Product2Id == productId) {
+    			return pbe.Id;
+    		}
+    	}
+    	return '';
     }
     
     public PageReference newPricingRequest(){
@@ -173,16 +164,20 @@ public class LeasedLineResults{
             get { return product.product__c; }
         }
         
-        public Decimal connectionprice1year {
-            get { return product.Connection_Price_1_Year__c; }
+        public String term {
+        	get { return product.Product_Term__c; }
         }
         
-        public Decimal connectionprice3year {
-            get { return product.Connection_Price_3_Year__c; }
+        public Decimal price {
+            get { return product.Price__c; }
         }
         
-        public Decimal rentalprice {
-            get { return product.Rental_Price__c; }  
+        public String family {
+        	get { return product.Product_Family__c; }
+        }
+        
+        public String productid {
+        	get { return product.Product_Id__c; }
         }
         
         public Boolean selected
