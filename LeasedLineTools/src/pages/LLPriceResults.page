@@ -29,15 +29,12 @@
                 <apex:column headerValue="Product">
                     <apex:outputText value="{!talkprod.productname}"/>
                 </apex:column>
-                <apex:column headerValue="Connection Price">
-                    <apex:outputText value="{!talkprod.connectionprice}"/>
+                <apex:column headerValue="Price">
+                    <apex:outputText value="{!talkprod.price}"/>
                 </apex:column>
                 <apex:column headerValue="Term">
                     <apex:outputText value="{!talkprod.term}"/>
-                </apex:column>
-                <apex:column headerValue="Rental Price">
-                    <apex:outputText value="{!talkprod.rentalprice}"/>
-                </apex:column>                
+                </apex:column>               
                 <apex:column headerValue="Include On Quote">
                     <apex:inputCheckbox value="{!talkprod.selected}"/>
                 </apex:column>
