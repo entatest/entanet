@@ -49,6 +49,7 @@
         <members>Leased_Line_Quote_Request__c.TOID__c</members>
         <members>Leased_Line_Quote_Request__c.Town__c</members>
         <members>Leased_Line_Quote_Request__c.xml__c</members>
+        <members>Product_Loaded_Status__c.Error_Message__c</members>
         <members>Product_Loaded_Status__c.Leased_Line_Quote_Request__c</members>
         <members>Product_Loaded_Status__c.Provider__c</members>
         <members>Product_Loaded_Status__c.Status__c</members>

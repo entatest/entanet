@@ -74,7 +74,8 @@ private class TestQuoteHandler
     	String siteRef = llqr.Id;
     	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"","error":""}]}';
     	QuoteHandler.parseQuote(response);
-    	List<Product_Loaded_Status__c> statuses = Database.query('SELECT Status__c FROM Product_Loaded_Status__c WHERE Leased_Line_Quote_Request__c = :siteRef');
+    	List<Product_Loaded_Status__c> statuses = [SELECT Status__c, Error_Message__c FROM Product_Loaded_Status__c WHERE Leased_Line_Quote_Request__c = :siteRef];
+	    System.assert(statuses[0].Error_Message__c.length() > 0);
 	    System.assertEquals('failure', statuses[0].Status__c);
     }
     
@@ -86,7 +87,7 @@ private class TestQuoteHandler
     	String xml = talktalkXml.escapeEcmaScript();
     	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"' + xml + '","error":""}]}';
     	QuoteHandler.parseQuote(response);
-    	List<Product_Loaded_Status__c> statuses = Database.query('SELECT Status__c FROM Product_Loaded_Status__c WHERE Leased_Line_Quote_Request__c = :siteRef');
+    	List<Product_Loaded_Status__c> statuses = [SELECT Status__c FROM Product_Loaded_Status__c WHERE Leased_Line_Quote_Request__c = :siteRef];
 	    System.assertEquals('success', statuses[0].Status__c);
     }
     

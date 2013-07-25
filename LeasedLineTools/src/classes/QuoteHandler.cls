@@ -7,6 +7,7 @@ global class QuoteHandler
     
     static private JSONParser parser;
     static private list<QuoteResponseParser> products;
+    static private ProductParserFactory factory;
     
     static webservice String parseQuote(String response)
     {
@@ -15,7 +16,6 @@ global class QuoteHandler
         String ready = 'pending';
         String provider = 'unknown';
         String siteRef;
-        ProductParserFactory factory = new ProductParserFactory();
         try {
             parser = JSON.createParser(response);
             while (parser.nextToken() != null) {
@@ -23,13 +23,14 @@ global class QuoteHandler
                 if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
                     provider = parser.getText();
                     System.debug(provider);
+        			factory = new ProductParserFactory(provider);
                 }
                 if (parser.getCurrentToken() == JSONToken.START_ARRAY) {
                     while (parser.nextToken() != null) {
                         // Advance to the start object marker
                         if (parser.getCurrentToken() == JSONToken.START_OBJECT) {
                             // Read object
-                            QuoteResponseParser product = factory.getProductParser(provider);
+                            QuoteResponseParser product = factory.getProductParser();
                             siteRef = product.siteRef;
                             //System.debug(product);
                             products.add(product);
@@ -46,14 +47,14 @@ global class QuoteHandler
             loadProductObjects();
             ready = 'success';
         	status = 'Data loaded successfully';
-        	setReadyStatus(siteRef, provider, ready);
+        	setReadyStatus(siteRef, provider, ready, '');
         } catch (Exception e) {
             status = e.getMessage();
     		if (e instanceof XmlException) {
     			status = INVALID_XML;
     		}
             ready = 'failure';
-        	setReadyStatus(siteRef, provider, ready);
+        	setReadyStatus(siteRef, provider, ready, status);
         }
         return status;
     }
@@ -65,13 +66,14 @@ global class QuoteHandler
         }
     }
     
-    static private void setReadyStatus(String siteRef, String provider, String ready)
+    static private void setReadyStatus(String siteRef, String provider, String ready, String message)
     {
     	try {
 	    	Product_Loaded_Status__c status = new Product_Loaded_Status__c(
 				Leased_Line_Quote_Request__c = siteRef,
 				Provider__c = provider,
-				Status__c = ready
+				Status__c = ready,
+				Error_Message__c = message
 			);
 			insert status;
     	} catch (Exception e) {
@@ -400,13 +402,21 @@ global class QuoteHandler
     
     public class ProductParserFactory
     {
-    	public QuoteResponseParser getProductParser(String parserType)
+    	private String parserType;
+    	
+    	public ProductParserFactory(String parserType)
+    	{
+    		this.parserType = parserType;
+    	}
+    	
+    	public QuoteResponseParser getProductParser()
     	{
     		if (parserType == 'talktalk') {
     			return (TalktalkResponseParser)parser.readValueAs(TalktalkResponseParser.class);
     		}
     		if (parserType == 'virgin') {
-    			return (VirginResponseParser)parser.readValueAs(VirginResponseParser.class);
+    			VirginResponseParser vParser = (VirginResponseParser)parser.readValueAs(VirginResponseParser.class);
+    			return vParser;
     		}
     		return (VoidResponseParser)parser.readValueAs(VoidResponseParser.class);
     	}

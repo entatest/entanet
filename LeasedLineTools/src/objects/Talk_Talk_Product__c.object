@@ -93,23 +93,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Pricing__c</fullName>
-        <externalId>false</externalId>
-        <label>Pricing</label>
-        <picklist>
-            <picklistValues>
-                <fullName>Connection</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Annual</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
-    </fields>
-    <fields>
         <fullName>Product_Family__c</fullName>
         <externalId>false</externalId>
         <label>Product Family</label>
