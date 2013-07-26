@@ -314,10 +314,11 @@ global class QuoteHandler
     			BPT_Quote__c = BPTQuote,
 				Bandwidth__c = bandwidth,
 				Bearer__c = bearer,
-				Connection_Price__c = Decimal.valueOf(connectionPrice),
+				Price__c = Decimal.valueOf(connectionPrice),
 				Flavour__c = flavour,
 				Product_term__c = term,
-				Rental_Price__c = Decimal.valueOf(rentalPrice),
+				Product_Id__c = '',
+			    Product_Family__c = '',
 				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice),
 				Error_Message__c = ''
 			);

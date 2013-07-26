@@ -69,12 +69,12 @@
                 <apex:column headerValue="Product Term">
                     <apex:outputText value="{!vprod.Product_Term__c}"/>
                 </apex:column>
-                <apex:column headerValue="Connection Price">
-                    <apex:outputtext value="£{!vprod.Connection_Price__c}"/>
+                <apex:column headerValue="Price">
+                    <apex:outputtext value="£{!vprod.Price__c}"/>
                 </apex:column>
-                <apex:column headerValue="Rental Price">
-                    <apex:outputtext value="£{!vprod.Rental_Price__c}"/>
-                </apex:column> 
+                <apex:column headerValue="Family">
+                    <apex:outputtext value="£{!vprod.Product_Family__c}"/>
+                </apex:column>
                 <apex:column headerValue="Total Pricing Summary">
                     <apex:outputtext value="£{!vprod.Total_Pricing_Summary__c}"/>
                 </apex:column>
@@ -91,18 +91,18 @@
                 <td align="right" id="choosedetails"><input id="showalldetails" type="button" value="Show All Details"/></td>
             </tr></table>
             <apex:pageBlockTable value="{!talktalkproducts}" var="talkprod">
+                <apex:column headerValue="Product Term">
+                    <apex:outputText value="{!talkprod.Product_Term__c}"/>
+                </apex:column>
                 <apex:column headerValue="Product">
                     <apex:outputText value="{!talkprod.Product__c}"/>
                 </apex:column>
-                <apex:column headerValue="Connection Price 1 Year">
-                    <apex:outputText value="{!talkprod.Product__c}"/>
+                <apex:column headerValue="Price">
+                    <apex:outputText value="{!talkprod.Price__c}"/>
                 </apex:column>
-                <apex:column headerValue="Connection Price 3 Year">
-                    <apex:outputText value="{!talkprod.Product__c}"/>
+                <apex:column headerValue="Family">
+                    <apex:outputtext value="£{!talkprod.Product_Family__c}"/>
                 </apex:column>
-                <apex:column headerValue="Rental Price">
-                    <apex:outputText value="{!talkprod.Product__c}"/>
-                </apex:column>                
                 <apex:column headerValue="Include On Quote">
                     <apex:inputCheckbox value="{!talkprod.Product__c}"/>
                 </apex:column>

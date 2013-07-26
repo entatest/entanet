@@ -66,15 +66,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Connection_Price__c</fullName>
-        <externalId>false</externalId>
-        <label>Connection Price</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Error_Message__c</fullName>
         <externalId>false</externalId>
         <label>Error Message</label>
@@ -90,6 +81,43 @@
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Product_Family__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Family</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Installation Charges</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Recurring Charges</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Product_Id__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Id</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Virgin Products</relationshipLabel>
+        <relationshipName>Virgin_Products</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Product_Term__c</fullName>
@@ -119,15 +147,6 @@
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Rental_Price__c</fullName>
-        <externalId>false</externalId>
-        <label>Rental Price</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Site_Ref__c</fullName>
