@@ -281,7 +281,7 @@ global class QuoteHandler
 	            XMLDom.Element totalPricing = dom.getElementByTagName('TotalPricing');
 	            if (totalPricing != null) {
 	                connectionPrice = totalPricing.getValue('InstallRevenue');
-	                rentalPrice = totalPricing.getValue('TariffSummary');
+	                rentalPrice = totalPricing.getValue('RentalRevenue');
 	                totalPrice = totalPricing.getValue('TariffSummary');
 	            }
 	            createObject();
