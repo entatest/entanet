@@ -193,10 +193,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Virgin_Media_Product__c.Opportunity_ID__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <relatedList>Leased_Line_Quote_Request__c.Opportunity_ID__c</relatedList>
     </relatedLists>
     <relatedLists>

@@ -92,17 +92,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Opportunity_ID__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Opportunity ID</label>
-        <referenceTo>Opportunity</referenceTo>
-        <relationshipLabel>Virgin Media Products</relationshipLabel>
-        <relationshipName>Virgin_Media_Products</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Product_Term__c</fullName>
         <externalId>false</externalId>
         <label>Product Term</label>
@@ -132,15 +121,6 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Reference__c</fullName>
-        <externalId>false</externalId>
-        <label>Reference</label>
-        <length>50</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Rental_Price__c</fullName>
         <externalId>false</externalId>
         <label>Rental Price</label>
@@ -148,15 +128,6 @@
         <required>false</required>
         <scale>2</scale>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Site_B_Access__c</fullName>
-        <externalId>false</externalId>
-        <label>Site B Access</label>
-        <length>50</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Site_Ref__c</fullName>
