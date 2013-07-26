@@ -12,8 +12,8 @@ public class LeasedLineQuoteResults {
     public List<Virgin_Media_Product__c> getvirginproducts() {
         virginproducts = new List<Virgin_Media_Product__c>();
         virginproducts = [SELECT Bearer__c, Bandwidth__c, Product_Term__c, Connection_Price__c,
-                                         Rental_Price__c, Total_Pricing_Summary__c, BPT_Quote__c, 
-                                         Reference__c, Site_B_Access__c, Flavour__c
+                             Rental_Price__c, Total_Pricing_Summary__c, BPT_Quote__c, 
+                             Site_Ref__c, Flavour__c, Error_Message__c
                           FROM Virgin_Media_Product__c];
         return virginproducts;   
     }

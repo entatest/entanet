@@ -7,12 +7,12 @@ global class QuoteHandler
     
     static private JSONParser parser;
     static private list<QuoteResponseParser> products;
-    static private ProductParserFactory factory;
     
     static webservice String parseQuote(String response)
     {
         String status = 'Data not loaded';
         products = new list<QuoteResponseParser>();
+    	ProductParserFactory factory = new ProductParserFactory();
         String ready = 'pending';
         String provider = 'unknown';
         String siteRef;
@@ -23,14 +23,13 @@ global class QuoteHandler
                 if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
                     provider = parser.getText();
                     System.debug(provider);
-        			factory = new ProductParserFactory(provider);
                 }
                 if (parser.getCurrentToken() == JSONToken.START_ARRAY) {
                     while (parser.nextToken() != null) {
                         // Advance to the start object marker
                         if (parser.getCurrentToken() == JSONToken.START_OBJECT) {
                             // Read object
-                            QuoteResponseParser product = factory.getProductParser();
+                            QuoteResponseParser product = factory.getProductParser(provider);
                             siteRef = product.siteRef;
                             //System.debug(product);
                             products.add(product);
@@ -402,21 +401,13 @@ global class QuoteHandler
     
     public class ProductParserFactory
     {
-    	private String parserType;
-    	
-    	public ProductParserFactory(String parserType)
-    	{
-    		this.parserType = parserType;
-    	}
-    	
-    	public QuoteResponseParser getProductParser()
+    	public QuoteResponseParser getProductParser(String parserType)
     	{
     		if (parserType == 'talktalk') {
     			return (TalktalkResponseParser)parser.readValueAs(TalktalkResponseParser.class);
     		}
     		if (parserType == 'virgin') {
-    			VirginResponseParser vParser = (VirginResponseParser)parser.readValueAs(VirginResponseParser.class);
-    			return vParser;
+    			return (VirginResponseParser)parser.readValueAs(VirginResponseParser.class);
     		}
     		return (VoidResponseParser)parser.readValueAs(VoidResponseParser.class);
     	}
