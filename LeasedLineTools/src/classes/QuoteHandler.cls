@@ -5,7 +5,7 @@ global class QuoteHandler
     static public final String INVALID_PROVIDER = 'Unknown provider';
     static public final String INVALID_SITE_REF = 'Invalid Site Reference';
     
-    static private JSONParser parser;
+    static private JSONParser jsonParser;
     static private list<QuoteResponseParser> products;
     
     static webservice String parseQuote(String response)
@@ -17,17 +17,17 @@ global class QuoteHandler
         String provider = 'unknown';
         String siteRef;
         try {
-            parser = JSON.createParser(response);
-            while (parser.nextToken() != null) {
+            jsonParser = JSON.createParser(response);
+            while (jsonParser.nextToken() != null) {
                 // Find out about the provider
-                if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
-                    provider = parser.getText();
+                if (jsonParser.getCurrentToken() == JSONToken.FIELD_NAME) {
+                    provider = jsonParser.getText();
                     system.debug(provider);
                 }
-                if (parser.getCurrentToken() == JSONToken.START_ARRAY) {
-                    while (parser.nextToken() != null) {
+                if (jsonParser.getCurrentToken() == JSONToken.START_ARRAY) {
+                    while (jsonParser.nextToken() != null) {
                         // Advance to the start object marker
-                        if (parser.getCurrentToken() == JSONToken.START_OBJECT) {
+                        if (jsonParser.getCurrentToken() == JSONToken.START_OBJECT) {
                             // Read object
                             QuoteResponseParser product = factory.getProductParser(provider);
                             siteRef = product.siteRef;
@@ -38,7 +38,7 @@ global class QuoteHandler
                             system.debug('Serialized product: ' + s);*/
         
                             // Skip the child start array and start object markers
-                            parser.skipChildren();
+                            jsonParser.skipChildren();
                         }
                     }
                 }
@@ -439,12 +439,12 @@ global class QuoteHandler
     	public QuoteResponseParser getProductParser(String parserType)
     	{
     		if (parserType == 'talktalk') {
-    			return (TalktalkResponseParser)parser.readValueAs(TalktalkResponseParser.class);
+    			return (TalktalkResponseParser)jsonParser.readValueAs(TalktalkResponseParser.class);
     		}
     		if (parserType == 'virgin') {
-    			return (VirginResponseParser)parser.readValueAs(VirginResponseParser.class);
+    			return (VirginResponseParser)jsonParser.readValueAs(VirginResponseParser.class);
     		}
-    		return (VoidResponseParser)parser.readValueAs(VoidResponseParser.class);
+    		return (VoidResponseParser)jsonParser.readValueAs(VoidResponseParser.class);
     	}
     }
 
