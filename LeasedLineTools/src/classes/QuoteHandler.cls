@@ -109,11 +109,11 @@ global class QuoteHandler
     
     public class TalktalkResponseParser extends QuoteResponseParser
     {
-		public String collectorExchangeName;
-		public String distance;
-		public String ethernetExchangeName;
-		public String fibreExchangeName;
-		public String zone;
+		private String collectorExchangeName;
+		private String distance;
+		private String ethernetExchangeName;
+		private String fibreExchangeName;
+		private String zone;
 		private list<TalktalkQuoteParser> quotes;
 		
 		override public void parsePayload()
