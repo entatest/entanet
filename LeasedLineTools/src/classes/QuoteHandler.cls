@@ -22,7 +22,7 @@ global class QuoteHandler
                 // Find out about the provider
                 if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
                     provider = parser.getText();
-                    System.debug(provider);
+                    system.debug(provider);
                 }
                 if (parser.getCurrentToken() == JSONToken.START_ARRAY) {
                     while (parser.nextToken() != null) {
@@ -31,11 +31,11 @@ global class QuoteHandler
                             // Read object
                             QuoteResponseParser product = factory.getProductParser(provider);
                             siteRef = product.siteRef;
-                            //System.debug(product);
+                            //system.debug(product);
                             products.add(product);
                             /* For debugging purposes, serialize again to verify what was parsed.
                             String s = JSON.serialize(product);
-                            System.debug('Serialized product: ' + s);*/
+                            system.debug('Serialized product: ' + s);*/
         
                             // Skip the child start array and start object markers
                             parser.skipChildren();
@@ -92,8 +92,14 @@ global class QuoteHandler
     	public String getProduct2Id(String bearer, String bandwidth, String term, String family)
     	{
     		String[] termParts = term.splitByCharacterType();
+    		bearer = bearer.deleteWhitespace();
+    		bandwidth = bandwidth.deleteWhitespace();
+    		family = family.deleteWhitespace();
     		for (Product2 prod: products2) {
-    			if (prod.Bearer__c == bearer && prod.Bandwidth__c == bandwidth && prod.Term__c == termParts[0] && prod.Family == family) {
+    			Boolean condition = bearer.equalsIgnoreCase(prod.Bearer__c.deleteWhitespace());
+    			condition = condition && bandwidth.equalsIgnoreCase(prod.Bandwidth__c.deleteWhitespace());
+    			condition = condition && family.equalsIgnoreCase(prod.Family.deleteWhitespace());
+    			if (condition && prod.Term__c == termParts[0]) {
     				return prod.Id;
     			}
     		}
@@ -115,7 +121,7 @@ global class QuoteHandler
     		if (isValid()) {
 	    		quotes = new list<TalktalkQuoteParser>();
 	    		XMLDom dom = new XMLDom(xml);
-	    		System.debug(dom);
+	    		system.debug(dom);
 	    		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
 	    		if (searchResponseDetail != null) {
 	    			collectorExchangeName = searchResponseDetail.getValue('ns:CollectorExchangeName');
@@ -284,7 +290,7 @@ global class QuoteHandler
 	                rentalPrice = totalPricing.getValue('RentalRevenue');
 	                totalPrice = totalPricing.getValue('TariffSummary');
 	            }
-	            createObject();
+	            createObjects();
     		}
     	}
         
@@ -303,36 +309,66 @@ global class QuoteHandler
         
         override protected void checkError()
         {
-    		createErrorObject();
+    		createErrorObjects();
         }
     	
-    	private void createObject()
+    	private void createObjects()
     	{
-    		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
-    			Site_Ref__c = siteRef,
-				Unique__c = emptyUnique + ' ' + bandwidth + '/' + bearer + ' - ' + term,
-    			BPT_Quote__c = BPTQuote,
-				Bandwidth__c = bandwidth,
-				Bearer__c = bearer,
-				Price__c = Decimal.valueOf(connectionPrice),
-				Flavour__c = flavour,
-				Product_term__c = term,
-				Product_Id__c = '',
-			    Product_Family__c = '',
-				Total_Pricing_Summary__c = Decimal.valueOf(totalPrice),
-				Error_Message__c = ''
-			);
-			upsert product Unique__c;
+    		Product2Handler handler = new Product2Handler('Virgin');
+    		list<Virgin_Media_Product__c> allProducts = new list<Virgin_Media_Product__c>();
+    		list<Schema.PicklistEntry> familyEntries = getPicklist('Virgin_Media_Product__c', 'Product_Family__c');
+    		for (Schema.PicklistEntry familyEntry: familyEntries) {
+				String family = familyEntry.getValue();
+    			String productId = handler.getProduct2Id(bearer, bandwidth, term, family);
+    			if (productId.length() > 0) {
+		    		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
+		    			Site_Ref__c = siteRef,
+						Unique__c = emptyUnique + ' ' + bandwidth + '/' + bearer + ' - ' + family + ' - ' + term,
+		    			BPT_Quote__c = BPTQuote,
+						Bandwidth__c = bandwidth,
+						Bearer__c = bearer,
+						Price__c = Decimal.valueOf(getPrice(family)),
+						Flavour__c = flavour,
+						Product_term__c = term,
+						Product_Id__c = productId,
+					    Product_Family__c = family,
+						Total_Pricing_Summary__c = Decimal.valueOf(totalPrice),
+						Error_Message__c = ''
+					);
+					allProducts.add(product);
+    			}
+    		}
+			upsert allProducts Unique__c;
     	}
     	
-    	private void createErrorObject()
+    	private String getPrice(String family)
     	{
-    		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
-				Site_Ref__c = siteRef,
-				Unique__c = emptyUnique + ' ' + bandwidth + '/' + bearer + ' - ' + term,
-				Error_Message__c = error
-			);
-			upsert product Unique__c;
+    		if (family.containsIgnoreCase('installation')) {
+    			return connectionPrice;
+    		}
+    		if (family.containsIgnoreCase('recurring')) {
+    			return rentalPrice;
+    		}
+    		return '0';
+    	}
+    	
+    	private void createErrorObjects()
+    	{
+    		list<Virgin_Media_Product__c> allProducts = new list<Virgin_Media_Product__c>();
+    		list<Schema.PicklistEntry> familyEntries = getPicklist('Virgin_Media_Product__c', 'Product_Family__c');
+    		for (Schema.PicklistEntry familyEntry: familyEntries) {
+				String family = familyEntry.getValue();
+	    		Virgin_Media_Product__c product = new Virgin_Media_Product__c(
+					Site_Ref__c = siteRef,
+					Unique__c = emptyUnique + ' ' + bandwidth + '/' + bearer + ' - ' + family + ' - ' + term,
+					Bandwidth__c = bandwidth,
+					Bearer__c = bearer,
+					Product_term__c = term,
+					Error_Message__c = error
+				);
+				allProducts.add(product);
+    		}
+			upsert allProducts Unique__c;
     	}
     }
     
@@ -353,8 +389,6 @@ global class QuoteHandler
         public String xml;
         public String error;
         public String emptyUnique;
-        
-        //public QuoteResponseParser() {System.debug('test');}
         
         abstract public void parsePayload();
         

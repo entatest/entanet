@@ -9,7 +9,7 @@ public class TestUtil {
 		String[] bandwidths = new String[]{'10Mb', '20Mb'};
 		String[] terms = new String[]{'1', '3'};
 		String[] families = new String[]{'Installation Charges', 'Recurring Charges'};
-		List<Product2> products2 = new List<Product2>();
+		list<Product2> products2 = new list<Product2>();
 		for (String bearer: bearers) {
 			for (String bandwidth: bandwidths) {
 				Integer intBearer = convertToMb(bearer);
@@ -57,11 +57,12 @@ public class TestUtil {
 	{
 		//String[] bearers = new String[]{'10Mb', '100Mb', '1Gb'};
 		//String[] bandwidths = new String[]{'2Mb', '4Mb', '6Mb', '8Mb', '10Mb', '20Mb', '30Mb', '40Mb', '50Mb', '60Mb', '70Mb', '80Mb', '90Mb', '100Mb', '200Mb', '300Mb', '400Mb', '500Mb', '600Mb', '700Mb', '800Mb', '900Mb', '1Gb'};
+		//String[] terms = new String[]{'1', '2', '3', '4', '5'};
 		String[] bearers = new String[]{'100Mb'};
-		String[] bandwidths = new String[]{'10Mb', '20Mb'};
-		String[] terms = new String[]{'1', '2', '3', '4', '5'};
+		String[] bandwidths = new String[]{'10Mb'};
+		String[] terms = new String[]{'3', '5'};
 		String[] families = new String[]{'Installation Charges', 'Recurring Charges'};
-		List<Product2> products2 = new List<Product2>();
+		list<Product2> products2 = new list<Product2>();
 		for (String bearer: bearers) {
 			for (String bandwidth: bandwidths) {
 				Integer intBearer = convertToMb(bearer);
