@@ -6,16 +6,15 @@ global class QuoteHandler
     static public final String INVALID_SITE_REF = 'Invalid Site Reference';
     
     static private JSONParser jsonParser;
-    static private list<QuoteResponseParser> products;
     
     static webservice String parseQuote(String response)
     {
-        String status = 'Data not loaded';
-        products = new list<QuoteResponseParser>();
     	ProductParserFactory factory = new ProductParserFactory();
+    	ProductParserCollection parserCollection;
+        String status = 'Data not loaded';
         String ready = 'pending';
         String provider = 'unknown';
-        String siteRef;
+        String siteRef = '';
         try {
             jsonParser = JSON.createParser(response);
             while (jsonParser.nextToken() != null) {
@@ -29,10 +28,8 @@ global class QuoteHandler
                         // Advance to the start object marker
                         if (jsonParser.getCurrentToken() == JSONToken.START_OBJECT) {
                             // Read object
-                            QuoteResponseParser product = factory.getProductParser(provider);
-                            siteRef = product.siteRef;
-                            //system.debug(product);
-                            products.add(product);
+                    		parserCollection = factory.getParserCollection(provider);
+                            parserCollection.add();
                             /* For debugging purposes, serialize again to verify what was parsed.
                             String s = JSON.serialize(product);
                             system.debug('Serialized product: ' + s);*/
@@ -43,11 +40,17 @@ global class QuoteHandler
                     }
                 }
             }
-            loadProductObjects();
-            ready = 'success';
+            if (parserCollection != null) {
+            	parserCollection.loadProductObjects();
+            	siteRef = parserCollection.getSiteRef();
+            }
         	status = 'Data loaded successfully';
+            ready = 'success';
         	setReadyStatus(siteRef, provider, ready, '');
         } catch (Exception e) {
+            if (parserCollection != null) {
+            	siteRef = parserCollection.getSiteRef();
+            }
             status = e.getMessage();
     		if (e instanceof XmlException) {
     			status = INVALID_XML;
@@ -56,13 +59,6 @@ global class QuoteHandler
         	setReadyStatus(siteRef, provider, ready, status);
         }
         return status;
-    }
-    
-    static private void loadProductObjects()
-    {
-        for (QuoteResponseParser qProd: products) {
-        	qProd.parsePayload();
-        }
     }
     
     static private void setReadyStatus(String siteRef, String provider, String ready, String message)
@@ -82,11 +78,11 @@ global class QuoteHandler
     
     public class Product2Handler
     {
-    	private list<Product2> products2;
+    	private list<Product2> products;
     	
     	public Product2Handler(String provider)
     	{
-    		products2 = [SELECT Bearer__c, Bandwidth__c, Term__c, Family FROM Product2 WHERE lineProvider__c = :provider AND IsDeleted = false];
+    		products = [SELECT Bearer__c, Bandwidth__c, Term__c, Family FROM Product2 WHERE lineProvider__c = :provider AND IsDeleted = false];
     	}
     	
     	public String getProduct2Id(String bearer, String bandwidth, String term, String family)
@@ -95,7 +91,7 @@ global class QuoteHandler
     		bearer = bearer.deleteWhitespace();
     		bandwidth = bandwidth.deleteWhitespace();
     		family = family.deleteWhitespace();
-    		for (Product2 prod: products2) {
+    		for (Product2 prod: products) {
     			Boolean condition = bearer.equalsIgnoreCase(prod.Bearer__c.deleteWhitespace());
     			condition = condition && bandwidth.equalsIgnoreCase(prod.Bandwidth__c.deleteWhitespace());
     			condition = condition && family.equalsIgnoreCase(prod.Family.deleteWhitespace());
@@ -152,7 +148,7 @@ global class QuoteHandler
     	private void createObjects()
     	{
     		Product2Handler handler = new Product2Handler('Talktalk');
-    		list<Talk_talk_Product__c> allProducts = new list<Talk_talk_Product__c>();
+    		list<Talk_talk_Product__c> products = new list<Talk_talk_Product__c>();
     		list<Schema.PicklistEntry> familyEntries = getPicklist('Talk_talk_Product__c', 'Product_Family__c');
     		list<Schema.PicklistEntry> termEntries = getPicklist('Talk_talk_Product__c', 'Product_Term__c');
     		for (TalktalkQuoteParser quoteParser: quotes) {
@@ -177,12 +173,12 @@ global class QuoteHandler
 			    				Zone__c = zone,
 			    				Product_Id__c = productId
 			    			);
-			    			allProducts.add(product);
+			    			products.add(product);
 		    			}
 	    			}
     			}
     		}
-	    	upsert allProducts Unique__c;
+	    	upsert products Unique__c;
     	}
     	
     	private void deleteObjects()
@@ -270,7 +266,8 @@ global class QuoteHandler
     	private String flavour;
     	private String connectionPrice;
     	private String rentalPrice;
-    	private String totalPrice;    	
+    	private String totalPrice;
+    	private list<Virgin_Media_Product__c> products;
     	
     	override public void parsePayload()
     	{
@@ -292,6 +289,11 @@ global class QuoteHandler
 	            }
 	            createObjects();
     		}
+    	}
+    	
+    	override public void setCollection(list<SObject> collection)
+    	{
+    		products = collection;
     	}
         
         override protected Boolean checkResponse()
@@ -315,7 +317,6 @@ global class QuoteHandler
     	private void createObjects()
     	{
     		Product2Handler handler = new Product2Handler('Virgin');
-    		list<Virgin_Media_Product__c> allProducts = new list<Virgin_Media_Product__c>();
     		list<Schema.PicklistEntry> familyEntries = getPicklist('Virgin_Media_Product__c', 'Product_Family__c');
     		for (Schema.PicklistEntry familyEntry: familyEntries) {
 				String family = familyEntry.getValue();
@@ -335,10 +336,9 @@ global class QuoteHandler
 						Total_Pricing_Summary__c = Decimal.valueOf(totalPrice),
 						Error_Message__c = ''
 					);
-					allProducts.add(product);
+					products.add(product);
     			}
     		}
-			upsert allProducts Unique__c;
     	}
     	
     	private String getPrice(String family)
@@ -354,7 +354,6 @@ global class QuoteHandler
     	
     	private void createErrorObjects()
     	{
-    		list<Virgin_Media_Product__c> allProducts = new list<Virgin_Media_Product__c>();
     		list<Schema.PicklistEntry> familyEntries = getPicklist('Virgin_Media_Product__c', 'Product_Family__c');
     		for (Schema.PicklistEntry familyEntry: familyEntries) {
 				String family = familyEntry.getValue();
@@ -366,9 +365,8 @@ global class QuoteHandler
 					Product_term__c = term,
 					Error_Message__c = error
 				);
-				allProducts.add(product);
+				products.add(product);
     		}
-			upsert allProducts Unique__c;
     	}
     }
     
@@ -391,6 +389,8 @@ global class QuoteHandler
         public String emptyUnique;
         
         abstract public void parsePayload();
+        
+        virtual public void setCollection(list<SObject> collection) {}
         
         protected Boolean isValid()
         {
@@ -434,18 +434,82 @@ global class QuoteHandler
 	    }
     }
     
+    abstract public class ProductParserCollection
+    {
+    	protected List<QuoteResponseParser> parsers;
+    	
+    	public ProductParserCollection()
+    	{
+    		parsers = new List<QuoteResponseParser>();
+    	}
+    	
+    	abstract public void add();
+    	
+    	public String getSiteRef()
+    	{
+    		return parsers[0].siteRef;
+    	}
+    
+	    virtual public void loadProductObjects()
+	    {
+	        for (QuoteResponseParser parser: parsers) {
+	        	parser.parsePayload();
+	        }
+	    }
+    }
+    
+    public class TalktalkParserCollection extends ProductParserCollection
+    {    	
+    	override public void add()
+    	{
+    		parsers.add((TalktalkResponseParser)jsonParser.readValueAs(TalktalkResponseParser.class));
+    	}
+    }
+    
+    public class VirginParserCollection extends ProductParserCollection
+    {
+    	private list<Virgin_Media_Product__c> products;
+    	
+    	public VirginParserCollection()
+    	{
+    		super();
+    		products = new list<Virgin_Media_Product__c>();
+    	}
+    	
+    	override public void add()
+    	{
+    		VirginResponseParser parser = (VirginResponseParser)jsonParser.readValueAs(VirginResponseParser.class);
+    		parser.setCollection(products);
+    		parsers.add(parser);
+    	}
+    	
+    	override public void loadProductObjects()
+    	{
+    		super.loadProductObjects();
+    		upsert products Unique__c;
+    	}
+    }
+    
+    public class VoidParserCollection extends ProductParserCollection
+    { 	
+    	override public void add()
+    	{
+    		parsers.add((VoidResponseParser)jsonParser.readValueAs(VoidResponseParser.class));
+    	}
+    }
+    
     public class ProductParserFactory
     {
-    	public QuoteResponseParser getProductParser(String parserType)
-    	{
-    		if (parserType == 'talktalk') {
-    			return (TalktalkResponseParser)jsonParser.readValueAs(TalktalkResponseParser.class);
-    		}
+		public ProductParserCollection getParserCollection(String parserType)
+		{
+			if (parserType == 'talktalk') {
+				return new TalktalkParserCollection();
+			}
     		if (parserType == 'virgin') {
-    			return (VirginResponseParser)jsonParser.readValueAs(VirginResponseParser.class);
+    			return new VirginParserCollection();
     		}
-    		return (VoidResponseParser)jsonParser.readValueAs(VoidResponseParser.class);
-    	}
+    		return new VoidParserCollection();
+		}
     }
 
 	public class UnknownProviderException extends Exception {}
