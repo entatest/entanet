@@ -103,6 +103,13 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Fixed_Price_Product__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Fixed Price Product</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Term__c</fullName>
         <externalId>false</externalId>
         <label>Term</label>

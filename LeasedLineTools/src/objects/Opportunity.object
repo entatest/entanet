@@ -38,8 +38,107 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>All_Products_Fixed_Price__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>All Products Fixed Price</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Bandwidth_Speeds__c</fullName>
+        <externalId>false</externalId>
+        <label>Bandwidth Speeds</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bearer_Size__c</fullName>
+        <externalId>false</externalId>
+        <label>Bearer Size</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>CampaignId</fullName>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Cancellation_Notice_Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Cancellation Notice Period</label>
+        <length>3</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Closed_at_Stage__c</fullName>
+        <externalId>false</externalId>
+        <label>Closed at Stage</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Closure_Comments__c</fullName>
+        <description>Free text field in relation to why the opportunity was closed</description>
+        <externalId>false</externalId>
+        <label>Closure Comments</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Renewal_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Contract Renewal Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Delivery_Postcode__c</fullName>
+        <externalId>false</externalId>
+        <label>Delivery Postcode</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Dependent_Closure_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Dependent Closure Reason</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Credit Score</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Installation_Postcode__c</fullName>
+        <externalId>false</externalId>
+        <label>Installation Postcode</label>
+        <length>12</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>LeadSource</fullName>
@@ -93,8 +192,237 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Lead_Requirements__c</fullName>
+        <externalId>false</externalId>
+        <label>Lead Requirements</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Margin_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IMAGE(IF(Margin_Threshold_Breached__c, &quot;/img/msg_icons/error16.png&quot;, &quot;/img/msg_icons/confirm16.png&quot;),&quot;Margin Status&quot;, 20, 20)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Margin Status</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Margin_Threshold_Breached__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Margin__c &lt; Account.Margin_Threshold__c, True, False)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Margin Threshold Breached</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Margin__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Total_Cost__c &gt; 0, ((Amount -  Total_Cost__c) /  Total_Cost__c), 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Margin</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Minimum_Contract_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Minimum Contract Term</label>
+        <length>3</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Netsuite_Customer_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Netsuite Customer Id</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Commission__c</fullName>
+        <externalId>false</externalId>
+        <label>Opportunity Commission</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Order_Timeframe__c</fullName>
+        <externalId>false</externalId>
+        <label>Order Timeframe</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Order_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Order Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Class A - New Customer/New Business</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Class B - Existin Customer/New Business</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Class C - Exisitng Customer/Replacement, Upgrade Etc</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Class D - Existing Customer/Re-sign</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Class E - Company Name Change ONLY</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>OwnerId</fullName>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Term__c</fullName>
+        <externalId>false</externalId>
+        <label>Payment Term</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Annually</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Payment_term_is__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Payment_Term__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payment term is</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Pre_Sales_Technical_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Pre-Sales Technical Contact</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Presales_Document_Ref__c</fullName>
+        <externalId>false</externalId>
+        <label>Presales Document Ref.</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Quote_Expiry_Date__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <description>Used to determine which of the products associated with the opportunity will expire last. This date should be used as the Expiration Date on Quote</description>
+        <externalId>false</externalId>
+        <label>Quote Expiry Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Reason_for_closure__c</fullName>
+        <externalId>false</externalId>
+        <label>Reason for closure</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Price</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Project abandoned</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Service not suitable</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Couldn’t meet all requirements</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stayed with incumbent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Solution_Technically_Verified__c</fullName>
+        <externalId>false</externalId>
+        <label>Solution Technically Verified</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Speed_Required__c</fullName>
+        <externalId>false</externalId>
+        <label>Speed Required</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>StageName</fullName>
@@ -184,8 +512,102 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Sub_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Sub Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Awaiting Salesorder / CRF to be sent</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Salesorder &amp; CRF submitted to customer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>CRF returned, awaiting Salesorder</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Salesorder returned, passed to Credit Control</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Credit control approved, awaiting CRF</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Referred to management by Credit Control</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Rejected by Credit Control, referred to Sales Contact</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Credit control in discussion with customer</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Passed to Provisioning Team</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>SyncedQuoteId</fullName>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SyncedQuote__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK( SyncedQuote.Id ) , &apos;&apos; , SyncedQuote.Id)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>SyncedQuote</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Systems_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Systems Contact</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Opportunities1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Systems_Validation_Required__c</fullName>
+        <externalId>false</externalId>
+        <label>Systems Validation Required</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>No</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Total_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Cost</label>
+        <summarizedField>OpportunityLineItem.Cost_Price__c</summarizedField>
+        <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Type</fullName>
@@ -284,6 +706,82 @@
         <searchResultsAdditionalFields>OPPORTUNITY.CLOSE_DATE</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
     </searchLayouts>
+    <validationRules>
+        <fullName>Closed_Won_Mandatory_Fields</fullName>
+        <active>true</active>
+        <description>Minimum Contract Term, Cancellation Notice Period, Payment Term and Sub Status need to be set  when Stage is Closed Won</description>
+        <errorConditionFormula>AND( 
+$Setup.Validation_Toggle__c.Is_Validation_On__c,
+ISPICKVAL(StageName, &apos;Closed Won&apos;),
+OR(
+ISBLANK(Cancellation_Notice_Period__c),
+ISBLANK(Minimum_Contract_Term__c),
+ISPICKVAL(Sub_Status__c, &quot;&quot;),
+ISPICKVAL(Payment_Term__c, &quot;&quot;)
+)
+)</errorConditionFormula>
+        <errorMessage>Minimum Contract Term, Cancellation Notice Period, Payment Term and Sub Status need to be set  when Stage is Closed Won</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Reason_for_Closure_Mandatory</fullName>
+        <active>true</active>
+        <description>Reason for Closure is mandatory when Stage is set to Closed Lost</description>
+        <errorConditionFormula>AND(
+$Setup.Validation_Toggle__c.Is_Validation_On__c,
+TEXT(StageName) = &quot;Closed Lost&quot;,
+ISPICKVAL(Reason_for_closure__c, &quot;&quot;)
+)</errorConditionFormula>
+        <errorDisplayField>Reason_for_closure__c</errorDisplayField>
+        <errorMessage>Reason for Closure is mandatory when Stage is set to Closed Lost</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Solution_Technically_Verified</fullName>
+        <active>true</active>
+        <description>Solution Technically Verified must be set if a Systems contact has been selected</description>
+        <errorConditionFormula>AND( 
+$Setup.Validation_Toggle__c.Is_Validation_On__c, 
+NOT(ISBLANK( Systems_Contact__c )), 
+ISPICKVAL(  Solution_Technically_Verified__c  , &quot;&quot;)
+)</errorConditionFormula>
+        <errorDisplayField>Solution_Technically_Verified__c</errorDisplayField>
+        <errorMessage>Solution Technically Verified must be set if a Systems contact has been selected</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Sub_Status_Mandatory_When_Closed_Won</fullName>
+        <active>true</active>
+        <description>Sub Status must be set when Stage is Closed Won</description>
+        <errorConditionFormula>AND( 
+$Setup.Validation_Toggle__c.Is_Validation_On__c,
+TEXT(StageName) = &apos;Closed Won&apos;,
+ISPICKVAL( Sub_Status__c, &quot;&quot;)
+)</errorConditionFormula>
+        <errorDisplayField>Sub_Status__c</errorDisplayField>
+        <errorMessage>Sub Status must be set when Stage is Closed Won</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Systems_Contact_Required</fullName>
+        <active>true</active>
+        <description>A Systems contact must be selected if Systems Validation Required is set to Yes</description>
+        <errorConditionFormula>AND( 
+$Setup.Validation_Toggle__c.Is_Validation_On__c, 
+ISBLANK( Systems_Contact__c ), 
+ISPICKVAL( Systems_Validation_Required__c , &quot;Yes&quot;)
+)</errorConditionFormula>
+        <errorDisplayField>Systems_Contact__c</errorDisplayField>
+        <errorMessage>A Systems contact must be selected if Systems Validation Required is set to Yes</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Systems_Validation_Required</fullName>
+        <active>true</active>
+        <description>Systems Validation Required must be set if a Pre-Sales Technical Contact has been selected</description>
+        <errorConditionFormula>AND( 
+$Setup.Validation_Toggle__c.Is_Validation_On__c, 
+NOT(ISBLANK( Pre_Sales_Technical_Contact__c )), 
+ISPICKVAL( Systems_Validation_Required__c , &quot;&quot;)
+)</errorConditionFormula>
+        <errorDisplayField>Systems_Validation_Required__c</errorDisplayField>
+        <errorMessage>Systems Validation Required must be set if a Pre-Sales Technical Contact has been selected</errorMessage>
+    </validationRules>
     <webLinks>
         <fullName>Get_Pricing</fullName>
         <availability>online</availability>
