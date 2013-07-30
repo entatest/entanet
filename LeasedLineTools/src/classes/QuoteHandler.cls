@@ -21,7 +21,7 @@ global class QuoteHandler
                 // Find out about the provider
                 if (jsonParser.getCurrentToken() == JSONToken.FIELD_NAME) {
                     provider = jsonParser.getText();
-                    system.debug(provider);
+//system.debug(provider);
                 }
                 if (jsonParser.getCurrentToken() == JSONToken.START_ARRAY) {
                     while (jsonParser.nextToken() != null) {
@@ -30,9 +30,9 @@ global class QuoteHandler
                             // Read object
                     		parserCollection = factory.getParserCollection(provider);
                             parserCollection.add();
-                            /* For debugging purposes, serialize again to verify what was parsed.
-                            String s = JSON.serialize(product);
-                            system.debug('Serialized product: ' + s);*/
+/* For debugging purposes, serialize again to verify what was parsed.
+String s = JSON.serialize(product);
+system.debug('Serialized product: ' + s);*/
         
                             // Skip the child start array and start object markers
                             jsonParser.skipChildren();
@@ -41,11 +41,11 @@ global class QuoteHandler
                 }
             }
             if (parserCollection != null) {
-            	parserCollection.loadProductObjects();
-            	siteRef = parserCollection.getSiteRef();
+	            parserCollection.loadProductObjects();
+	            siteRef = parserCollection.getSiteRef();
+	        	status = 'Data loaded successfully';
+	            ready = 'success';
             }
-        	status = 'Data loaded successfully';
-            ready = 'success';
         	setReadyStatus(siteRef, provider, ready, '');
         } catch (Exception e) {
             if (parserCollection != null) {
@@ -73,6 +73,7 @@ global class QuoteHandler
 			insert status;
     	} catch (Exception e) {
     		// Log exception
+    		system.debug(e.getMessage());
     	}
     }
     
@@ -117,7 +118,7 @@ global class QuoteHandler
     		if (isValid()) {
 	    		quotes = new list<TalktalkQuoteParser>();
 	    		XMLDom dom = new XMLDom(xml);
-	    		system.debug(dom);
+//system.debug(dom);
 	    		XMLDom.Element searchResponseDetail = dom.getElementByTagName('ns:SearchResponseDetail');
 	    		if (searchResponseDetail != null) {
 	    			collectorExchangeName = searchResponseDetail.getValue('ns:CollectorExchangeName');
