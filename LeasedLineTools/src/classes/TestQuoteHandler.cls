@@ -278,4 +278,30 @@ private class TestQuoteHandler
     	system.assert(products.size() == 4);
     	system.assert(errorProducts.size() == 0);
     }
+    
+    @isTest static void talktalkUniqueKeyContainsSiteRefTest()
+    {
+    	TestUtil.createTalktalkProducts();
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	String xml = talktalkXml.escapeEcmaScript();
+    	String response = '{"talktalk":[{"siteRef":"' + siteRef + '","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
+    	list<Talk_Talk_Product__c> products = [SELECT Unique__c FROM Talk_Talk_Product__c WHERE Site_Ref__c = :siteRef ORDER BY Unique__c];
+    	system.assert(products[0].Unique__c.contains(siteRef));
+    }
+    
+    @isTest static void virginUniqueKeyContainsSiteRefTest()
+    {
+    	TestUtil.createVirginProducts();
+    	Leased_Line_Quote_Request__c llqr = new Leased_Line_Quote_Request__c();
+    	insert llqr;
+    	String siteRef = llqr.Id;
+    	String xml = virginXml.escapeEcmaScript();
+    	String response = '{"virgin":[{"siteRef":"' + siteRef + '","bearer":"100 Mb","bandwidth":"10 Mb","term":"3","xml":"' + xml + '","error":""}]}';
+    	QuoteHandler.parseQuote(response);
+    	list<Virgin_Media_Product__c> products = [SELECT Unique__c FROM Virgin_Media_Product__c WHERE Site_Ref__c = :siteRef];
+    	system.assert(products[0].Unique__c.contains(siteRef));
+    }
 }
