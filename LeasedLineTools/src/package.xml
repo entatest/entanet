@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -17,6 +17,13 @@
         <name>ApexTrigger</name>
     </types>
     <types>
+        <members>Account.AccountSource</members>
+        <members>Account.HubSpot_Inc__Sync_From_HubSpot__c</members>
+        <members>Account.Industry</members>
+        <members>Account.Netsuite_Customer_Id__c</members>
+        <members>Account.Ownership</members>
+        <members>Account.Rating</members>
+        <members>Account.Type</members>
         <members>BT_Wholesale_Product__c.Access_Type__c</members>
         <members>BT_Wholesale_Product__c.Bandwidth__c</members>
         <members>BT_Wholesale_Product__c.Bearer__c</members>
@@ -26,6 +33,10 @@
         <members>BT_Wholesale_Product__c.Opportunity__c</members>
         <members>BT_Wholesale_Product__c.Product_Term__c</members>
         <members>BT_Wholesale_Product__c.Rental_Price__c</members>
+        <members>Contact.HubSpot_Inc__HubSpot_Intelligence__c</members>
+        <members>Contact.HubSpot_Inc__SICCode__c</members>
+        <members>Contact.LeadSource</members>
+        <members>Contact.Netsuite_Customer_Id__c</members>
         <members>Leased_Line_Product__c.Line_Provider__c</members>
         <members>Leased_Line_Product__c.Postcode__c</members>
         <members>Leased_Line_Product__c.TOID__c</members>
@@ -63,6 +74,7 @@
         <members>Talk_Talk_Product__c.Price__c</members>
         <members>Talk_Talk_Product__c.Product_Family__c</members>
         <members>Talk_Talk_Product__c.Product_Id__c</members>
+        <members>Talk_Talk_Product__c.Product_Term__c</members>
         <members>Talk_Talk_Product__c.Product__c</members>
         <members>Talk_Talk_Product__c.Site_Ref__c</members>
         <members>Talk_Talk_Product__c.Unique__c</members>
@@ -79,9 +91,6 @@
         <members>Virgin_Media_Product__c.Site_Ref__c</members>
         <members>Virgin_Media_Product__c.Total_Pricing_Summary__c</members>
         <members>Virgin_Media_Product__c.Unique__c</members>
-        <members>Contact.Netsuite_Id__c</members>
-        <members>Contact.Netsuite_Customer_Id__c</members>
-        <members>Account.Netsuite_Customer_Id__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -90,10 +99,7 @@
         <members>Leased_Line_Quote_Request__c</members>
         <members>Opportunity</members>
         <members>Product2</members>
-        <members>Product_Loaded_Status__c</members>
-        <members>Sales_Order_Option__c</members>
-        <members>Talk_Talk_Product__c</members>
-        <members>Virgin_Media_Product__c</members>
+        <members>Quote</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -105,17 +111,39 @@
         <name>Layout</name>
     </types>
     <types>
-        <members>*</members>
-        <name>StaticResource</name>
-    </types>
-    <types>
-        <members>Opportunity.Get_Pricing</members>
-        <name>WebLink</name>
+        <members>Account.AllAccounts</members>
+        <members>Account.MyAccounts</members>
+        <members>Account.NewThisWeek</members>
+        <members>Contact.AllContacts</members>
+        <members>Contact.BirthdaysThisMonth</members>
+        <members>Contact.NewThisWeek</members>
+        <members>Sales_Order_Option__c.All</members>
+        <members>Talk_Talk_Product__c.All</members>
+        <members>Talk_Talk_Product__c.View_Details</members>
+        <members>Virgin_Media_Product__c.All</members>
+        <name>ListView</name>
     </types>
     <types>
         <members>Basic</members>
         <name>Profile</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>StaticResource</name>
+    </types>
+    <types>
+        <members>Account.AltavistaNews</members>
+        <members>Account.GoogleMaps</members>
+        <members>Account.GoogleNews</members>
+        <members>Account.GoogleSearch</members>
+        <members>Account.HooversProfile</members>
+        <members>Account.YahooMaps</members>
+        <members>Contact.GoogleMaps</members>
+        <members>Contact.GoogleSearch</members>
+        <members>Contact.SendGmail</members>
+        <members>Contact.YahooMaps</members>
+        <members>Contact.YahooWeather</members>
+        <name>WebLink</name>
+    </types>
     <version>27.0</version>
 </Package>
-

@@ -22,11 +22,14 @@
                     <apex:outputText value="{!item.productname}"/>
                 </apex:column>
                 <apex:column headerValue="Cost">
-                    <apex:inputText value="{!item.price}"/>
+                    <apex:inputText value="{!item.connectionprice1year}"/>
                 </apex:column>
                 <apex:column headerValue="Price">
-                    <apex:inputText value="{!item.price}"/>
-                </apex:column> 
+                    <apex:inputText value="{!item.connectionprice3year}"/>
+                </apex:column>
+                <apex:column headerValue="Quantity">
+                    <apex:inputText value="{!item.quantity}"/>
+                </apex:column>  
         </apex:pageBlockTable>               
     
    
