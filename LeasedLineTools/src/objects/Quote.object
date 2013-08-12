@@ -34,11 +34,57 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Current_Deal_Margin__c</fullName>
+        <externalId>false</externalId>
+        <label>Current Deal Margin</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Deal_Length__c</fullName>
+        <externalId>false</externalId>
+        <label>Deal Length</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>IncludeInSummary__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Include In Summary</label>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Required__c</fullName>
+        <externalId>false</externalId>
+        <label>Monthly Required</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>PO_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>PO Number</label>
+        <length>20</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shortfall__c</fullName>
+        <externalId>false</externalId>
+        <label>Shortfall</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Status</fullName>
@@ -86,6 +132,15 @@
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Target_Margin__c</fullName>
+        <externalId>false</externalId>
+        <label>Target Margin</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
     </fields>
     <searchLayouts>
         <lookupDialogsAdditionalFields>QUOTE.NAME</lookupDialogsAdditionalFields>

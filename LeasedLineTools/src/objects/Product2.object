@@ -96,6 +96,25 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Cost_Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost Price</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Default_Duration__c</fullName>
+        <externalId>false</externalId>
+        <label>Duration</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Family</fullName>
         <picklist>
             <sorted>false</sorted>

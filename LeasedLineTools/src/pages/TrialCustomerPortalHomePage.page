@@ -68,6 +68,7 @@ var date3 = '{!TODAY() + 24}';
                         </tr>
                     </thead>
                     <tbody>
+					<!--
                         <knowledge:articleList articleVar="article" sortBy="mostViewed" pageSize="10">
                             <tr class="dataRow odd" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
                                 <td class="dataCell" colspan="1">
@@ -75,6 +76,7 @@ var date3 = '{!TODAY() + 24}';
                                 </td>
                             </tr>      
                         </knowledge:articleList>
+						-->
                     </tbody>
                 </table>
             </div>

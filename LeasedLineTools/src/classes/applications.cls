@@ -33,7 +33,7 @@ public with sharing class applications {
     
     public PageReference saveOptions() {
         String selectedField;
-        test = '';
+        test = 'test';
         selectedsos = new List<Sales_Order_Option__c>();
         
         for (String field : getcrmAppplications()){
