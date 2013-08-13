@@ -1,6 +1,7 @@
 public with sharing class applications {
     
     String[] applications = new String[]{};
+	String testington = 'test';
     public List<Sales_Order_Option__c> selectedsos;
     
     public List<Sales_Order_Option__c> getselectedsos(){
