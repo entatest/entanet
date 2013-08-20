@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <customSettingsVisibility>Public</customSettingsVisibility>
+    <description>Default and minimum threshold values for account margins, based on account type</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>End_User_Default__c</fullName>
+        <externalId>false</externalId>
+        <label>End User Default</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>End_User_Threshold__c</fullName>
+        <externalId>false</externalId>
+        <label>End User Threshold</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Reseller_Default__c</fullName>
+        <externalId>false</externalId>
+        <label>Reseller Default</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Reseller_Threshold__c</fullName>
+        <externalId>false</externalId>
+        <label>Reseller Threshold</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Wholesaler_Default__c</fullName>
+        <externalId>false</externalId>
+        <label>Wholesaler Default</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Wholesaler_Threshold__c</fullName>
+        <externalId>false</externalId>
+        <label>Wholesaler Threshold</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Percent</type>
+    </fields>
+    <label>Margins</label>
+</CustomObject>
