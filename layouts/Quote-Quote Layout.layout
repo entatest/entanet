@@ -28,24 +28,12 @@
                 <field>PO_Number__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Target_Margin__c</field>
+                <behavior>Required</behavior>
+                <field>Cancellation_Notice_Period__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Current_Deal_Margin__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Deal_Length__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Monthly_Required__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Shortfall__c</field>
+                <behavior>Required</behavior>
+                <field>Minimum_Contract_Term__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -64,6 +52,18 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Description</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Payment_Term__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Deal_Duration__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Deal_Margin__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -187,11 +187,12 @@
     </miniLayout>
     <relatedLists>
         <fields>QUOTE_LI.PRODUCT2</fields>
-        <fields>QUOTE_LI.LIST_PRICE</fields>
-        <fields>QUOTE_LI.UNIT_PRICE</fields>
         <fields>QUOTE_LI.QUANTITY</fields>
-        <fields>QUOTE_LI.SUBTOTAL</fields>
+        <fields>QUOTE_LI.LIST_PRICE</fields>
+        <fields>Monthly_Price__c</fields>
+        <fields>Annual_Price__c</fields>
         <fields>QUOTE_LI.TOTAL_PRICE</fields>
+        <fields>Number_of_Payments__c</fields>
         <relatedList>RelatedQuoteLineItemList</relatedList>
     </relatedLists>
     <relatedLists>

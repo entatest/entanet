@@ -49,7 +49,10 @@ private class bg_OpportunityLineItemQuoteTriggerTest {
 
         // Create a quote for the opportunity with the fixed price product added.
         // Covers the case for setting quote expiration date where all opportunity products are fixed price
-        Quote quoteFixed = new Quote(Name='Fixed Price Quote', OpportunityId=o.Id);
+        Quote quoteFixed = new Quote(Name='Fixed Price Quote',
+        								Cancellation_Notice_Period__c = '45',
+        								 Minimum_Contract_Term__c = '36',
+        								 Payment_Term__c = 'Quaterly', OpportunityId=o.Id);
         insert quoteFixed;
         System.assertEquals('Fixed Price Quote', quoteFixed.Name); 
         
@@ -63,7 +66,9 @@ private class bg_OpportunityLineItemQuoteTriggerTest {
         System.assertEquals(250, oliexNotFixed.Cost_Price__c); 
 
         // Create quote to cover case where all at least one opp product is not fixed price
-        Quote quoteNotFixed = new Quote(Name='Non-Fixed Price Quote', OpportunityId=o.Id);
+        Quote quoteNotFixed = new Quote(Name='Non-Fixed Price Quote', Cancellation_Notice_Period__c = '45',
+        								 Minimum_Contract_Term__c = '36',
+        								 Payment_Term__c = 'Quaterly',OpportunityId=o.Id);
         insert quoteNotFixed;
         System.assertEquals('Non-Fixed Price Quote', quoteNotFixed.Name); 
     }
